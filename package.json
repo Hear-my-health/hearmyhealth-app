@@ -1,0 +1,20 @@
+{
+  "name": "nuxt-ssr-firebase-template",
+  "description": "Template for Nuxt.js SSR app, deployed to Firebase functions.",
+  "author": "eriksondaniel",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "dev": "cd src && yarn dev",
+    "serve": "firebase serve --only functions,hosting",
+    "build": "cd src && yarn build",
+    "predeployserver": "rm -r functions/.nuxt && cp -r src/.nuxt/ functions/",
+    "predeploy": "rm -r public/* && mkdir -p public/_nuxt && cp -r functions/.nuxt/dist/client/ public/_nuxt && cp -a src/static/* public/",
+    "deploy": "firebase deploy"
+  },
+  "engines": {},
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^5.12.0"
+  }
+}
