@@ -39,7 +39,30 @@ export default {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     // https://go.nuxtjs.dev/pwa
-    '@nuxtjs/pwa'
+    '@nuxtjs/pwa',
+    [
+      '@nuxtjs/firebase',
+      {
+        config: {
+          apiKey: 'AIzaSyAwCqlhcKen3cL3gcD8zj0ufBzkG_GJYRU',
+          authDomain: 'hear-my-health.firebaseapp.com',
+          projectId: 'hear-my-health',
+          storageBucket: 'hear-my-health.appspot.com',
+          messagingSenderId: '1070628008462',
+          appId: '1:1070628008462:web:06d2128e6803a14e6e025f',
+          measurementId: 'G-4VQ956MJ9R'
+        },
+        services: {
+          auth: {
+            initialize: {
+              onAuthStateChangedAction: 'onAuthStateChanged'
+            },
+            ssr: true
+          },
+          firestore: true
+        }
+      }
+    ]
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
