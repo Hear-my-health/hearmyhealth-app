@@ -1,5 +1,6 @@
 export default {
   onAuthStateChanged ({ commit }, authUser) {
+    console.log('store index onAuthStateChanged')
     if (!authUser) {
       commit('RESET_STORE')
       return

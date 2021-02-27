@@ -2,5 +2,9 @@ export default () => ({
   authUser: null,
   session: {},
   credential: {},
-  dataSource: []
+  dataSource: [],
+  users: [],
+  token: '',
+  thoughts: [],
+  alerts: []
 })

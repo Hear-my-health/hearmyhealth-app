@@ -5,5 +5,13 @@ export default {
     } catch {
       return false
     }
+  },
+
+  users: (state) => {
+    return state.users
+  },
+
+  dataSource: (state) => {
+    return state.dataSource
   }
 }

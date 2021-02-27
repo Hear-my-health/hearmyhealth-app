@@ -1,6 +1,9 @@
+import { vuexfireMutations } from 'vuexfire'
 import initialState from './state'
 
 export default {
+  ...vuexfireMutations,
+
   RESET_STORE: (state) => {
     Object.assign(state, initialState())
   },
@@ -10,22 +13,29 @@ export default {
     state.authUser = {
       uid: authUser.uid,
       email: authUser.email,
+      photoURL: authUser.photoURL,
+      providerData: authUser.providerData[0],
       idToken: authUser.refreshToken
     }
   },
 
   SET_TOKEN: (state, token) => {
-    console.log('token', token)
     state.token = token
   },
 
   SET_CREDENTIAL: (state, credential) => {
-    console.log('credential', credential)
     state.credential = credential
   },
 
   SET_DATA_SOURCE: (state, dataSource) => {
-    console.log('dataSource', dataSource)
     state.dataSource = dataSource
+  },
+
+  SET_THOUGHTS: (state, thoughts) => {
+    state.thoughts = thoughts
+  },
+
+  SET_ALERTS: (state, alerts) => {
+    state.alerts = alerts
   }
 }
