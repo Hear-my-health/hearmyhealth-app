@@ -107,7 +107,6 @@ export default {
     redirect,
     error
   }) {
-    console.log('params', params)
     const { uid } = params
 
     return { uid }

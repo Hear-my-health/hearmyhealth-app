@@ -9,7 +9,6 @@ export default {
   },
 
   SET_AUTH_USER: (state, authUser) => {
-    console.log('authUser', authUser)
     state.authUser = {
       uid: authUser.uid,
       email: authUser.email,
@@ -37,5 +36,13 @@ export default {
 
   SET_ALERTS: (state, alerts) => {
     state.alerts = alerts
+  },
+
+  SET_DATA_SET: (state, dataSet) => {
+    state.dataSet = dataSet
+  },
+
+  SET_DATA_SAVING_TIME: (state, dataSavingTime) => {
+    state.dataSavingTime = dataSavingTime
   }
 }

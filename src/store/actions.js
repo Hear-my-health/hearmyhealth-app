@@ -48,7 +48,6 @@ export default {
       commit('RESET_STORE')
       return
     }
-    console.log('onAuthStateChanged actions authUser', authUser)
     commit('SET_AUTH_USER', authUser)
   },
 
@@ -59,7 +58,6 @@ export default {
   }),
 
   getThoughts: firestoreAction(async function ({ state, bindFirestoreRef }, ctx) {
-    console.log('getThoughts ctx', ctx)
     const { uid } = ctx
     const res = this.$fire.firestore
       .collection('thoughts')
@@ -68,8 +66,17 @@ export default {
     await bindFirestoreRef('thoughts', res, { wait: true })
   }),
 
+  getDataSavingTime: firestoreAction(async function ({ state, bindFirestoreRef }, ctx) {
+    const { uid } = ctx
+    const res = this.$fire.firestore
+      .collection('dataSavingTime')
+      .where('uid', '==', uid)
+      .orderBy('date').limit(5)
+
+    await bindFirestoreRef('dataSavingTime', res, { wait: true })
+  }),
+
   getAlerts: firestoreAction(async function ({ state, bindFirestoreRef }, ctx) {
-    console.log('getAlerts ctx', ctx)
     const { uid } = ctx
     const res = this.$fire.firestore
       .collection('alerts')
@@ -78,8 +85,16 @@ export default {
     await bindFirestoreRef('alerts', res, { wait: true })
   }),
 
+  getDataSet: firestoreAction(async function ({ state, bindFirestoreRef }, ctx) {
+    const { uid } = ctx
+    const res = this.$fire.firestore
+      .collection('dataSet')
+      .where('uid', '==', uid)
+
+    await bindFirestoreRef('dataSet', res, { wait: true })
+  }),
+
   getDataSourceByUser: firestoreAction(async function ({ state, bindFirestoreRef }) {
-    console.log('getDataSourceByUser state', state)
     const { uid } = state.authUser
     const res = this.$fire.firestore
       .collection('dataSources')

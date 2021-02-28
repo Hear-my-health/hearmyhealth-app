@@ -129,17 +129,12 @@ export default {
   },
 
   methods: {
-    editItem () {
-      console.log('editItem')
-    },
     async createDoctor () {
-      console.log('createDoctor', this.form)
       try {
         const { email, password } = this.form
-        const dd = await this.$fireModule
+        await this.$fireModule
           .auth()
           .createUserWithEmailAndPassword(email, password)
-        console.log('dd', dd)
       } catch (error) {
         console.log('error', error)
       }

@@ -86,8 +86,7 @@ export default {
   methods: {
     async signOut () {
       try {
-        const ss = await this.$fireModule.auth().signOut()
-        console.log('ss', ss)
+        await this.$fireModule.auth().signOut()
         this.$router.push('/')
       } catch (error) {
         console.log('error', error)

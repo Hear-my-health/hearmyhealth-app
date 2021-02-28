@@ -115,7 +115,6 @@ export default {
     },
 
     async createDoctor () {
-      console.log('createDoctor', this.form)
       try {
         const { uid } = this.$store.state.authUser
         const { thought } = this.form

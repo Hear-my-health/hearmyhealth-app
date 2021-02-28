@@ -6,5 +6,7 @@ export default () => ({
   users: [],
   token: '',
   thoughts: [],
-  alerts: []
+  alerts: [],
+  dataSavingTime: [],
+  dataSet: []
 })

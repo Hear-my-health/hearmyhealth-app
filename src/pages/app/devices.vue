@@ -110,7 +110,6 @@ export default {
 
   mounted () {
     const { authUser } = this.$store.state
-    console.log('PAGE index authUser', authUser)
     if (!authUser) {
       this.$router.push('/')
     } else {
