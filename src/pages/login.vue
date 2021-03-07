@@ -7,22 +7,6 @@
         </nuxt-link>
         <v-spacer />
       </v-container>
-
-      <!--       <v-btn
-        v-for="(link, i) in links"
-        :key="i"
-        :to="link.to"
-        depressed
-        plain
-        color="black"
-      >
-        {{ link.name }}
-      </v-btn>
-
-      <v-divider class="mx-4" vertical />
-      <v-btn :to="'/login'" color="primary" elevation="1">
-        Ir a la App
-      </v-btn> -->
     </v-app-bar>
     <v-main class="grey lighten-5">
       <v-container>
@@ -43,11 +27,10 @@
               @click="signInWithGoogle"
             >
               <img
-                src="~/assets/images/google-icon.webp"
-                width="48"
-                height="48"
-                alt="google-icon"
+                src="~/assets/images/google-auth.svg"
+                alt="google-auth"
                 class="pa-1"
+                style=" width: 48px; height: 48px; "
               >
               <span class="mx-2"> Sign in with Google </span>
             </v-btn>
@@ -220,9 +203,8 @@ export default {
       }
 
       await this.getMeDataSources(authData)
-      /*       await this.getMeSessions(authData.credential.accessToken)
       await this.getMeSessionsSleep(authData.credential.accessToken)
- */
+
       await this.$router.push('/')
     },
 
@@ -269,6 +251,15 @@ export default {
     },
 
     async saveDataSourcesByUsers (dataSource, user, accessToken) {
+      const rr = dataSource.filter((item) => {
+        const scope = item.dataType.name
+        return (
+          scope === 'com.google.sleep.segment'
+        )
+      })
+
+      console.log('saveDataSourcesByUsers sleep', rr)
+
       const dataSourceFilter = dataSource.filter((item) => {
         const scope = item.dataType.name
         const packageName = item.application ? item.application.packageName : ''
@@ -278,6 +269,7 @@ export default {
           (scope === 'com.google.heart_rate.bpm' ||
             scope === 'com.google.step_count.cadence' ||
             scope === 'com.google.step_count.delta' ||
+            scope === 'com.google.sleep.segment' ||
             scope === 'com.google.calories.expended') &&
             packageName === 'com.google.android.gms' && !device
         )
@@ -286,16 +278,23 @@ export default {
         await this.$fire.firestore.collection('dataSources').doc(user.uid).set({
           data: dataSourceFilter
         })
+
+        const startTime = '2021-02-01T00:00:00.000Z'
+        const start = new Date(startTime).getTime()
+
+        const dataSaving = this.$store.state.dataSavingTime.length > 0 ? this.$store.state.dataSavingTime[0] : null
+
+        const startDate = dataSaving ? dataSaving.date : start
+
         dataSourceFilter.forEach(async (item, index) => {
-          await this.getMeDatasetStepSAVE(item, accessToken)
+          await this.getMeDatasetStepSAVE(item, accessToken, startDate)
         })
       } catch (error) {
         return 'error'
       }
     },
 
-    async getMeDatasetStepSAVE (item, accessToken) {
-      console.log('getMeDatasetStepSAVE accessToken', accessToken)
+    async getMeDatasetStepSAVE (item, accessToken, startDate) {
       const {
         dataStreamId,
         dataType: { name }
@@ -306,9 +305,7 @@ export default {
         Authorization: `Bearer ${token}`
       }
 
-      const startTime = '2021-02-20T00:00:00.000Z'
-      const start = new Date(startTime).getTime()
-      const end = new Date().getTime()
+      const endDate = new Date().getTime()
 
       const body = {
         aggregateBy: [
@@ -318,8 +315,8 @@ export default {
           }
         ],
         bucketByTime: { durationMillis: 86400000 },
-        startTimeMillis: start,
-        endTimeMillis: end
+        startTimeMillis: startDate,
+        endTimeMillis: endDate
       }
 
       const { uid } = this.$store.state.authUser
@@ -332,6 +329,7 @@ export default {
           headers,
           data: body
         })
+
         if (res) {
           if (res.data) {
             this.dataStream = res.data.bucket
@@ -366,7 +364,6 @@ export default {
                 }
 
                 const state = this.getState(dd)
-                console.log(`%c STATE ${state} `, `background-color: ${state}; font-weight: bold; text: black;`)
 
                 await this.$fire.firestore
                   .collection('dataSet')
@@ -382,7 +379,7 @@ export default {
             })
 
             await this.$fire.firestore.collection('dataSavingTime').doc().set({
-              date: end,
+              date: endDate,
               type: 'dataSet',
               uid
             })
@@ -442,7 +439,7 @@ export default {
     async getMeSessionsSleep (accessToken) {
       console.log('LOGIN getMeSessionsSleep')
       const startTime = '2021-02-01T00:00:00.000Z'
-      const endTime = '2021-02-10T23:59:59.999Z'
+      const endTime = '2021-03-03T23:59:59.999Z'
 
       const token = accessToken
       const headers = { Authorization: `Bearer ${token}` }

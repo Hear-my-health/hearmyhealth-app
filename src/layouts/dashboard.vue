@@ -9,16 +9,6 @@
       dark=""
       class="blue darken-4"
     >
-      <!--       <v-list-item>
-        <v-list-item-content>
-          <v-list-item-title class="title">
-            Application
-          </v-list-item-title>
-          <v-list-item-subtitle>
-            subtext
-          </v-list-item-subtitle>
-        </v-list-item-content>
-      </v-list-item> -->
       <v-list>
         <v-list-item class="py-5">
           <img src="~/assets/images/logo-white.svg" alt="logo-icon" height="24">
@@ -80,11 +70,6 @@ export default {
           icon: 'mdi-apps',
           title: 'Home',
           to: '/app'
-        },
-        {
-          icon: 'mdi-alert-circle',
-          title: 'Alertas',
-          to: '/app/alerts'
         },
         {
           icon: 'mdi-watch',

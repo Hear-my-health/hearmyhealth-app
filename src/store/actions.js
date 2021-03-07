@@ -71,7 +71,7 @@ export default {
     const res = this.$fire.firestore
       .collection('dataSavingTime')
       .where('uid', '==', uid)
-      .orderBy('date').limit(5)
+      .orderBy('date', 'asc').limit(5)
 
     await bindFirestoreRef('dataSavingTime', res, { wait: true })
   }),
@@ -90,6 +90,7 @@ export default {
     const res = this.$fire.firestore
       .collection('dataSet')
       .where('uid', '==', uid)
+      .orderBy('startTimeMillis', 'desc').limit(200)
 
     await bindFirestoreRef('dataSet', res, { wait: true })
   }),
