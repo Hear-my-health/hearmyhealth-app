@@ -1,42 +1,81 @@
 <template>
   <div>
     <section>
-      <v-parallax :src="imageLink.sub_main" height="600">
+      <v-parallax :src="imageLink.main" height="450">
         <v-layout column align-center justify-center class="white--text">
           <h1
-            class="white--text mb-2 display-1 text-xs-center"
+            class="white--text mb-2 display-3 text-xs-center"
             style="font-weight: 900;"
           >
             Hear my health
           </h1>
           <div
-            class="white--text subheading mb-3 text-xs-center"
-            style="font-weight: 900; text-shadow: 2px 2px #000000"
+            class="white--text display-1 mb-3 text-xs-center"
+            style="font-weight: 900"
           >
-            Unlesh your creativity without limitations
+            Decisiones médicas basadas en datos
           </div>
           <v-btn
-            class="blue lighten-2 mt-5"
-            dark
+            class="blue lighten-1 mt-6"
+            style="max-width:180px"
             large
             href="/pre-made-themes"
           >
-            Get Started
-          </v-btn>
+            Documentación
+          </v-btn><div id="product" />
         </v-layout>
       </v-parallax>
     </section>
-
     <section>
       <v-layout column wrap class="my-5" align-center>
         <v-flex xs12 sm4 class="my-3">
           <div class="text-xs-center">
             <h2 class="headline">
-              The best way to share your amazing stuff
-            </h2>
-            <span class="subheading">
-              No more restrictions, no more limits
-            </span>
+              Aplicación de monitoreo continuo de pacientes con trastornos alimentarios
+            </h2><br>
+            <div class="display-2" style="text-align: center; color: #0BC5C3">
+              ¿Qué ofrecemos?
+            </div>
+          </div>
+        </v-flex>
+      </v-layout>
+      <v-container grid-list-xl>
+        <v-layout row wrap align-center>
+          <v-flex pa-10 xs12 md6>
+            <v-card class="elevation-0 transparent">
+              <v-img class="ma-auto" max-width="170" src="https://firebasestorage.googleapis.com/v0/b/mace-d54b3.appspot.com/o/disponibilidad2.png?alt=media&token=d66d381e-bfc3-4a56-b4e9-37704244fb33" />
+              <v-card-title primary-title class="layout justify-center">
+                <div class="headline text-xs-center">
+                  Datos e indicadores
+                </div>
+              </v-card-title>       <v-card-text class="text-center">
+                La aplicación almacena y analiza datos recopilados de wearables como pulseras o relojes inteligentes y genera indicadores fisiológicos, psicológicos y nutricionales del paciente con trastorno alimentario
+              </v-card-text>
+            </v-card>
+          </v-flex>
+          <v-flex pa-10 xs12 md6>
+            <v-card class="elevation-0 transparent">
+              <v-img class="ma-auto" max-width="235" src="https://firebasestorage.googleapis.com/v0/b/mace-d54b3.appspot.com/o/especialistas.png?alt=media&token=5e6bdfc7-5b1b-49d7-b44f-e40e7214fa06" />
+              <v-card-title primary-title class="layout justify-center">
+                <div class="headline">
+                  Soporte a especialistas
+                </div>
+              </v-card-title>
+              <v-card-text class="text-center">
+                Los aplicación permite a los especialistas tomar decisiones basadas en datos sobre sus pacientes y monitorear su evolución en el tiempo, de esta forma se pueden brindar mejores tratamientos
+              </v-card-text>
+            </v-card>
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </section>
+    <section>
+      <v-layout column wrap class="my-5" align-center>
+        <v-flex xs12 sm4 class="my-3">
+          <div class="text-xs-center">
+            <v-text class="display-2" style="color: #0BC5C3">
+              ¿Qué datos procesamos?
+            </v-text>
           </div>
         </v-flex>
         <v-flex xs12>
@@ -44,64 +83,42 @@
             <v-layout row wrap align-center>
               <v-flex xs12 md4>
                 <v-card class="elevation-0 transparent">
-                  <v-card-text class="text-xs-center">
-                    <v-icon x-large class="blue--text text--lighten-2">
-                      public
-                    </v-icon>
-                  </v-card-text>
+                  <v-img class="ma-auto" max-width="50" src="https://firebasestorage.googleapis.com/v0/b/mace-d54b3.appspot.com/o/saludfisica.png?alt=media&token=0f631f06-9158-41db-bdee-93c17a91f8fa"/>
                   <v-card-title primary-title class="layout justify-center">
                     <div class="headline text-xs-center">
-                      Reach the world
+                      Datos fisiológicos
                     </div>
                   </v-card-title>
-                  <v-card-text>
-                    Show your stuff to the whole community of Endorfine not
-                    only to your mum or your friends. We love making good
-                    content viral. In this moment Endorfine is used by artists
-                    who are not famous but that want to share their works to
-                    the world. Unfortunately with other social networks this
-                    is hard, slow and sometime expensive.
+                  <v-card-text class="text-center">
+                    La aplicación mide la salud física  mediante la frecuencia cardiaca, los pasos y las calorías quemadas
                   </v-card-text>
                 </v-card>
               </v-flex>
               <v-flex xs12 md4>
                 <v-card class="elevation-0 transparent">
                   <v-card-text class="text-xs-center">
-                    <v-icon x-large class="blue--text text--lighten-2">
-                      flash_on
-                    </v-icon>
+                    <v-img class="ma-auto" max-width="75" src="https://firebasestorage.googleapis.com/v0/b/mace-d54b3.appspot.com/o/saludnutricional.png?alt=media&token=df575869-26c7-49a6-82cc-d446b4799a5d" />
                   </v-card-text>
                   <v-card-title primary-title class="layout justify-center">
                     <div class="headline">
-                      Fast feedback
+                      Datos nutricionales
                     </div>
                   </v-card-title>
-                  <v-card-text>
-                    Time is important, we don't want you to waste it. Here you
-                    can get a massive feedback from real users in minutes. And
-                    if your stuff is appreciated you won't only get positive
-                    feedback but also lovely and sincere fans
+                  <v-card-text class="text-center">
+                    Mide la salud nutricional obteniendo la ingesta total de alimentos, la duración de las comidas y el peso sobrante de la de comida
                   </v-card-text>
                 </v-card>
               </v-flex>
               <v-flex xs12 md4>
                 <v-card class="elevation-0 transparent">
-                  <v-card-text class="text-xs-center">
-                    <v-icon x-large class="blue--text text--lighten-2">
-                      share
-                    </v-icon>
-                  </v-card-text>
+                  <v-img class="ma-auto" max-width="80" src="https://firebasestorage.googleapis.com/v0/b/mace-d54b3.appspot.com/o/saludmental.png?alt=media&token=a25e9959-b060-47ff-a6df-8a04029e29ab" />
                   <v-card-title primary-title class="layout justify-center">
                     <div class="headline text-xs-center">
-                      Create new connections
+                      Datos de salud mental
                     </div>
                   </v-card-title>
-                  <v-card-text>
-                    Imagine if you can directly speak with the world's
-                    population. Don't you think it would be easier to find
-                    nice people to interact with? Endorfine is both local and
-                    global and help you to connect without limitations with
-                    people from your city, your state and your universe!
+                  <v-card-text class="text-center">
+                    Mide la salud mental mediante tres variables: Estado de ánimo, horas y de sueño y horas de sueño profundo
                   </v-card-text>
                 </v-card>
               </v-flex>
@@ -110,88 +127,14 @@
         </v-flex>
       </v-layout>
     </section>
-
-    <section>
-      <v-parallax :src="imageLink.main" height="380">
+    <section id="contact">
+      <v-parallax :src="imageLink.social_cover" height="220">
         <v-layout column align-center justify-center>
           <div class="headline white--text mb-3 text-xs-center">
-            Endorfine is a social network that allows everyone to reach a huge
-            audience with a tap
-          </div>
-          <em>With the power of Endorfine you don't need to be famous or post
-            pics of cute cats in order to get visibility</em>
-          <v-btn
-            class="blue lighten-2 mt-5"
-            dark
-            large
-            href="/pre-made-themes"
-          >
-            Get more info
-          </v-btn>
-        </v-layout>
-      </v-parallax>
-    </section>
-
-    <section>
-      <v-container grid-list-md>
-        <v-layout row wrap>
-          <v-flex xs12 text-xs-center class="mt-5">
-            <div class="headline">
-              Are you amazed? Stay tuned!
-            </div>
-            <br>
-            <div>
-              We are lunching the beta in a few time. If you want to be one of
-              the first Endorfine users we will email you as soon as we're
-              ready. In the beginning only few people will test before the
-              launch. Let us know how Endorfine will help you!
-            </div>
-          </v-flex>
-          <v-flex xs8 offset-xs2>
-            <v-card class="elevation-0 transparent">
-              <v-card-text>
-                <v-flex v-if="!subscribed" xs12>
-                  <v-text-field
-                    v-model="email"
-                    label="Email address"
-                    :rules="emailRules"
-                    hint="Enter your email!"
-                    persistent-hint
-                  />
-                </v-flex>
-                <v-flex v-if="!subscribed" xs12>
-                  <v-text-field multi-line label="Bio and curiosities" />
-                </v-flex>
-                <v-flex v-if="!subscribed" xs12 class="text-xs-center">
-                  <v-btn
-                    class="blue lighten-2 mb-5"
-                    dark
-                    large
-                    @click="subscribe"
-                  >
-                    Get in touch
-                  </v-btn>
-                </v-flex>
-                <v-flex v-if="subscribed" xs12 class="text-xs-center">
-                  <v-btn class="green lighten-2 mb-5" dark large>
-                    Welcome on board!
-                  </v-btn>
-                </v-flex>
-              </v-card-text>
-            </v-card>
-          </v-flex>
-        </v-layout>
-      </v-container>
-    </section>
-
-    <section>
-      <v-parallax :src="imageLink.social_cover" height="380">
-        <v-layout column align-center justify-center>
-          <div class="headline white--text mb-3 text-xs-center">
-            We are dropping cool news and opportunities on socials
+            Los trastornos alimentarios son las enfermedades mentales más mortales actualmente
           </div>
         </v-layout>
-        <v-layout justify-space-around justify-center>
+        <!-- <v-layout justify-space-around justify-center>
           <v-icon x-large dark>
             fab fa-facebook-f
           </v-icon>
@@ -211,24 +154,72 @@
           <v-icon x-large dark>
             fab fa-discord
           </v-icon>
-        </v-layout>
+        </v-layout> -->
       </v-parallax>
     </section>
-
     <section>
+      <v-container grid-list-md>
+        <v-layout row wrap>
+          <v-flex xs12 text-xs-center class="mt-5">
+            <div class="headline">
+              ¡Contáctanos!
+            </div>
+            <br>
+            <div>
+              Escríbenos tus sugerencias, recomendaciones o si deseas mayor información sobre este proyecto.
+            </div>
+          </v-flex>
+          <v-flex xs8 offset-xs2>
+            <v-card class="elevation-0 transparent">
+              <v-card-text>
+                <v-flex v-if="!subscribed" xs12>
+                  <v-text-field
+                    v-model="email"
+                    label="Email address"
+                    :rules="emailRules"
+                    hint="Enter your email!"
+                    persistent-hint
+                  />
+                </v-flex>
+                <v-flex v-if="!subscribed" xs12>
+                  <v-text-field multi-line label="Comentarios" />
+                </v-flex>
+                <v-flex v-if="!subscribed" xs12 class="text-xs-center">
+                  <v-btn
+                    class="blue lighten-2 mb-5"
+                    dark
+                    large
+                    @click="subscribe"
+                  >
+                    Enviar
+                  </v-btn>
+                </v-flex>
+                <v-flex v-if="subscribed" xs12 class="text-xs-center">
+                  <v-btn class="green lighten-2 mb-5" dark large>
+                    Gracias!
+                  </v-btn>
+                </v-flex>
+              </v-card-text>
+            </v-card>
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </section>
+
+    <!-- <section style="background: #8C8B87">
       <v-container grid-list-xl>
         <v-layout row wrap justify-center class="my-5">
           <v-flex xs12 sm4>
             <v-card class="elevation-0 transparent">
               <v-card-title primary-title class="layout justify-center">
                 <div class="headline">
-                  Company info
+                  Información
                 </div>
               </v-card-title>
-              <v-card-text>
+              <v-card-list>
                 We are not a company. We hate companies. Just imagine us like
                 the guys from the Silicon Valley series.
-              </v-card-text>
+              </v-card-list>
             </v-card>
           </v-flex>
           <v-flex xs12 sm4 offset-sm1>
@@ -246,7 +237,7 @@
           </v-flex>
         </v-layout>
       </v-container>
-    </section>
+    </section> -->
   </div>
 </template>
 
@@ -261,13 +252,13 @@ export default {
       title: 'Endorfine',
       imageLink: {
         main:
-          'https://firebasestorage.googleapis.com/v0/b/endorfinevue.appspot.com/o/assets%2Fb13f0434-b228-11e6-8e5d-5252025056ab_web_scale_0.4666667_0.4666667__.jpg?alt=media&token=660df23e-599e-434b-9313-ba69c973eeea',
+          'https://firebasestorage.googleapis.com/v0/b/mace-d54b3.appspot.com/o/fondoc.jpg?alt=media&token=1f29c48d-38dc-42db-9f5a-76d202a3d0ed',
         sub_main:
-          'https://firebasestorage.googleapis.com/v0/b/endorfinevue.appspot.com/o/assets%2FNight-Club-Clubbing-Jobs-Abroad2.jpg?alt=media&token=82bbda7d-5df4-430b-9217-adaf1c8485c5',
+          'https://firebasestorage.googleapis.com/v0/b/mace-d54b3.appspot.com/o/yellow.jpg?alt=media&token=4cdeefc5-835a-4adb-9978-642001548372',
         logo:
           'https://firebasestorage.googleapis.com/v0/b/endorfinevue.appspot.com/o/assets%2Fandroid-chrome-512x512.png?alt=media&token=8a0a66f6-4741-4ff6-8f28-eb9ec74374df',
         social_cover:
-          'https://firebasestorage.googleapis.com/v0/b/endorfinevue.appspot.com/o/assets%2Fo-NIGHTCLUB-facebook.jpg?alt=media&token=cefc5c4c-9714-41da-9c22-f63caf5e89a4'
+          'https://firebasestorage.googleapis.com/v0/b/mace-d54b3.appspot.com/o/19373.jpg?alt=media&token=cd0b3e63-3695-4c54-a78d-d4c84460ae87'
       },
       email: '',
       emailRules: [
