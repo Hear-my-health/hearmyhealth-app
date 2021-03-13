@@ -42,6 +42,10 @@ export default {
     state.dataSet = dataSet
   },
 
+  SET_DEVICES: (state, devices) => {
+    state.devices = devices
+  },
+
   SET_DATA_SAVING_TIME: (state, dataSavingTime) => {
     state.dataSavingTime = dataSavingTime
   }

@@ -101,7 +101,50 @@
             {{ redondear(item.steps.value || 0) }}
           </div>
         </template>
+
+        <template #[`item.sleep`]="{ item }">
+          <div
+            v-if="item.sleep"
+            :class="`${item.sleep.state}`"
+            class="py-1 text-center"
+          >
+            {{ redondear(item.sleep.value || 0) }}
+          </div>
+        </template>
+
+        <template #[`item.deepSleep`]="{ item }">
+          <div
+            v-if="item.deepSleep"
+            :class="`${item.deepSleep.state}`"
+            class="py-1 text-center"
+          >
+            {{ redondear(item.deepSleep.value || 0) }}
+          </div>
+        </template>
+
+        <template #[`item.mood`]="{ item }">
+          <div
+            v-if="item.mood"
+            :class="`${item.mood.state}`"
+            class="py-1 text-center"
+          >
+            {{ redondear(item.mood.value || 0) }}
+          </div>
+        </template>
+
         <template #[`item.fisica`]="{ item }">
+          <span v-if="item.heartRate && item.calories && item.steps">
+            {{
+              redondear(
+                0.5 * findState(item.heartRate.state).value +
+                  0.17 * findState(item.steps.state).value +
+                  0.33 * findState(item.calories.state).value
+              )
+            }}
+          </span>
+        </template>
+
+        <template #[`item.mental`]="{ item }">
           <span v-if="item.heartRate && item.calories && item.steps">
             {{
               redondear(
@@ -133,10 +176,9 @@
 
     <div v-if="false">
       <div>dataSetSleep {{ dataSetSleep.length }}</div>
-      dataSetSleep {{ dataSetSleep }}
       <div v-for="(item, index) in dataSetSleep" :key="index">
         <div class="card">
-          item {{ item }}
+          item {{ item.point }}
         </div>
       </div>
     </div>
@@ -185,12 +227,35 @@ export default {
         value: 'steps'
       },
       {
+        text: 'Sueño',
+        align: 'start',
+        sortable: true,
+        value: 'sleep'
+      },
+      {
+        text: 'Sueño profundo',
+        align: 'start',
+        sortable: true,
+        value: 'deepSleep'
+      },
+      {
+        text: 'Estado de animo',
+        align: 'start',
+        sortable: true,
+        value: 'mood'
+      },
+      {
         text: 'Salud física',
         align: 'start',
         sortable: true,
         value: 'fisica'
+      },
+      {
+        text: 'Salud mental',
+        align: 'start',
+        sortable: true,
+        value: 'mental'
       }
-
       /*         {
           text: 'Id',
           align: 'start',
@@ -250,16 +315,16 @@ export default {
             ),
             steps: dd.find(
               t => t.dataTypeName === 'com.google.step_count.delta'
-            )
-            /*             sleep: dd.find(
-              t => t.dataTypeName === 'com.google.heart_rate.bpm'
+            ),
+            sleep: dd.find(
+              t => t.dataTypeName === 'com.google.sleep.segment'
             ),
             deepSleep: dd.find(
-              t => t.dataTypeName === 'com.google.calories.expended'
+              t => t.dataTypeName === 'app.web.hear-my-health.sleep.deep'
             ),
             mood: dd.find(
-              t => t.dataTypeName === 'com.google.step_count.delta'
-            ) */
+              t => t.dataTypeName === 'app.web.hear-my-health.mood.segment'
+            )
           }
           start = dateEnd
           tt.push(ee)
@@ -354,14 +419,18 @@ export default {
       switch (scope) {
         case 'com.google.heart_rate.bpm':
           return 'Ritmo cardiaco'
-        case 'com.google.sleep.segment':
-          return 'Dormir'
         case 'com.google.step_count.cadence':
           return 'Cadencia de conteo de pasos'
         case 'com.google.step_count.delta':
           return 'Delta de recuento de pasos'
         case 'com.google.calories.expended':
           return 'Calorías quemadas'
+        case 'com.google.sleep.segment':
+          return 'Sueño'
+        case 'app.web.hear-my-health.sleep.deep':
+          return 'Sueño profundo'
+        case 'app.web.hear-my-health.mood.segment':
+          return 'Estado de animo'
         default:
           return 'desconocido'
       }

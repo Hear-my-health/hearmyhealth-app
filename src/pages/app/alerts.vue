@@ -28,7 +28,6 @@ export default {
         thought: ''
       },
       formTitle: 'Agregar pensamiento'
-
     }
   },
 

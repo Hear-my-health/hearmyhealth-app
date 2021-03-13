@@ -30,7 +30,7 @@
                 src="~/assets/images/google-auth.svg"
                 alt="google-auth"
                 class="pa-1"
-                style=" width: 48px; height: 48px; "
+                style="width: 48px; height: 48px"
               >
               <span class="mx-2"> Sign in with Google </span>
             </v-btn>
@@ -49,98 +49,7 @@ export default {
 
   data () {
     return {
-      values: [
-        {
-          key: 'heartRateByDay',
-          name: 'Frecuencia Cardiaca',
-          indicator: 'heartRate',
-          indicatorUnit: 'lat/min',
-          dataTypeName: 'com.google.heart_rate.bpm',
-          type: 'healthPhysical',
-          frequency: 'day',
-          maxSalud: 120,
-          minSalud: 60,
-          maxAcept: 200,
-          minAcept: 50,
-          weight: 3,
-          weightPercentage: 0.5
-        },
-        {
-          key: 'stepByDay',
-          name: 'Pasos',
-          indicator: 'step',
-          indicatorUnit: 'cal',
-          dataTypeName: 'com.google.step_count.delta',
-          type: 'healthPhysical',
-          frequency: 'day',
-          maxSalud: 730,
-          minSalud: 365,
-          maxAcept: 1460,
-          minAcept: 180,
-          weight: 1,
-          weightPercentage: 0.17
-        },
-        {
-          key: 'caloriesBurnedByDay',
-          name: 'Calorias quemadas',
-          indicator: 'caloriesBurned',
-          indicatorUnit: 'cal',
-          dataTypeName: 'com.google.calories.expended',
-          type: 'healthPhysical',
-          frequency: 'day',
-          maxSalud: 100,
-          minSalud: 50,
-          maxAcept: 200,
-          minAcept: 25,
-          weight: 1,
-          weightPercentage: 0.17
-        },
-        {
-          key: 'sleepByDay',
-          name: 'Sueño',
-          indicator: 'sleep',
-          indicatorUnit: 'horas',
-          dataTypeName: 'com.google.sleep.segment',
-          type: 'healthMental',
-          frequency: 'day',
-          maxSalud: 200,
-          minSalud: 100,
-          maxAcept: 400,
-          minAcept: 50,
-          weight: 1,
-          weightPercentage: 0.17
-        },
-        {
-          key: 'sleepDeepByDay',
-          name: 'Sueño Profundo',
-          indicator: 'sleepDeep',
-          indicatorUnit: 'horas',
-          dataTypeName: 'com.google.sleep.segment',
-          type: 'healthMental',
-          frequency: 'day',
-          maxSalud: 100,
-          minSalud: 50,
-          maxAcept: 200,
-          minAcept: 25,
-          weight: 1,
-          weightPercentage: 0.17
-        },
-        {
-          key: 'moodByDay',
-          name: 'Estado de animo',
-          indicator: 'mood',
-          indicatorUnit: 'horas',
-          dataTypeName: 'com.google.sleep.segment',
-          type: 'healthMental',
-          frequency: 'day',
-          maxSalud: 4,
-          minSalud: 3,
-          maxAcept: 2,
-          minAcept: 1,
-          weight: 1,
-          weightPercentage: 0.17
-        }
-      ]
+
     }
   },
 
@@ -193,7 +102,6 @@ export default {
       // provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
       // You can add or remove more scopes here provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
       const authData = await this.$fire.auth.signInWithPopup(provider)
-      console.log('signInWithGoogle authData', authData)
 
       await this.$store.commit('SET_CREDENTIAL', authData.credential)
       await this.getDataSavingTime(authData.user.uid)
@@ -203,7 +111,6 @@ export default {
       }
 
       await this.getMeDataSources(authData)
-      await this.getMeSessionsSleep(authData.credential.accessToken)
 
       await this.$router.push('/')
     },
@@ -251,50 +158,79 @@ export default {
     },
 
     async saveDataSourcesByUsers (dataSource, user, accessToken) {
-      const rr = dataSource.filter((item) => {
-        const scope = item.dataType.name
-        return (
-          scope === 'com.google.sleep.segment'
-        )
-      })
-
-      console.log('saveDataSourcesByUsers sleep', rr)
-
       const dataSourceFilter = dataSource.filter((item) => {
         const scope = item.dataType.name
-        const packageName = item.application ? item.application.packageName : ''
+        const packageName = item.application
+          ? item.application.packageName
+          : ''
         const device = item.device
 
         return (
           (scope === 'com.google.heart_rate.bpm' ||
             scope === 'com.google.step_count.cadence' ||
             scope === 'com.google.step_count.delta' ||
-            scope === 'com.google.sleep.segment' ||
             scope === 'com.google.calories.expended') &&
-            packageName === 'com.google.android.gms' && !device
+          packageName === 'com.google.android.gms' &&
+          !device
         )
       })
+
+      const dataSourceFilterDevice = dataSource.filter((item) => {
+        const scope = item.dataType.name
+        const packageName = item.application
+          ? item.application.packageName
+          : ''
+        const device = item.device
+
+        return (
+          (scope === 'com.google.heart_rate.bpm' ||
+            scope === 'com.google.step_count.cadence' ||
+            scope === 'com.google.step_count.delta' ||
+            scope === 'com.google.calories.expended') &&
+          packageName === 'com.google.android.gms' &&
+          !!device
+        )
+      })
+
       try {
+        await this.$fire.firestore.collection('devices').doc(user.uid).set({
+          data: dataSourceFilterDevice
+        })
+
         await this.$fire.firestore.collection('dataSources').doc(user.uid).set({
           data: dataSourceFilter
         })
 
-        const startTime = '2021-02-01T00:00:00.000Z'
-        const start = new Date(startTime).getTime()
+        const startDateOrigin = '2021-02-01T00:00:00.000Z'
+        const startTimeOrigin = new Date(startDateOrigin).getTime()
 
-        const dataSaving = this.$store.state.dataSavingTime.length > 0 ? this.$store.state.dataSavingTime[0] : null
+        const dataSaving =
+          this.$store.state.dataSavingTime.length > 0
+            ? this.$store.state.dataSavingTime[0]
+            : null
 
-        const startDate = dataSaving ? dataSaving.date : start
+        const startTime = dataSaving ? dataSaving.date : startTimeOrigin
 
-        dataSourceFilter.forEach(async (item, index) => {
-          await this.getMeDatasetStepSAVE(item, accessToken, startDate)
+        const endDate = new Date()
+
+        const endTime = endDate.getTime()
+
+        dataSourceFilter.forEach(async (item) => {
+          await this.getMeDatasetStepSAVE(
+            item,
+            accessToken,
+            startTime,
+            endTime
+          )
         })
+
+        this.getMeSessionsSleep(accessToken, startTime, endDate)
       } catch (error) {
         return 'error'
       }
     },
 
-    async getMeDatasetStepSAVE (item, accessToken, startDate) {
+    async getMeDatasetStepSAVE (item, accessToken, startDate, endDate) {
       const {
         dataStreamId,
         dataType: { name }
@@ -304,8 +240,6 @@ export default {
       const headers = {
         Authorization: `Bearer ${token}`
       }
-
-      const endDate = new Date().getTime()
 
       const body = {
         aggregateBy: [
@@ -336,7 +270,10 @@ export default {
             res.data.bucket.forEach(async (obj, index) => {
               try {
                 let value
-                if (name === 'com.google.step_count.delta' || name === 'com.google.step_count.delta') {
+                if (
+                  name === 'com.google.step_count.delta' ||
+                  name === 'com.google.step_count.delta'
+                ) {
                   value = obj.dataset[0].point[0]
                     ? obj.dataset[0].point[0].value[0].intVal
                     : null
@@ -350,6 +287,9 @@ export default {
                   endTimeMillis: obj.endTimeMillis,
                   startTimeMillis: obj.startTimeMillis,
                   dataSourceId: obj.dataset[0].dataSourceId,
+                  point: obj.dataset[0].point.length
+                    ? obj.dataset[0].point[0]
+                    : '',
                   dataTypeName: name,
                   endTimeNanos: obj.dataset[0].point[0]
                     ? obj.dataset[0].point[0].endTimeNanos
@@ -374,7 +314,7 @@ export default {
                     state
                   })
               } catch (error) {
-                console.log('error', error)
+                return error
               }
             })
 
@@ -386,14 +326,14 @@ export default {
           }
         }
       } catch (error) {
-        console.log('getMeDatasetStep error', error)
+        return error
       }
     },
 
     getState (obj) {
       const { value } = obj
       if (value) {
-        const dd = this.values.find(v => v.dataTypeName === obj.dataTypeName)
+        const dd = this.$store.state.values.find(v => v.dataTypeName === obj.dataTypeName)
         if (value >= dd.minSalud && value <= dd.maxSalud) {
           return 'green'
         }
@@ -419,35 +359,86 @@ export default {
       }
     },
 
-    async getMeSessions (accessToken) {
-      const startTime = '2021-01-01T00:00:00.000Z'
-      const endTime = '2021-01-31T23:59:59.999Z'
+    async getMeSessionsSleep (accessToken, startTime, endDate) {
+      const startDate = new Date(Number(startTime))
+      const { uid } = this.$store.state.authUser
 
       const token = accessToken
       const headers = { Authorization: `Bearer ${token}` }
       try {
         const res = await this.$axios.$get(
-          `https://www.googleapis.com/fitness/v1/users/me/sessions?startTime=${startTime}&endTime=${endTime}`,
+          `https://www.googleapis.com/fitness/v1/users/me/sessions?startTime=${startDate.toISOString()}&endTime=${endDate.toISOString()}&activityType=72`,
           { headers }
         )
-        console.log('LOGIN getMeSessions res', res)
-      } catch (error) {
-        console.log('LOGIN getMeSessions error', error)
-      }
-    },
 
-    async getMeSessionsSleep (accessToken) {
-      console.log('LOGIN getMeSessionsSleep')
-      const startTime = '2021-02-01T00:00:00.000Z'
-      const endTime = '2021-03-03T23:59:59.999Z'
+        res.session.forEach(async (obj, index) => {
+          try {
+            const value = (
+              (obj.endTimeMillis - obj.startTimeMillis) /
+              60 /
+              60 /
+              1000
+            ).toFixed(2)
 
-      const token = accessToken
-      const headers = { Authorization: `Bearer ${token}` }
-      try {
-        const res = await this.$axios.$get(
-          `https://www.googleapis.com/fitness/v1/users/me/sessions?startTime=${startTime}&endTime=${endTime}&activityType=72`,
-          { headers }
-        )
+            const sleepObj = {
+              dataSourceId: obj.application.packageName,
+              dataTypeName: 'com.google.sleep.segment',
+              endTimeMillis: obj.endTimeMillis,
+              endTimeNanos: '',
+              originDataSourceId: obj.id,
+              point: obj,
+              startTimeMillis: obj.startTimeMillis,
+              startTimeNanos: '',
+
+              value,
+
+              name: obj.name,
+              modifiedTimeMillis: obj.modifiedTimeMillis,
+              activityType: obj.activityType
+            }
+            const stateSleep = this.getState(sleepObj)
+
+            const valueSleep = value * 0.2
+
+            const sleepDeepObj = {
+              dataSourceId: obj.application.packageName,
+              dataTypeName: 'app.web.hear-my-health.sleep.deep',
+              endTimeMillis: obj.endTimeMillis,
+              endTimeNanos: '',
+              originDataSourceId: obj.id,
+              point: obj,
+              startTimeMillis: obj.startTimeMillis,
+              startTimeNanos: '',
+
+              value: valueSleep,
+
+              name: obj.name,
+              modifiedTimeMillis: obj.modifiedTimeMillis,
+              activityType: obj.activityType
+            }
+            const stateSleepDeep = this.getState(sleepDeepObj)
+
+            await this.$fire.firestore
+              .collection('dataSet')
+              .doc()
+              .set({
+                uid,
+                ...sleepObj,
+                stateSleep
+              })
+            await this.$fire.firestore
+              .collection('dataSet')
+              .doc()
+              .set({
+                uid,
+                ...sleepDeepObj,
+                stateSleepDeep
+              })
+          } catch (error) {
+            console.log('error', error)
+          }
+        })
+
         console.log('LOGIN getMeSessionsSleep res', res)
       } catch (error) {
         console.log('LOGIN getMeSessionsSleep error', error)

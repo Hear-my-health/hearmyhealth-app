@@ -71,7 +71,7 @@ export default {
     const res = this.$fire.firestore
       .collection('dataSavingTime')
       .where('uid', '==', uid)
-      .orderBy('date', 'asc').limit(5)
+      .orderBy('date', 'desc').limit(5)
 
     await bindFirestoreRef('dataSavingTime', res, { wait: true })
   }),
@@ -90,9 +90,19 @@ export default {
     const res = this.$fire.firestore
       .collection('dataSet')
       .where('uid', '==', uid)
-      .orderBy('startTimeMillis', 'desc').limit(200)
+      .orderBy('startTimeMillis', 'desc').limit(400)
 
     await bindFirestoreRef('dataSet', res, { wait: true })
+  }),
+
+  getDevices: firestoreAction(async function ({ state, bindFirestoreRef }, ctx) {
+    const { uid } = state.authUser
+
+    const res = this.$fire.firestore
+      .collection('devices')
+      .doc(uid)
+
+    await bindFirestoreRef('devices', res, { wait: true })
   }),
 
   getDataSourceByUser: firestoreAction(async function ({ state, bindFirestoreRef }) {

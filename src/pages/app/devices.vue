@@ -16,26 +16,20 @@
             <v-spacer />
           </v-toolbar>
         </template>
+        <template #[`item.device`]="{ item }">
+          <span v-if="item.device">
+            {{ item.device.uid }}
+          </span>
+        </template>
         <template #[`item.type`]="{ item }">
-          {{ nameData(item.dataType.name) }}
+          <span v-if="item.device">
+            {{ item.device.type }}
+          </span>
         </template>
         <template #[`item.application`]="{ item }">
-          {{ item.application ? item.application.packageName : "" }}
-        </template>
-        <template #[`item.actions`]="{ item }">
-          <v-btn
-            color="black"
-            elevation="0"
-            outlined
-            raised
-            :to="`/back/${item.uid}`"
-          >
-            Ver
-
-            <v-icon small class="mr-2">
-              mdi-arrow-right
-            </v-icon>
-          </v-btn>
+          <span v-if="item.device">
+            {{ item.device.model }}
+          </span>
         </template>
       </v-data-table>
     </v-col>
@@ -52,7 +46,7 @@ export default {
           text: 'Name',
           align: 'start',
           sortable: false,
-          value: 'dataStreamName'
+          value: 'device'
         },
         {
           text: 'Tipo',
@@ -92,7 +86,7 @@ export default {
 
   async fetch ({ store }) {
     try {
-      await store.dispatch('getDataSourceByUser')
+      await store.dispatch('getDevices')
     } catch (e) {
       return 'error'
     }
@@ -104,7 +98,7 @@ export default {
     },
 
     dataSourceState () {
-      return this.$store.state.dataSource.data
+      return this.$store.state.devices.data
     }
   },
 
@@ -113,7 +107,7 @@ export default {
     if (!authUser) {
       this.$router.push('/')
     } else {
-      this.$store.dispatch('getDataSourceByUser')
+      this.$store.dispatch('getDevices')
     }
   },
 
