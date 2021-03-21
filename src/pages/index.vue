@@ -19,7 +19,7 @@
             class="blue lighten-1 mt-6"
             style="max-width:180px"
             large
-            href="/pre-made-themes"
+            href="/login"
           >
             Documentación
           </v-btn><div id="product" />
