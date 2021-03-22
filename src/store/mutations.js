@@ -46,6 +46,10 @@ export default {
     state.devices = devices
   },
 
+  SET_VALUES: (state, values) => {
+    state.values = values
+  },
+
   SET_DATA_SAVING_TIME: (state, dataSavingTime) => {
     state.dataSavingTime = dataSavingTime
   }

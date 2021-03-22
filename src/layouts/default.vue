@@ -1,117 +1,60 @@
 <template>
-  <v-app dark>
-    <v-navigation-drawer
-      v-model="drawer"
-      :mini-variant="miniVariant"
-      :clipped="clipped"
-      fixed
-      app
-      dark=""
-      class="blue darken-4"
-    >
-      <v-list>
-        <v-list-item
-          to="/"
-          router
-          exact
-        >
-          <v-list-item-action>
-            <v-icon>{{ 'mdi-apps' }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="'LOGO'" />
-          </v-list-item-content>
-        </v-list-item>
-
-        <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          :to="item.to"
-          router
-          exact
-        >
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-    <v-app-bar :clipped-left="clipped" fixed app class="elevation-0 white">
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+  <v-app light>
+    <v-app-bar fixed app class="elevation-0 white">
+      <nuxt-link to="/">
+        <v-img
+          class="mx-2"
+          src="https://firebasestorage.googleapis.com/v0/b/mace-d54b3.appspot.com/o/logoapp.svg?alt=media&token=4fbf64de-c874-4025-a08c-3ad55412dfcd"
+          max-height="40"
+          max-width="40"
+          contain
+        />
+      </nuxt-link><img src="~/assets/images/logo-2.svg" height="18" alt="google-icon">
       <v-spacer />
-      <v-btn icon to="/account">
-        <v-list-item-avatar>
-          <v-img src="https://randomuser.me/api/portraits/women/85.jpg" />
-        </v-list-item-avatar>
+      <v-btn
+        v-for="(link, i) in links"
+        :key="i"
+        :to="link.to"
+        depressed
+        plain
+        color="black"
+      >
+        {{ link.name }}
+      </v-btn>
+
+      <v-divider class="mx-4" vertical />
+      <v-btn :to="'/login'" color="primary" elevation="1">
+        Ir a la App
       </v-btn>
     </v-app-bar>
     <v-main class="grey lighten-5">
-      <v-container>
-        <nuxt />
-      </v-container>
+      <nuxt />
     </v-main>
-    <v-navigation-drawer v-model="rightDrawer" :right="right" temporary fixed>
-      <v-list>
-        <v-list-item @click.native="right = !right">
-          <v-list-item-action>
-            <v-icon light>
-              mdi-repeat
-            </v-icon>
-          </v-list-item-action>
-          <v-list-item-title>Switch drawer (click me)</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
+    <v-footer
+      dark
+      padless
+    >
+      <v-card
+        class="flex"
+        flat
+        tile
+      >
+        <v-card-text class="py-2 white--text text-center">
+          {{ new Date().getFullYear() }} — <strong>Hear my health </strong> — <a style="color: white; text-decoration: none" href="mailto:u201616577@upc.edu.pe" target="_blank"><v-icon>mdi-email</v-icon>
+          </a>
+        </v-card-text>
+      </v-card>
+    </v-footer>
   </v-app>
 </template>
-
 <script>
 export default {
-  data () {
-    return {
-      clipped: false,
-      drawer: false,
-      fixed: false,
-      items: [
-        {
-          icon: 'mdi-apps',
-          title: 'Home',
-          to: '/'
-        },
-        {
-          icon: 'mdi-chart-areaspline',
-          title: 'Estadísticas generales',
-          to: '/charts'
-        },
-        {
-          icon: 'mdi-chart-bar',
-          title: 'Informes',
-          to: '/dashboard'
-        },
-        {
-          icon: 'mdi-alert-circle',
-          title: 'Alertas',
-          to: '/alerts'
-        },
-        {
-          icon: 'mdi-watch',
-          title: 'Dispositivos',
-          to: '/device'
-        },
-        {
-          icon: 'mdi-brain',
-          title: 'Pensamientos',
-          to: '/thoughts'
-        }
-      ],
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
-      title: 'Vuetify.js'
-    }
-  }
+  data: () => ({
+    links: [
+      { name: 'Inicio', to: '/' },
+      { name: 'Producto', to: '#product' },
+      { name: 'Contacto', to: '#contact' }
+    ]
+  })
 }
 </script>

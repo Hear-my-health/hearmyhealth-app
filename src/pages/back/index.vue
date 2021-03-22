@@ -37,7 +37,7 @@
             elevation="0"
             outlined
             raised
-            :to="`/back/${item.uid}`"
+            :to="`/back/${item.uid}#data`"
           >
             Ver
 
@@ -56,7 +56,7 @@
 
 <script>
 export default {
-  layout: 'dashboard',
+  layout: 'back',
 
   data () {
     return {
@@ -120,7 +120,7 @@ export default {
 
   computed: {
     users () {
-      return this.$store.state.users
+      return this.$store.state.users.filter(user => user.role === 'user')
     }
   },
 

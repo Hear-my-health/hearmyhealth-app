@@ -2,11 +2,7 @@
   <v-row justify="center" align="center">
     <v-col v-if="isClient" cols="12" sm="8" md="6">
       <div v-if="auth">
-        <v-avatar
-          color="primary"
-          size="64"
-          class="mt-5 mb-7"
-        >
+        <v-avatar color="primary" size="64" class="mt-5 mb-7">
           <v-img :src="auth.photoURL" />
         </v-avatar>
         <div>
@@ -51,13 +47,7 @@
             disabled
           />
         </div>
-        <v-btn
-          elevation="0"
-          large
-          outlined
-          raised
-          @click="signOut"
-        >
+        <v-btn elevation="0" large outlined raised @click="signOut">
           Cerrar sesión
         </v-btn>
       </div>
@@ -67,6 +57,7 @@
 <script>
 export default {
   layout: 'dashboard',
+  middleware: 'authenticated',
 
   data () {
     return {
@@ -92,7 +83,6 @@ export default {
         console.log('error', error)
       }
     }
-
   }
 }
 </script>

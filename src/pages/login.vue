@@ -46,17 +46,23 @@ export default {
   components: {},
 
   layout: 'free',
+  middleware: 'authenticated',
 
   data () {
-    return {
-
-    }
+    return {}
   },
 
-  mounted () {
+  async mounted () {
     const { authUser } = this.$store.state
+
+    console.log('authUser', authUser)
     if (authUser) {
-      this.$router.push('/app')
+      /*       console.log('logueqado')
+      await this.$store.dispatch('getUser', { uid: authUser.uid })
+      const { role } = this.$store.state.user
+      console.log('role', role)
+ */
+      await this.$router.push('/app')
     }
   },
 
@@ -333,7 +339,9 @@ export default {
     getState (obj) {
       const { value } = obj
       if (value) {
-        const dd = this.$store.state.values.find(v => v.dataTypeName === obj.dataTypeName)
+        const dd = this.$store.state.values.find(
+          v => v.dataTypeName === obj.dataTypeName
+        )
         if (value >= dd.minSalud && value <= dd.maxSalud) {
           return 'green'
         }

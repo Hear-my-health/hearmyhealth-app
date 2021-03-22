@@ -57,6 +57,16 @@ export default {
     await bindFirestoreRef('users', res, { wait: true })
   }),
 
+  getUser: firestoreAction(async function ({ state, bindFirestoreRef }, ctx) {
+    const { uid } = ctx
+
+    const res = this.$fire.firestore
+      .collection('users')
+      .doc(uid)
+
+    await bindFirestoreRef('user', res, { wait: true })
+  }),
+
   getThoughts: firestoreAction(async function ({ state, bindFirestoreRef }, ctx) {
     const { uid } = ctx
     const res = this.$fire.firestore
@@ -85,6 +95,13 @@ export default {
     await bindFirestoreRef('alerts', res, { wait: true })
   }),
 
+  getValues: firestoreAction(async function ({ state, bindFirestoreRef }, ctx) {
+    const res = this.$fire.firestore
+      .collection('values')
+
+    await bindFirestoreRef('values', res, { wait: true })
+  }),
+
   getDataSet: firestoreAction(async function ({ state, bindFirestoreRef }, ctx) {
     const { uid } = ctx
     const res = this.$fire.firestore
@@ -96,7 +113,9 @@ export default {
   }),
 
   getDevices: firestoreAction(async function ({ state, bindFirestoreRef }, ctx) {
-    const { uid } = state.authUser
+    const { uid } = ctx
+
+    console.log('getDevices uid', uid)
 
     const res = this.$fire.firestore
       .collection('devices')

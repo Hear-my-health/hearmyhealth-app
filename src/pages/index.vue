@@ -19,9 +19,9 @@
             class="blue lighten-1 mt-6"
             style="max-width:180px"
             large
-            href="/pre-made-themes"
+            href="/login"
           >
-            Documentación
+            Registrate
           </v-btn><div id="product" />
         </v-layout>
       </v-parallax>
@@ -83,7 +83,7 @@
             <v-layout row wrap align-center>
               <v-flex xs12 md4>
                 <v-card class="elevation-0 transparent">
-                  <v-img class="ma-auto" max-width="50" src="https://firebasestorage.googleapis.com/v0/b/mace-d54b3.appspot.com/o/saludfisica.png?alt=media&token=0f631f06-9158-41db-bdee-93c17a91f8fa"/>
+                  <v-img class="ma-auto" max-width="50" src="https://firebasestorage.googleapis.com/v0/b/mace-d54b3.appspot.com/o/saludfisica.png?alt=media&token=0f631f06-9158-41db-bdee-93c17a91f8fa" />
                   <v-card-title primary-title class="layout justify-center">
                     <div class="headline text-xs-center">
                       Datos fisiológicos
@@ -245,8 +245,6 @@
 export default {
   name: 'App',
 
-  layout: 'landing',
-
   data () {
     return {
       title: 'Endorfine',
@@ -281,7 +279,6 @@ export default {
 
   mounted () {
     const { authUser } = this.$store.state
-    console.log('PAGE index authUser', authUser)
     if (authUser) {
       this.$router.push('/app')
     }

@@ -1,5 +1,6 @@
 export default () => ({
   authUser: null,
+  user: {},
   session: {},
   credential: {},
   dataSource: [],
@@ -10,7 +11,8 @@ export default () => ({
   dataSavingTime: [],
   dataSet: [],
   devices: [],
-  values: [
+  values: [],
+  valuesLast: [
     {
       key: 'heartRateByDay',
       name: 'Frecuencia Cardiaca',
