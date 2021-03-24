@@ -16,12 +16,16 @@
             Decisiones médicas basadas en datos
           </div>
           <v-btn
-            class="blue lighten-1 mt-6"
-            style="max-width:180px"
+            class="lighten-1 mt-6"
+            style="max-width:180px; color: white; background: #0C314C"
             large
             href="/login"
           >
+<<<<<<< Updated upstream
             Registrate
+=======
+            Ir a la app
+>>>>>>> Stashed changes
           </v-btn><div id="product" />
         </v-layout>
       </v-parallax>
@@ -250,7 +254,7 @@ export default {
       title: 'Endorfine',
       imageLink: {
         main:
-          'https://firebasestorage.googleapis.com/v0/b/mace-d54b3.appspot.com/o/fondoc.jpg?alt=media&token=1f29c48d-38dc-42db-9f5a-76d202a3d0ed',
+          'https://firebasestorage.googleapis.com/v0/b/hear-my-health.appspot.com/o/FotoJet%20(5).jpg?alt=media&token=2a0943a1-cb3d-4701-83d9-161deb0b83db',
         sub_main:
           'https://firebasestorage.googleapis.com/v0/b/mace-d54b3.appspot.com/o/yellow.jpg?alt=media&token=4cdeefc5-835a-4adb-9978-642001548372',
         logo:

@@ -11,7 +11,7 @@
       <v-timeline-item v-for="(thought, ith) in thoughts" :key="ith">
         <v-card class="elevation-1">
           <v-card-title class="headline">
-            {{ thought.date }}
+            {{ Date(thought.date*1000) }}
           </v-card-title>
           <v-card-text>
             {{ thought.thought }}
