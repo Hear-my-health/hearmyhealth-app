@@ -145,12 +145,12 @@
         </template>
 
         <template #[`item.mental`]="{ item }">
-          <span v-if="item.heartRate && item.calories && item.steps">
+          <span v-if="item.sleep && item.deepSleep && item.mood">
             {{
               redondear(
-                0.5 * findState(item.heartRate.state).value +
-                  0.17 * findState(item.steps.state).value +
-                  0.33 * findState(item.calories.state).value
+                0.5 * findState(item.sleep.state).value +
+                  0.17 * findState(item.mood.state).value +
+                  0.33 * findState(item.deepSleep.state).value
               )
             }}
           </span>
