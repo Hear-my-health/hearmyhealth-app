@@ -80,7 +80,7 @@
             :class="`${item.heartRate.state}`"
             class="py-1 text-center"
           >
-            {{ redondear(item.heartRate.value || 0) }}
+            {{ round(item.heartRate.value || 0) }}
           </div>
         </template>
         <template #[`item.calories`]="{ item }">
@@ -89,7 +89,7 @@
             :class="`${item.calories.state}`"
             class="py-1 text-center"
           >
-            {{ redondear(item.calories.value || 0) }}
+            {{ round(item.calories.value || 0) }}
           </div>
         </template>
         <template #[`item.steps`]="{ item }">
@@ -98,7 +98,7 @@
             :class="`${item.steps.state}`"
             class="py-1 text-center"
           >
-            {{ redondear(item.steps.value || 0) }}
+            {{ round(item.steps.value || 0) }}
           </div>
         </template>
 
@@ -108,7 +108,7 @@
             :class="`${item.sleep.state}`"
             class="py-1 text-center"
           >
-            {{ redondear(item.sleep.value || 0) }}
+            {{ round(item.sleep.value || 0) }}
           </div>
         </template>
 
@@ -118,7 +118,7 @@
             :class="`${item.deepSleep.state}`"
             class="py-1 text-center"
           >
-            {{ redondear(item.deepSleep.value || 0) }}
+            {{ round(item.deepSleep.value || 0) }}
           </div>
         </template>
 
@@ -128,14 +128,14 @@
             :class="`${item.mood.state}`"
             class="py-1 text-center"
           >
-            {{ redondear(item.mood.value || 0) }}
+            {{ round(item.mood.value || 0) }}
           </div>
         </template>
 
         <template #[`item.fisica`]="{ item }">
           <span v-if="item.heartRate && item.calories && item.steps">
             {{
-              redondear(
+              round(
                 0.5 * findState(item.heartRate.state).value +
                   0.17 * findState(item.steps.state).value +
                   0.33 * findState(item.calories.state).value
@@ -147,7 +147,7 @@
         <template #[`item.mental`]="{ item }">
           <span v-if="item.sleep && item.deepSleep && item.mood">
             {{
-              redondear(
+              round(
                 0.5 * findState(item.sleep.state).value +
                   0.17 * findState(item.mood.state).value +
                   0.33 * findState(item.deepSleep.state).value
@@ -369,7 +369,7 @@ export default {
       return state.find(e => e.key === key)
     },
 
-    redondear (num) {
+    round (num) {
       return Math.round(num * 100) / 100
     },
 
