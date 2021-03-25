@@ -21,11 +21,7 @@
             large
             href="/login"
           >
-<<<<<<< Updated upstream
-            Registrate
-=======
             Ir a la app
->>>>>>> Stashed changes
           </v-btn><div id="product" />
         </v-layout>
       </v-parallax>
@@ -248,7 +244,7 @@
 <script>
 export default {
   name: 'App',
-
+  layout: 'landing',
   data () {
     return {
       title: 'Endorfine',
