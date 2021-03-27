@@ -1,15 +1,13 @@
 <template>
   <v-app light>
     <v-app-bar style="background-color: #0C314C" fixed app class="elevation-0">
-      <nuxt-link to="/">
-        <v-img
-          class="mx-2"
-          src="https://firebasestorage.googleapis.com/v0/b/hear-my-health.appspot.com/o/LOGOS-DAVID-FINAL-mini.jpg?alt=media&token=0ccbe5a5-7e2b-4754-8b11-c43b0801006e"
-          max-height="60"
-          max-width="60"
-          contain
-        />
-      </nuxt-link>
+      <v-img
+        class="mx-2"
+        src="https://firebasestorage.googleapis.com/v0/b/hear-my-health.appspot.com/o/LOGOS-DAVID-FINAL-mini.jpg?alt=media&token=0ccbe5a5-7e2b-4754-8b11-c43b0801006e"
+        max-height="60"
+        max-width="61"
+        contain
+      />
       <v-spacer />
       <v-btn
         v-for="(link, i) in links"
