@@ -11,7 +11,7 @@
       <v-timeline-item v-for="(thought, ith) in thoughts" :key="ith">
         <v-card class="elevation-1">
           <v-card-title class="headline">
-            {{ Date(thought.date*1000) }}
+            {{ thought.date }}
           </v-card-title>
           <v-card-text>
             {{ thought.thought }}
@@ -118,6 +118,7 @@ export default {
     if (!authUser) {
       this.$router.push('/')
     } else {
+      this.$store.dispatch('getValues')
       this.$store.dispatch('getThoughts', { uid: authUser.uid })
     }
   },
@@ -164,10 +165,12 @@ export default {
 
     getState (obj) {
       const { value } = obj
-      if (value) {
+      if (value >= 0) {
+        console.log(this.$store.state.values)
         const dd = this.$store.state.values.find(
           v => v.dataTypeName === obj.dataTypeName
         )
+        console.log(dd)
         if (value >= dd.minSalud && value <= dd.maxSalud) {
           return 'green'
         }
@@ -186,6 +189,7 @@ export default {
 
     async createDoctor () {
       const ss = this.moods.filter(e => e.select)
+      console.log(ss)
 
       if (ss.length) {
         try {
@@ -199,7 +203,7 @@ export default {
             thought,
             uid
           })
-
+          console.log(item)
           const obj = {
             dataSourceId: '',
             dataTypeName: 'app.web.hear-my-health.mood.segment',
@@ -216,9 +220,10 @@ export default {
             modifiedTimeMillis: '',
             activityType: ''
           }
+          console.log(obj)
 
           const stateSleep = this.getState(obj)
-
+          console.log(stateSleep)
           await this.$fire.firestore
             .collection('dataSet')
             .doc()
@@ -227,7 +232,7 @@ export default {
               ...obj,
               stateSleep
             })
-
+          console.log('davidprueb')
           this.close()
         } catch (error) {
           return error
