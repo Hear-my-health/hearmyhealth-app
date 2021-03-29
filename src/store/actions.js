@@ -97,6 +97,7 @@ export default {
   }),
 
   getValues: firestoreAction(async function ({ state, bindFirestoreRef }, ctx) {
+    console.log('get.values')
     const res = this.$fire.firestore
       .collection('values')
 

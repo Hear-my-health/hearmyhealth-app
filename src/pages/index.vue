@@ -7,7 +7,7 @@
             class="white--text mb-2 display-3 text-xs-center"
             style="font-weight: 900"
           >
-            Hear my health
+            Hear my Health
           </h1>
           <div
             class="white--text display-1 mb-3 text-xs-center"
@@ -21,9 +21,8 @@
             large
             href="/login"
           >
-            Registrate
-          </v-btn>
-          <div id="product" />
+            Ir a la app
+          </v-btn><div id="product" />
         </v-layout>
       </v-parallax>
     </section>
@@ -32,11 +31,10 @@
         <v-flex xs12 sm4 class="my-3">
           <div class="text-xs-center">
             <h2 class="headline">
-              Aplicación de monitoreo continuo de pacientes con trastornos
-              alimentarios
-            </h2>
-            <br />
-            <div class="display-2" style="text-align: center; color: #0bc5c3">
+              Piloto de monitoreo continuo de pacientes con anorexia y bulimia
+            </h2><br>
+            <div class="display-2" style="text-align: center; color: #0BC5C3">
+            
               ¿Qué ofrecemos?
             </div>
           </div>
@@ -52,13 +50,12 @@
                 src="https://firebasestorage.googleapis.com/v0/b/mace-d54b3.appspot.com/o/disponibilidad2.png?alt=media&token=d66d381e-bfc3-4a56-b4e9-37704244fb33"
               />
               <v-card-title primary-title class="layout justify-center">
-                <div class="headline text-xs-center">Datos e indicadores</div>
-              </v-card-title>
-              <v-card-text class="text-center">
-                La aplicación almacena y analiza datos recopilados de wearables
-                como pulseras o relojes inteligentes y genera indicadores
-                fisiológicos, psicológicos y nutricionales del paciente con
-                trastorno alimentario
+
+                <div class="headline text-xs-center">
+                  Datos e indicadores
+                </div>
+              </v-card-title>       <v-card-text class="text-center">
+                El piloto almacena y analiza los datos del paciente recopilados de wearables como pulseras o relojes inteligentes, con el fin de generar indicadores fisiológicos, psicológicos y nutricionales útiles
               </v-card-text>
             </v-card>
           </v-flex>
@@ -73,10 +70,7 @@
                 <div class="headline">Soporte a especialistas</div>
               </v-card-title>
               <v-card-text class="text-center">
-                Los aplicación permite a los especialistas tomar decisiones
-                basadas en datos sobre sus pacientes y monitorear su evolución
-                en el tiempo, de esta forma se pueden brindar mejores
-                tratamientos
+                El piloto genera recomendaciones en base a los datos recopilados del paciente con el fin de servir de soporte en las decisiones del especialista y así brindar mejores tratamientos
               </v-card-text>
             </v-card>
           </v-flex>
@@ -94,22 +88,17 @@
         </v-flex>
         <v-flex xs12>
           <v-container grid-list-xl>
-            <v-layout row wrap align-center>
+            <v-layout row wrap align-top>
               <v-flex xs12 md4>
                 <v-card class="elevation-0 transparent">
-                  <v-img
-                    class="ma-auto"
-                    max-width="50"
-                    src="https://firebasestorage.googleapis.com/v0/b/mace-d54b3.appspot.com/o/saludfisica.png?alt=media&token=0f631f06-9158-41db-bdee-93c17a91f8fa"
-                  />
+                  <v-img class="ma-auto" max-width="80" src="https://firebasestorage.googleapis.com/v0/b/mace-d54b3.appspot.com/o/saludmental.png?alt=media&token=a25e9959-b060-47ff-a6df-8a04029e29ab" />
                   <v-card-title primary-title class="layout justify-center">
                     <div class="headline text-xs-center">
-                      Datos fisiológicos
+                      Datos de salud mental
                     </div>
                   </v-card-title>
                   <v-card-text class="text-center">
-                    La aplicación mide la salud física mediante la frecuencia
-                    cardiaca, los pasos y las calorías quemadas
+                    Medimos la salud mental a través del estado de ánimo del paciente y horas de sueño incluyendo el profundo
                   </v-card-text>
                 </v-card>
               </v-flex>
@@ -126,27 +115,20 @@
                     <div class="headline">Datos nutricionales</div>
                   </v-card-title>
                   <v-card-text class="text-center">
-                    Mide la salud nutricional obteniendo la ingesta total de
-                    alimentos, la duración de las comidas y el peso sobrante de
-                    la de comida
+                    Medimos la salud nutricional a través de la ingesta total de alimentos, el peso sobrante de la comida y la duración de la ingesta
                   </v-card-text>
                 </v-card>
               </v-flex>
               <v-flex xs12 md4>
                 <v-card class="elevation-0 transparent">
-                  <v-img
-                    class="ma-auto"
-                    max-width="80"
-                    src="https://firebasestorage.googleapis.com/v0/b/mace-d54b3.appspot.com/o/saludmental.png?alt=media&token=a25e9959-b060-47ff-a6df-8a04029e29ab"
-                  />
+                  <v-img class="ma-auto" max-width="46" src="https://firebasestorage.googleapis.com/v0/b/mace-d54b3.appspot.com/o/saludfisica.png?alt=media&token=0f631f06-9158-41db-bdee-93c17a91f8fa" />
                   <v-card-title primary-title class="layout justify-center">
                     <div class="headline text-xs-center">
-                      Datos de salud mental
+                      Datos fisiológicos
                     </div>
                   </v-card-title>
                   <v-card-text class="text-center">
-                    Mide la salud mental mediante tres variables: Estado de
-                    ánimo, horas y de sueño y horas de sueño profundo
+                    Medimos la salud física a través de la frecuencia cardíaca, cantidad de pasos y calorías quemadas
                   </v-card-text>
                 </v-card>
               </v-flex>
@@ -158,10 +140,12 @@
     <section id="contact">
       <v-parallax :src="imageLink.social_cover" height="220">
         <v-layout column align-center justify-center>
-          <div class="headline white--text mb-3 text-xs-center">
-            Los trastornos alimentarios son las enfermedades mentales más
-            mortales actualmente
-          </div>
+          <div class="headline white--text mb-3">
+            Actualmente, la anorexia y bulimia son las enfermedades mentales más mortales del mundo
+            <br>
+          </div><v-text style="font-style: italic; font-size: medium; text-align: right">
+            -Centro de Excelencia para Trastornos Alimentarios de EEUU
+          </v-text>
         </v-layout>
         <!-- <v-layout justify-space-around justify-center>
           <v-icon x-large dark>
@@ -271,9 +255,9 @@
 
 <script>
 export default {
-  name: "App",
-
-  data() {
+  name: 'App',
+  layout: 'landing',
+  data () {
     return {
       title: "Endorfine",
       imageLink: {
@@ -284,7 +268,7 @@ export default {
         logo:
           "https://firebasestorage.googleapis.com/v0/b/endorfinevue.appspot.com/o/assets%2Fandroid-chrome-512x512.png?alt=media&token=8a0a66f6-4741-4ff6-8f28-eb9ec74374df",
         social_cover:
-          "https://firebasestorage.googleapis.com/v0/b/mace-d54b3.appspot.com/o/19373.jpg?alt=media&token=cd0b3e63-3695-4c54-a78d-d4c84460ae87",
+          'https://firebasestorage.googleapis.com/v0/b/hear-my-health.appspot.com/o/fondo%20slide1.jpg?alt=media&token=3516bc21-bee5-414b-acef-1134a5a809ff'
       },
       email: "",
       emailRules: [
