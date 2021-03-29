@@ -13,5 +13,9 @@ export default {
 
   dataSource: (state) => {
     return state.dataSource
+  },
+
+  user: (state) => {
+    return state.user
   }
 }

@@ -11,7 +11,11 @@
     >
       <v-list>
         <v-list-item class="py-5">
-          <img src="~/assets/images/logo-white.svg" alt="logo-icon" height="24">
+          <img
+            src="~/assets/images/logo-white.svg"
+            alt="logo-icon"
+            height="24"
+          />
         </v-list-item>
         <v-list-item
           v-for="(item, i) in items"
@@ -47,9 +51,7 @@
       <v-list>
         <v-list-item @click.native="right = !right">
           <v-list-item-action>
-            <v-icon light>
-              mdi-repeat
-            </v-icon>
+            <v-icon light> mdi-repeat </v-icon>
           </v-list-item-action>
           <v-list-item-title>Switch drawer (click me)</v-list-item-title>
         </v-list-item>
@@ -60,39 +62,39 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       clipped: false,
       drawer: false,
       fixed: false,
       items: [
         {
-          icon: 'mdi-apps',
-          title: 'Home',
-          to: '/app'
+          icon: "mdi-apps",
+          title: "Home",
+          to: "/app",
         },
         {
-          icon: 'mdi-watch',
-          title: 'Dispositivos',
-          to: '/app/devices'
+          icon: "mdi-watch",
+          title: "Dispositivos",
+          to: "/app/devices",
         },
         {
-          icon: 'mdi-brain',
-          title: 'Pensamientos',
-          to: '/app/thoughts'
-        }
+          icon: "mdi-brain",
+          title: "Pensamientos",
+          to: "/app/thoughts",
+        },
       ],
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: 'Vuetify.js'
-    }
+      title: "Vuetify.js",
+    };
   },
 
   computed: {
-    auth () {
-      return this.$store.state.authUser || null
-    }
-  }
-}
+    auth() {
+      return this.$store.state.authUser || null;
+    },
+  },
+};
 </script>
