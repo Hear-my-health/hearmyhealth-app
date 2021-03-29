@@ -2,7 +2,7 @@
 import { firestoreAction } from 'vuexfire'
 
 export default {
-  async nuxtServerInit ({ dispatch, commit }, ctx) {
+  async nuxtServerInit({ dispatch, commit }, ctx) {
     if (this.$fire.auth === null) {
       throw 'nuxtServerInit Example not working - this.$fire.auth cannot be accessed.'
     }
@@ -42,7 +42,7 @@ export default {
     }
   },
 
-  onAuthStateChanged ({ commit }, { authUser, claims }) {
+  onAuthStateChanged({ commit }, { authUser, claims }) {
     console.log('onAuthStateChanged', authUser)
     if (!authUser) {
       commit('RESET_STORE')
@@ -59,7 +59,7 @@ export default {
 
   getUser: firestoreAction(async function ({ state, bindFirestoreRef }, ctx) {
     const { uid } = ctx
-
+    console.log('getUser uid', uid)
     const res = this.$fire.firestore
       .collection('users')
       .doc(uid)
@@ -91,6 +91,7 @@ export default {
     const res = this.$fire.firestore
       .collection('alerts')
       .where('uid', '==', uid)
+      .orderBy('date', 'desc').limit(100)
 
     await bindFirestoreRef('alerts', res, { wait: true })
   }),
@@ -104,6 +105,7 @@ export default {
 
   getDataSet: firestoreAction(async function ({ state, bindFirestoreRef }, ctx) {
     const { uid } = ctx
+    console.log('getDataSet uid', uid)
     const res = this.$fire.firestore
       .collection('dataSet')
       .where('uid', '==', uid)

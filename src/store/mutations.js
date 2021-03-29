@@ -52,5 +52,9 @@ export default {
 
   SET_DATA_SAVING_TIME: (state, dataSavingTime) => {
     state.dataSavingTime = dataSavingTime
+  },
+
+  SET_USER: (state, user) => {
+    state.user = user
   }
 }
