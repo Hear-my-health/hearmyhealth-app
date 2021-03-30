@@ -5,7 +5,7 @@
         <v-layout column align-center justify-center class="white--text">
           <h1
             class="white--text mb-2 display-3 text-xs-center"
-            style="font-weight: 900;"
+            style="font-weight: 900"
           >
             Hear my Health
           </h1>
@@ -17,7 +17,7 @@
           </div>
           <v-btn
             class="lighten-1 mt-6"
-            style="max-width:180px; color: white; background: #0C314C"
+            style="max-width: 180px; color: white; background: #0c314c"
             large
             href="/login"
           >
@@ -34,6 +34,7 @@
               Piloto de monitoreo continuo de pacientes con anorexia y bulimia
             </h2><br>
             <div class="display-2" style="text-align: center; color: #0BC5C3">
+            
               ¿Qué ofrecemos?
             </div>
           </div>
@@ -43,8 +44,13 @@
         <v-layout row wrap align-center>
           <v-flex pa-10 xs12 md6>
             <v-card class="elevation-0 transparent">
-              <v-img class="ma-auto" max-width="170" src="https://firebasestorage.googleapis.com/v0/b/mace-d54b3.appspot.com/o/disponibilidad2.png?alt=media&token=d66d381e-bfc3-4a56-b4e9-37704244fb33" />
+              <v-img
+                class="ma-auto"
+                max-width="170"
+                src="https://firebasestorage.googleapis.com/v0/b/mace-d54b3.appspot.com/o/disponibilidad2.png?alt=media&token=d66d381e-bfc3-4a56-b4e9-37704244fb33"
+              />
               <v-card-title primary-title class="layout justify-center">
+
                 <div class="headline text-xs-center">
                   Datos e indicadores
                 </div>
@@ -55,11 +61,13 @@
           </v-flex>
           <v-flex pa-10 xs12 md6>
             <v-card class="elevation-0 transparent">
-              <v-img class="ma-auto" max-width="235" src="https://firebasestorage.googleapis.com/v0/b/mace-d54b3.appspot.com/o/especialistas.png?alt=media&token=5e6bdfc7-5b1b-49d7-b44f-e40e7214fa06" />
+              <v-img
+                class="ma-auto"
+                max-width="235"
+                src="https://firebasestorage.googleapis.com/v0/b/mace-d54b3.appspot.com/o/especialistas.png?alt=media&token=5e6bdfc7-5b1b-49d7-b44f-e40e7214fa06"
+              />
               <v-card-title primary-title class="layout justify-center">
-                <div class="headline">
-                  Soporte a especialistas
-                </div>
+                <div class="headline">Soporte a especialistas</div>
               </v-card-title>
               <v-card-text class="text-center">
                 El piloto genera recomendaciones en base a los datos recopilados del paciente con el fin de servir de soporte en las decisiones del especialista y así brindar mejores tratamientos
@@ -73,7 +81,7 @@
       <v-layout column wrap class="my-5" align-center>
         <v-flex xs12 sm4 class="my-3">
           <div class="text-xs-center">
-            <v-text class="display-2" style="color: #0BC5C3">
+            <v-text class="display-2" style="color: #0bc5c3">
               ¿Qué datos procesamos?
             </v-text>
           </div>
@@ -97,12 +105,14 @@
               <v-flex xs12 md4>
                 <v-card class="elevation-0 transparent">
                   <v-card-text class="text-xs-center">
-                    <v-img class="ma-auto" max-width="75" src="https://firebasestorage.googleapis.com/v0/b/mace-d54b3.appspot.com/o/saludnutricional.png?alt=media&token=df575869-26c7-49a6-82cc-d446b4799a5d" />
+                    <v-img
+                      class="ma-auto"
+                      max-width="75"
+                      src="https://firebasestorage.googleapis.com/v0/b/mace-d54b3.appspot.com/o/saludnutricional.png?alt=media&token=df575869-26c7-49a6-82cc-d446b4799a5d"
+                    />
                   </v-card-text>
                   <v-card-title primary-title class="layout justify-center">
-                    <div class="headline">
-                      Datos nutricionales
-                    </div>
+                    <div class="headline">Datos nutricionales</div>
                   </v-card-title>
                   <v-card-text class="text-center">
                     Medimos la salud nutricional a través de la ingesta total de alimentos, el peso sobrante de la comida y la duración de la ingesta
@@ -164,12 +174,11 @@
       <v-container grid-list-md>
         <v-layout row wrap>
           <v-flex xs12 text-xs-center class="mt-5">
-            <div class="headline">
-              ¡Contáctanos!
-            </div>
-            <br>
+            <div class="headline">¡Contáctanos!</div>
+            <br />
             <div>
-              Escríbenos tus sugerencias, recomendaciones o si deseas mayor información sobre este proyecto.
+              Escríbenos tus sugerencias, recomendaciones o si deseas mayor
+              información sobre este proyecto.
             </div>
           </v-flex>
           <v-flex xs8 offset-xs2>
@@ -250,49 +259,49 @@ export default {
   layout: 'landing',
   data () {
     return {
-      title: 'Endorfine',
+      title: "Endorfine",
       imageLink: {
         main:
-          'https://firebasestorage.googleapis.com/v0/b/hear-my-health.appspot.com/o/FotoJet%20(5).jpg?alt=media&token=2a0943a1-cb3d-4701-83d9-161deb0b83db',
+          "https://firebasestorage.googleapis.com/v0/b/hear-my-health.appspot.com/o/FotoJet%20(5).jpg?alt=media&token=2a0943a1-cb3d-4701-83d9-161deb0b83db",
         sub_main:
-          'https://firebasestorage.googleapis.com/v0/b/mace-d54b3.appspot.com/o/yellow.jpg?alt=media&token=4cdeefc5-835a-4adb-9978-642001548372',
+          "https://firebasestorage.googleapis.com/v0/b/mace-d54b3.appspot.com/o/yellow.jpg?alt=media&token=4cdeefc5-835a-4adb-9978-642001548372",
         logo:
-          'https://firebasestorage.googleapis.com/v0/b/endorfinevue.appspot.com/o/assets%2Fandroid-chrome-512x512.png?alt=media&token=8a0a66f6-4741-4ff6-8f28-eb9ec74374df',
+          "https://firebasestorage.googleapis.com/v0/b/endorfinevue.appspot.com/o/assets%2Fandroid-chrome-512x512.png?alt=media&token=8a0a66f6-4741-4ff6-8f28-eb9ec74374df",
         social_cover:
           'https://firebasestorage.googleapis.com/v0/b/hear-my-health.appspot.com/o/fondo%20slide1.jpg?alt=media&token=3516bc21-bee5-414b-acef-1134a5a809ff'
       },
-      email: '',
+      email: "",
       emailRules: [
         (v) => {
-          return !!v || 'E-mail is required'
+          return !!v || "E-mail is required";
         },
-        v =>
+        (v) =>
           /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
-          'E-mail must be valid'
+          "E-mail must be valid",
       ],
-      subscribed: false
-    }
+      subscribed: false,
+    };
   },
   computed: {
-    imgHeight () {
-      const offset = 320
-      return this.pageHeight - offset
-    }
+    imgHeight() {
+      const offset = 320;
+      return this.pageHeight - offset;
+    },
   },
 
-  mounted () {
-    const { authUser } = this.$store.state
+  mounted() {
+    const { authUser } = this.$store.state;
     if (authUser) {
-      this.$router.push('/app')
+      this.$router.push("/app");
     }
   },
 
   methods: {
-    subscribe () {
-      this.subscribed = !this.subscribed
-    }
-  }
-}
+    subscribe() {
+      this.subscribed = !this.subscribed;
+    },
+  },
+};
 </script>
 
 <style scoped>
