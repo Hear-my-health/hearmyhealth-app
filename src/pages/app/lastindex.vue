@@ -12,6 +12,7 @@ export default {
   },
 
   layout: 'dashboard',
+  middleware: 'authenticated',
 
   mounted () {
     const { authUser } = this.$store.state

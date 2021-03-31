@@ -89,7 +89,6 @@
                     outlined
                     name="input-7-4"
                     label="Pensamiento"
-                    value="The Woodman set to work at once, and so sharp was his axe that the tree was soon chopped nearly through."
                   />
                 </v-col>
                 <v-col cols="12" md="6">
@@ -98,7 +97,6 @@
                     outlined
                     name="input-7-4"
                     label="Pensamiento"
-                    value="The Woodman set to work at once, and so sharp was his axe that the tree was soon chopped nearly through."
                   />
                 </v-col>
                 <v-col cols="12" md="6">
@@ -107,7 +105,6 @@
                     outlined
                     name="input-7-4"
                     label="Pensamiento"
-                    value="The Woodman set to work at once, and so sharp was his axe that the tree was soon chopped nearly through."
                   />
                 </v-col>
                 <v-col cols="12" md="4">
@@ -116,7 +113,6 @@
                     outlined
                     name="input-7-4"
                     label="Pensamiento"
-                    value="The Woodman set to work at once, and so sharp was his axe that the tree was soon chopped nearly through."
                   />
                 </v-col>
                 <v-col cols="12" md="4">
@@ -125,7 +121,6 @@
                     outlined
                     name="input-7-4"
                     label="Pensamiento"
-                    value="The Woodman set to work at once, and so sharp was his axe that the tree was soon chopped nearly through."
                   />
                 </v-col>
                 <v-col cols="12" md="4">
@@ -134,7 +129,6 @@
                     outlined
                     name="input-7-4"
                     label="Pensamiento"
-                    value="The Woodman set to work at once, and so sharp was his axe that the tree was soon chopped nearly through."
                   />
                 </v-col>
                 <v-col cols="12" md="4">
@@ -143,7 +137,6 @@
                     outlined
                     name="input-7-4"
                     label="Pensamiento"
-                    value="The Woodman set to work at once, and so sharp was his axe that the tree was soon chopped nearly through."
                   />
                 </v-col>
                 <v-col cols="12" md="4">
@@ -152,7 +145,6 @@
                     outlined
                     name="input-7-4"
                     label="Pensamiento"
-                    value="The Woodman set to work at once, and so sharp was his axe that the tree was soon chopped nearly through."
                   />
                 </v-col>
                 <v-col cols="12" md="4">
@@ -161,7 +153,6 @@
                     outlined
                     name="input-7-4"
                     label="Pensamiento"
-                    value="The Woodman set to work at once, and so sharp was his axe that the tree was soon chopped nearly through."
                   />
                 </v-col>
               </v-row>
