@@ -7,52 +7,50 @@
     </v-tabs>
     <v-tabs-items v-model="tab">
       <v-tab-item value="dashboard">
-        <Dashboard :myUid="uid" />
+        <Dashboard :my-uid="uid" />
       </v-tab-item>
       <v-tab-item value="data">
         <h1>data</h1>
         <div>Información del usuario</div>
         <div>uid {{ uid }}</div>
-        <Data :myUid="uid" />
+        <Data :my-uid="uid" />
       </v-tab-item>
       <v-tab-item value="devices">
         <Device />
       </v-tab-item>
       <v-tab-item value="thoughts">
-        <h5 class="text-h5">Pensamientos</h5>
+        <h5 class="text-h5">
+          Pensamientos
+        </h5>
         <v-timeline dense>
           <v-timeline-item v-for="(thought, ith) in thoughts" :key="ith">
             <v-card class="elevation-1">
               <v-card-title class="headline">
-                {{ thought.date }}
-              </v-card-title>
-              <v-card-text>
                 {{ thought.thought }}
+              </v-card-title>
+              <v-card-text style="font-size: 1.2rem">
+                {{ "Fecha: " + formatDateTable(thought.date) + "  Hora: " + formatDateHour(thought.date) }}
               </v-card-text>
             </v-card>
           </v-timeline-item>
         </v-timeline>
       </v-tab-item>
       <v-tab-item value="alerts">
-        <h5 class="text-h5">Alertas</h5>
+        <h5 class="text-h5">
+          Alertas
+        </h5>
         <v-btn elevation="0" outlined raised @click="dialog = !dialog">
           Agregar alerta
         </v-btn>
         <v-row justify="center" align="center">
           <v-col v-for="(alert, ilt) in alerts" :key="ilt" cols="12">
             <v-card classdark>
-              <v-row>
-                <v-col cols="12" sm="8">
-                  <v-card-subtitle class="headline">
-                    {{ alert.alert }}
-                  </v-card-subtitle>
-                </v-col>
-                <v-col cols="12" sm="4">
-                  <v-card-title>
-                    {{ formatDateTable(alert.date) }}
-                  </v-card-title>
-                </v-col>
-              </v-row>
+              <v-card-title class="headline">
+                {{ alert.alert }}
+              </v-card-title>
+              <v-card-text style="font-size: 1.2rem">
+                {{ formatDateTable(alert.date) }}
+              </v-card-text>
             </v-card>
             <v-spacer />
           </v-col>
@@ -182,7 +180,7 @@
             Editar
           </v-btn>
         </v-card> -->
-        <Profile :myUid="uid" />
+        <Profile :my-uid="uid" />
       </v-tab-item>
     </v-tabs-items>
 
@@ -215,7 +213,9 @@
               Cancelar
             </v-btn>
 
-            <v-btn elevation="0" outlined raised type="submit"> Guardar </v-btn>
+            <v-btn elevation="0" outlined raised type="submit">
+              Guardar
+            </v-btn>
           </v-card-actions>
         </v-card>
       </form>
@@ -223,31 +223,31 @@
   </div>
 </template>
 <script>
-import Data from "~/components/uid/Data";
-import Device from "~/components/uid/Device";
-import Dashboard from "~/components/uid/Dashboard";
-import Profile from "~/components/uid/Profile";
+import Data from '~/components/uid/Data'
+import Device from '~/components/uid/Device'
+import Dashboard from '~/components/uid/Dashboard'
+import Profile from '~/components/uid/Profile'
 
 export default {
   components: {
     Data,
     Device,
     Dashboard,
-    Profile,
+    Profile
   },
-  layout: "back",
-  asyncData({ params }) {
-    const { uid } = params;
+  layout: 'back',
+  asyncData ({ params }) {
+    const { uid } = params
 
-    return { uid };
+    return { uid }
   },
 
-  data: (vm) => ({
+  data: vm => ({
     dialog: false,
     isEditing: true,
     form: {
-      alert: "",
-      type: "Alta",
+      alert: '',
+      type: 'Alta'
     },
     /*     profile: {
       name: "",
@@ -257,62 +257,62 @@ export default {
       weight: "",
       height: "",
     }, */
-    formTitle: "Agregar alerta",
+    formTitle: 'Agregar alerta',
     tab: null,
     tabs: [
       {
-        name: "Dashboard",
-        slug: "dashboard",
-        value: "dashboard",
+        name: 'Dashboard',
+        slug: 'dashboard',
+        value: 'dashboard'
       },
       {
-        name: "Datos",
-        slug: "data",
-        value: "data",
+        name: 'Datos',
+        slug: 'data',
+        value: 'data'
       },
       {
-        name: "Dispositivos",
-        slug: "devices",
-        value: "devices",
+        name: 'Dispositivos',
+        slug: 'devices',
+        value: 'devices'
       },
       {
-        name: "Pensamientos",
-        slug: "thoughts",
-        value: "thoughts",
+        name: 'Pensamientos',
+        slug: 'thoughts',
+        value: 'thoughts'
       },
       {
-        name: "Alertas",
-        slug: "alerts",
-        value: "alerts",
+        name: 'Alertas',
+        slug: 'alerts',
+        value: 'alerts'
       },
       {
-        name: "Información",
-        slug: "profile",
-        value: "profile",
-      },
+        name: 'Información',
+        slug: 'profile',
+        value: 'profile'
+      }
     ],
-    text: "loremos",
+    text: 'loremos'
   }),
 
-  async fetch({ store }) {
+  async fetch ({ store }) {
     try {
-      await store.dispatch("getAlerts", { uid: this.uid });
-      await store.dispatch("getThoughts", { uid: this.uid });
+      await store.dispatch('getAlerts', { uid: this.uid })
+      await store.dispatch('getThoughts', { uid: this.uid })
       /* await store.dispatch("getDataSet", { uid: this.uid }); */
-      await store.dispatch("getDevices", { uid: this.uid });
+      await store.dispatch('getDevices', { uid: this.uid })
       /*       await store.dispatch("getUser", { uid: this.uid }); */
     } catch (e) {
-      return "error";
+      return 'error'
     }
   },
 
   computed: {
-    alerts() {
-      return this.$store.state.alerts;
+    alerts () {
+      return this.$store.state.alerts
     },
-    thoughts() {
-      return this.$store.state.thoughts;
-    },
+    thoughts () {
+      return this.$store.state.thoughts
+    }
     /*     user() {
       return this.$store.state.user;
     }, */
@@ -329,15 +329,15 @@ export default {
     },
   }, */
 
-  mounted() {
-    const { authUser } = this.$store.state;
+  mounted () {
+    const { authUser } = this.$store.state
     if (!authUser) {
-      this.$router.push("/");
+      this.$router.push('/')
     } else {
-      this.$store.dispatch("getAlerts", { uid: this.uid });
-      this.$store.dispatch("getThoughts", { uid: this.uid });
+      this.$store.dispatch('getAlerts', { uid: this.uid })
+      this.$store.dispatch('getThoughts', { uid: this.uid })
       /* this.$store.dispatch("getDataSet", { uid: this.uid }); */
-      this.$store.dispatch("getDevices", { uid: this.uid });
+      this.$store.dispatch('getDevices', { uid: this.uid })
       /*  this.$store.dispatch("getUser", { uid: this.uid });
            if (this.user) {
         this.profile.name = this.user.name;
@@ -351,49 +351,52 @@ export default {
   },
 
   methods: {
-    close() {
-      this.dialog = !this.dialog;
+    close () {
+      this.dialog = !this.dialog
     },
 
-    async createAlert() {
-      document.getElementsByTagName("user")[0].__vue__.$store.state;
+    async createAlert () {
       try {
-        const { uid } = this.$store.state.authUser;
-        const { alert, type } = this.form;
-        const date = new Date().getTime();
+        const { uid } = this.$store.state.authUser
+        const { alert, type } = this.form
+        const date = new Date().getTime()
 
-        await this.$fire.firestore.collection("alerts").doc().set({
+        await this.$fire.firestore.collection('alerts').doc().set({
           date,
           alert,
           type,
           uid,
-          createdBy: this.uid,
-        });
+          createdBy: this.uid
+        })
 
-        this.close();
+        this.close()
       } catch (error) {
-        console.log("error", error);
+        console.log('error', error)
       }
     },
 
-    formatDateTable(item) {
-      const ss = new Date(Number(item)).toISOString().substr(0, 10);
-      return ss;
+    formatDateTable (item) {
+      const ss = new Date(Number(item)).toISOString().substr(0, 10)
+      return ss
     },
-
-    async updatePatientInfo() {
+    formatDateHour (item) {
+      const ss = new Date(Number(item)).toISOString().substr(11, 5)
+      return ss
+    },
+    async updatePatientInfo () {
       try {
-        const { clinic_history, weight, height } = this.profile;
-        await this.$fire.firestore.collection("users").doc(this.uid).update({
-          clinic_history: clinic_history,
-          weight: weight,
-          height: height,
-        });
-        this.isEditing = true;
+        // eslint-disable-next-line camelcase
+        const { clinic_history, weight, height } = this.profile
+        await this.$fire.firestore.collection('users').doc(this.uid).update({
+          clinic_history,
+          weight,
+          height
+        })
+        this.isEditing = true
       } catch (error) {
-        console.log("error", error);
+        console.log('error', error)
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>

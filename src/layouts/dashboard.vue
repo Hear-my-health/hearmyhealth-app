@@ -62,39 +62,39 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       clipped: false,
       drawer: false,
       fixed: false,
       items: [
         {
-          icon: "mdi-apps",
-          title: "Home",
-          to: "/app",
+          icon: 'mdi-brain',
+          title: 'Pensamientos',
+          to: '/app'
         },
         {
-          icon: "mdi-watch",
-          title: "Dispositivos",
-          to: "/app/devices",
+          icon: 'mdi-watch',
+          title: 'Dispositivos',
+          to: '/app/devices'
         },
         {
-          icon: "mdi-brain",
-          title: "Pensamientos",
-          to: "/app/thoughts",
-        },
+          icon: 'mdi-account',
+          title: 'Perfil',
+          to: '/app/account'
+        }
       ],
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: "Vuetify.js",
-    };
+      title: 'Vuetify.js'
+    }
   },
 
   computed: {
-    auth() {
-      return this.$store.state.authUser || null;
-    },
-  },
-};
+    auth () {
+      return this.$store.state.authUser || null
+    }
+  }
+}
 </script>
