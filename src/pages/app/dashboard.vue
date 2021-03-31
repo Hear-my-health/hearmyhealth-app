@@ -5,21 +5,21 @@
 </template>
 
 <script>
-import Dashboard from "~/components/uid/Dashboard";
+import Dashboard from '~/components/uid/Dashboard'
 export default {
   components: {
-    Dashboard,
+    Dashboard
   },
 
-  layout: "dashboard",
+  layout: 'dashboard',
 
-  mounted() {
-    const { authUser } = this.$store.state;
+  mounted () {
+    const { authUser } = this.$store.state
     if (!authUser) {
-      this.$router.push("/");
+      this.$router.push('/')
     } else {
-      this.$store.dispatch("getDataSet", { uid: authUser.uid });
+      this.$store.dispatch('getDataSet', { uid: authUser.uid })
     }
-  },
-};
+  }
+}
 </script>
