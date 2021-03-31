@@ -1,8 +1,8 @@
 <template>
   <div>
-    <v-btn elevation="0" outlined raised @click="dialog = !dialog">
+    <!-- <v-btn elevation="0" outlined raised @click="dialog = !dialog">
       Agregar value
-    </v-btn>
+    </v-btn> -->
 
     <v-row justify="center" align="center">
       <v-col cols="12" sm="12" md="12">
@@ -16,7 +16,7 @@
         >
           <template #top>
             <v-toolbar flat>
-              <v-toolbar-title>Usuarios</v-toolbar-title>
+              <v-toolbar-title>Rangos para indicadores</v-toolbar-title>
               <v-divider class="mx-4" inset vertical />
               <v-spacer />
             </v-toolbar>
@@ -52,7 +52,7 @@
                     v-model="form.key"
                     outlined
                     :counter="10"
-                    label="First name"
+                    label="key"
                     required
                   />
                 </v-col>
@@ -61,7 +61,7 @@
                     v-model="form.name"
                     outlined
                     :counter="20"
-                    label="First name"
+                    label="Nombre"
                     required
                   />
                 </v-col>
@@ -70,7 +70,7 @@
                     v-model="form.indicator"
                     outlined
                     :counter="10"
-                    label="First name"
+                    label="Indicador"
                     required
                   />
                 </v-col>
@@ -79,7 +79,7 @@
                     v-model="form.indicatorUnit"
                     outlined
                     :counter="10"
-                    label="First name"
+                    label="Unidad Indicador"
                     required
                   />
                 </v-col>
@@ -88,7 +88,7 @@
                     v-model="form.dataTypeName"
                     outlined
                     name="input-7-4"
-                    label="Pensamiento"
+                    label="Tipo dato"
                   />
                 </v-col>
                 <v-col cols="12" md="6">
@@ -96,7 +96,7 @@
                     v-model="form.type"
                     outlined
                     name="input-7-4"
-                    label="Pensamiento"
+                    label="Tipo"
                   />
                 </v-col>
                 <v-col cols="12" md="6">
@@ -104,7 +104,7 @@
                     v-model="form.frequency"
                     outlined
                     name="input-7-4"
-                    label="Pensamiento"
+                    label="Frecuencia"
                   />
                 </v-col>
                 <v-col cols="12" md="4">
@@ -112,7 +112,7 @@
                     v-model="form.maxSalud"
                     outlined
                     name="input-7-4"
-                    label="Pensamiento"
+                    label="Máximo saludable"
                   />
                 </v-col>
                 <v-col cols="12" md="4">
@@ -120,7 +120,7 @@
                     v-model="form.minSalud"
                     outlined
                     name="input-7-4"
-                    label="Pensamiento"
+                    label="Mínimo saludable"
                   />
                 </v-col>
                 <v-col cols="12" md="4">
@@ -128,7 +128,7 @@
                     v-model="form.maxAcept"
                     outlined
                     name="input-7-4"
-                    label="Pensamiento"
+                    label="Máximo aceptable"
                   />
                 </v-col>
                 <v-col cols="12" md="4">
@@ -136,7 +136,7 @@
                     v-model="form.minAcept"
                     outlined
                     name="input-7-4"
-                    label="Pensamiento"
+                    label="Mínimo aceptable"
                   />
                 </v-col>
                 <v-col cols="12" md="4">
@@ -198,48 +198,48 @@ export default {
         weightPercentage: 0
       },
       headers: [
-        {
-          text: 'Key',
-          align: 'start',
-          sortable: false,
-          value: 'key'
-        },
-        {
-          text: 'Nombre',
-          align: 'start',
-          sortable: false,
-          value: 'name'
-        },
+        // {
+        //   text: 'Key',
+        //   align: 'start',
+        //   sortable: false,
+        //   value: 'key'
+        // },
         {
           text: 'Indicador',
           align: 'start',
           sortable: false,
-          value: 'indicator'
+          value: 'name'
         },
-        {
-          text: 'Unidad Indicador',
-          align: 'start',
-          sortable: false,
-          value: 'indicatorUnit'
-        },
-        {
-          text: 'Tipo dato',
-          align: 'start',
-          sortable: false,
-          value: 'dataTypeName'
-        },
-        {
-          text: 'Tipo',
-          align: 'start',
-          sortable: false,
-          value: 'type'
-        },
-        {
-          text: 'Frecuencia',
-          align: 'start',
-          sortable: false,
-          value: 'frequency'
-        },
+        // {
+        //   text: 'Indicador',
+        //   align: 'start',
+        //   sortable: false,
+        //   value: 'indicator'
+        // },
+        // {
+        //   text: 'Unidad Indicador',
+        //   align: 'start',
+        //   sortable: false,
+        //   value: 'indicatorUnit'
+        // },
+        // {
+        //   text: 'Tipo dato',
+        //   align: 'start',
+        //   sortable: false,
+        //   value: 'dataTypeName'
+        // },
+        // {
+        //   text: 'Tipo',
+        //   align: 'start',
+        //   sortable: false,
+        //   value: 'type'
+        // },
+        // {
+        //   text: 'Frecuencia',
+        //   align: 'start',
+        //   sortable: false,
+        //   value: 'frequency'
+        // },
         {
           text: 'Max',
           align: 'start',
@@ -264,18 +264,18 @@ export default {
           sortable: false,
           value: 'minAcept'
         },
-        {
-          text: 'Peso',
-          align: 'start',
-          sortable: false,
-          value: 'weight'
-        },
-        {
-          text: 'Porcentaje Peso',
-          align: 'start',
-          sortable: false,
-          value: 'weightPercentage'
-        },
+        // {
+        //   text: 'Peso',
+        //   align: 'start',
+        //   sortable: false,
+        //   value: 'weight'
+        // },
+        // {
+        //   text: 'Porcentaje Peso',
+        //   align: 'start',
+        //   sortable: false,
+        //   value: 'weightPercentage'
+        // },
         { text: 'Acciones', value: 'actions' }
       ]
     }
