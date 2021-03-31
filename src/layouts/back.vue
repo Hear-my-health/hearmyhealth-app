@@ -37,8 +37,8 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-spacer />
       <v-btn icon to="/app/account">
-        <v-list-item-avatar>
-          <v-img src="https://randomuser.me/api/portraits/women/85.jpg" />
+        <v-list-item-avatar v-if="auth">
+          <v-img :src="auth.photoURL" />
         </v-list-item-avatar>
       </v-btn>
     </v-app-bar>
@@ -71,12 +71,12 @@ export default {
       fixed: false,
       items: [
         {
-          icon: 'mdi-chart-areaspline',
+          icon: 'mdi-chart-bar',
           title: 'Pacientes',
           to: '/'
         },
         {
-          icon: 'mdi-chart-bar',
+          icon: 'mdi-numeric',
           title: 'Valores',
           to: '/values'
         }
@@ -100,6 +100,11 @@ export default {
       right: true,
       rightDrawer: false,
       title: 'Vuetify.js'
+    }
+  },
+  computed: {
+    auth () {
+      return this.$store.state.authUser || null
     }
   }
 }

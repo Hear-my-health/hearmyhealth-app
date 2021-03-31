@@ -166,7 +166,9 @@
           >
             Ver
 
-            <v-icon small class="mr-2"> mdi-arrow-right </v-icon>
+            <v-icon small class="mr-2">
+              mdi-arrow-right
+            </v-icon>
           </v-btn>
         </template>
       </v-data-table>
@@ -175,19 +177,21 @@
     <div v-if="false">
       <div>dataSetSleep {{ dataSetSleep.length }}</div>
       <div v-for="(item, index) in dataSetSleep" :key="index">
-        <div class="card">item {{ item.point }}</div>
+        <div class="card">
+          item {{ item.point }}
+        </div>
       </div>
     </div>
     <!-- AGE AND DNI VERIFICATION -->
     <v-dialog
+      v-if="
+        noData === true &&
+          this.user.role === 'user' &&
+          this.$store.state.authUser.uid === this.user.uid
+      "
       v-model="info"
       max-width="500px"
       elevation="0"
-      v-if="
-        noData === true &&
-        this.user.role === 'user' &&
-        this.$store.state.authUser.uid === this.user.uid
-      "
     >
       <form @submit.prevent="updateInfo">
         <!-- <form> -->
@@ -214,8 +218,8 @@
               <v-row>
                 <v-col cols="12" md="12">
                   <v-text-field
-                    type="date"
                     v-model="dateOfBirth"
+                    type="date"
                     outlined
                     label="Fecha de nacimiento"
                     required
@@ -234,7 +238,7 @@
             <!-- <v-btn @click="submit" elevation="0" outlined raised type="submit">
               Actualizar
             </v-btn> -->
-            <v-btn type="submit" @click="submit" elevation="0" outlined raised>
+            <v-btn type="submit" elevation="0" outlined raised @click="submit">
               Actualizar
             </v-btn>
           </v-card-actions>
@@ -245,303 +249,302 @@
 </template>
 
 <script>
-import { validationMixin } from "vuelidate";
-import { required, maxLength, minLength } from "vuelidate/lib/validators";
+import { validationMixin } from 'vuelidate'
+import { required, maxLength, minLength } from 'vuelidate/lib/validators'
 export default {
-  props: ["myUid"],
   /*  data: (vm) => ({ */
   mixins: [validationMixin],
+  props: ['myUid'],
   validations: {
     dni: { required, minLength: minLength(8), maxLength: maxLength(8) },
-    dateOfBirth: { required },
+    dateOfBirth: { required }
   },
-  data() {
+  data () {
     return {
       uid: this.$props.myUid,
-      dateStart: "",
-      dateStarFormatted: "",
-      dateEnd: "",
-      dateEndFormatted: "",
+      dateStart: '',
+      dateStarFormatted: '',
+      dateEnd: '',
+      dateEndFormatted: '',
       menu1: false,
       menu2: false,
       noData: false,
-      dni: "",
-      dateOfBirth: "",
+      dni: '',
+      dateOfBirth: '',
       info: {
-        dni: "",
-        dateOfBirth: "",
+        dni: '',
+        dateOfBirth: ''
       },
       headers: [
         {
-          text: "Fecha Inicio",
-          align: "start",
+          text: 'Fecha Inicio',
+          align: 'start',
           sortable: false,
-          value: "dateStart",
+          value: 'dateStart'
         },
         {
-          text: "Fecha Fin",
-          align: "start",
+          text: 'Fecha Fin',
+          align: 'start',
           sortable: false,
-          value: "dateEnd",
+          value: 'dateEnd'
         },
         {
-          text: "Frecuencia cardiaca",
-          align: "start",
+          text: 'Frecuencia cardiaca',
+          align: 'start',
           sortable: true,
-          value: "heartRate",
+          value: 'heartRate'
         },
         {
-          text: "Calorias",
-          align: "start",
+          text: 'Calorias',
+          align: 'start',
           sortable: true,
-          value: "calories",
+          value: 'calories'
         },
         {
-          text: "Pasos",
-          align: "start",
+          text: 'Pasos',
+          align: 'start',
           sortable: true,
-          value: "steps",
+          value: 'steps'
         },
         {
-          text: "Sueño",
-          align: "start",
+          text: 'Sueño',
+          align: 'start',
           sortable: true,
-          value: "sleep",
+          value: 'sleep'
         },
         {
-          text: "Sueño profundo",
-          align: "start",
+          text: 'Sueño profundo',
+          align: 'start',
           sortable: true,
-          value: "deepSleep",
+          value: 'deepSleep'
         },
         {
-          text: "Estado de animo",
-          align: "start",
+          text: 'Estado de animo',
+          align: 'start',
           sortable: true,
-          value: "mood",
+          value: 'mood'
         },
         {
-          text: "Salud física",
-          align: "start",
+          text: 'Salud física',
+          align: 'start',
           sortable: true,
-          value: "fisica",
+          value: 'fisica'
         },
         {
-          text: "Salud mental",
-          align: "start",
+          text: 'Salud mental',
+          align: 'start',
           sortable: true,
-          value: "mental",
-        },
+          value: 'mental'
+        }
       ],
       start: 0,
-      end: 0,
-    };
+      end: 0
+    }
   },
   /*   }), */
 
   computed: {
-    auth() {
-      return this.$store.state.authUser || null;
+    auth () {
+      return this.$store.state.authUser || null
     },
 
-    user() {
-      return this.$store.state.user;
+    user () {
+      return this.$store.state.user
     },
 
-    dniErrors() {
-      const errors = [];
-      if (!this.$v.dni.$dirty) return errors;
+    dniErrors () {
+      const errors = []
+      if (!this.$v.dni.$dirty) { return errors }
       (!this.$v.dni.maxLength || !this.$v.dni.minLength) &&
-        errors.push("El DNI debe tener 8 caracteres");
+        errors.push('El DNI debe tener 8 caracteres')
       /* !this.$v.dni.minLength && errors.push("El DNI debe tener 8 caracteres");  */
-      !this.$v.dni.required && errors.push("El DNI es requerido");
-      return errors;
+      !this.$v.dni.required && errors.push('El DNI es requerido')
+      return errors
     },
 
-    dateOfBirthErrors() {
-      const errors = [];
-      if (!this.$v.dateOfBirth.$dirty) return errors;
+    dateOfBirthErrors () {
+      const errors = []
+      if (!this.$v.dateOfBirth.$dirty) { return errors }
       !this.$v.dateOfBirth.required &&
-        errors.push("La fecha de nacimiento es requerida");
-      return errors;
+        errors.push('La fecha de nacimiento es requerida')
+      return errors
     },
 
-    dataSetSleep() {
+    dataSetSleep () {
       return this.$store.state.dataSet.filter(
-        (s) => s.dataTypeName === "com.google.sleep.segment"
-      );
+        s => s.dataTypeName === 'com.google.sleep.segment'
+      )
     },
 
-    dataSet() {
-      const tt = [];
-      const dateStartTime = new Date(this.dateStart).getTime();
-      const dateEndTime = new Date(this.dateEnd).getTime();
-      const dd = (dateEndTime - dateStartTime) / 86400000;
-      let start = dateStartTime;
+    dataSet () {
+      const tt = []
+      const dateStartTime = new Date(this.dateStart).getTime()
+      const dateEndTime = new Date(this.dateEnd).getTime()
+      const dd = (dateEndTime - dateStartTime) / 86400000
+      let start = dateStartTime
 
       if (this.$store.state.dataSet.length > 0) {
         for (let index = 1; index <= Math.floor(dd); index++) {
-          const dateEnd = start + 86400000;
+          const dateEnd = start + 86400000
           const dd = this.$store.state.dataSet.filter(
-            (s) => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
-          );
+            s => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
+          )
           const ee = {
             dateStart: start,
             dateEnd,
             heartRate: dd.find(
-              (t) => t.dataTypeName === "com.google.heart_rate.bpm"
+              t => t.dataTypeName === 'com.google.heart_rate.bpm'
             ),
             calories: dd.find(
-              (t) => t.dataTypeName === "com.google.calories.expended"
+              t => t.dataTypeName === 'com.google.calories.expended'
             ),
             steps: dd.find(
-              (t) => t.dataTypeName === "com.google.step_count.delta"
+              t => t.dataTypeName === 'com.google.step_count.delta'
             ),
             sleep: dd.find(
-              (t) => t.dataTypeName === "com.google.sleep.segment"
+              t => t.dataTypeName === 'com.google.sleep.segment'
             ),
             deepSleep: dd.find(
-              (t) => t.dataTypeName === "app.web.hear-my-health.sleep.deep"
+              t => t.dataTypeName === 'app.web.hear-my-health.sleep.deep'
             ),
             mood: dd.find(
-              (t) => t.dataTypeName === "app.web.hear-my-health.mood.segment"
-            ),
-          };
-          start = dateEnd;
-          tt.push(ee);
+              t => t.dataTypeName === 'app.web.hear-my-health.mood.segment'
+            )
+          }
+          start = dateEnd
+          tt.push(ee)
         }
       }
-      return tt;
-    },
+      return tt
+    }
   },
 
   watch: {
-    dateStart(val) {
-      this.dateStarFormatted = this.formatDate(this.dateStart);
+    dateStart (val) {
+      this.dateStarFormatted = this.formatDate(this.dateStart)
     },
-    dateEnd(val) {
-      this.dateEndFormatted = this.formatDate(this.dateEnd);
+    dateEnd (val) {
+      this.dateEndFormatted = this.formatDate(this.dateEnd)
     },
-    user() {
+    user () {
       if (!this.user.dni || !this.user.dateOfBirth) {
-        this.noData = true;
+        this.noData = true
       } else {
-        this.noData = false;
+        this.noData = false
       }
-    },
+    }
+  },
+  created () {
+    const date = new Date()
+    this.dateEnd = date.toISOString().substr(0, 10)
+    this.dateEndFormatted = this.formatDate(date.toISOString().substr(0, 10))
+
+    date.setDate(date.getDate() - 7)
+    this.dateStart = date.toISOString().substr(0, 10)
+    this.dateStarFormatted = this.formatDate(date.toISOString().substr(0, 10))
   },
 
-  created() {
-    const date = new Date();
-    this.dateEnd = date.toISOString().substr(0, 10);
-    this.dateEndFormatted = this.formatDate(date.toISOString().substr(0, 10));
-
-    date.setDate(date.getDate() - 7);
-    this.dateStart = date.toISOString().substr(0, 10);
-    this.dateStarFormatted = this.formatDate(date.toISOString().substr(0, 10));
-  },
-
-  mounted() {
-    const { authUser } = this.$store.state;
+  mounted () {
+    const { authUser } = this.$store.state
     if (!authUser) {
-      this.$router.push("/");
+      this.$router.push('/')
     } else {
       /* this.$store.dispatch("getDataSet", { uid: authUser.uid }); */
-      this.$store.dispatch("getDataSet", { uid: this.uid });
-      this.$store.dispatch("getUser", { uid: authUser.uid });
+      this.$store.dispatch('getDataSet', { uid: this.uid })
+      this.$store.dispatch('getUser', { uid: authUser.uid })
     }
   },
 
   methods: {
-    submit() {
-      console.log(this.$v.$touch());
-      this.$v.$touch();
+    submit () {
+      console.log(this.$v.$touch())
+      this.$v.$touch()
     },
-    async updateInfo() {
+    async updateInfo () {
       try {
-        const { uid } = this.auth;
-        const { dni, dateOfBirth } = this;
-        await this.$fire.firestore.collection("users").doc(uid).update({
-          dni: dni,
-          dateOfBirth: dateOfBirth,
-        });
-        this.noData = false;
+        const { uid } = this.auth
+        const { dni, dateOfBirth } = this
+        await this.$fire.firestore.collection('users').doc(uid).update({
+          dni,
+          dateOfBirth
+        })
+        this.noData = false
       } catch (error) {
-        console.log("error", error);
+        console.log('error', error)
       }
     },
-    findState(key) {
+    findState (key) {
       const state = [
         {
-          key: "green",
+          key: 'green',
           value: 1,
-          percentaje: 100,
+          percentaje: 100
         },
         {
-          key: "yellow",
+          key: 'yellow',
           value: 0.5,
-          percentaje: 100,
+          percentaje: 100
         },
         {
-          key: "red",
+          key: 'red',
           value: 0,
-          percentaje: 100,
+          percentaje: 100
         },
         {
-          key: "not",
+          key: 'not',
           value: -0.01,
-          percentaje: 100,
-        },
-      ];
-      return state.find((e) => e.key === key);
+          percentaje: 100
+        }
+      ]
+      return state.find(e => e.key === key)
     },
 
-    round(num) {
-      return Math.round(num * 100) / 100;
+    round (num) {
+      return Math.round(num * 100) / 100
     },
 
-    formatDateTable(item) {
-      const ss = new Date(Number(item)).toISOString().substr(0, 10);
-      return ss;
+    formatDateTable (item) {
+      const ss = new Date(Number(item)).toISOString().substr(0, 10)
+      return ss
     },
 
-    formatDate(date) {
+    formatDate (date) {
       if (!date) {
-        return null;
+        return null
       }
 
-      const [year, month, day] = date.split("-");
-      return `${month}/${day}/${year}`;
+      const [year, month, day] = date.split('-')
+      return `${month}/${day}/${year}`
     },
-    parseDate(date) {
+    parseDate (date) {
       if (!date) {
-        return null;
+        return null
       }
 
-      const [month, day, year] = date.split("/");
-      return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+      const [month, day, year] = date.split('/')
+      return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
     },
 
-    nameData(scope) {
+    nameData (scope) {
       switch (scope) {
-        case "com.google.heart_rate.bpm":
-          return "Ritmo cardiaco";
-        case "com.google.step_count.cadence":
-          return "Cadencia de conteo de pasos";
-        case "com.google.step_count.delta":
-          return "Delta de recuento de pasos";
-        case "com.google.calories.expended":
-          return "Calorías quemadas";
-        case "com.google.sleep.segment":
-          return "Sueño";
-        case "app.web.hear-my-health.sleep.deep":
-          return "Sueño profundo";
-        case "app.web.hear-my-health.mood.segment":
-          return "Estado de animo";
+        case 'com.google.heart_rate.bpm':
+          return 'Ritmo cardiaco'
+        case 'com.google.step_count.cadence':
+          return 'Cadencia de conteo de pasos'
+        case 'com.google.step_count.delta':
+          return 'Delta de recuento de pasos'
+        case 'com.google.calories.expended':
+          return 'Calorías quemadas'
+        case 'com.google.sleep.segment':
+          return 'Sueño'
+        case 'app.web.hear-my-health.sleep.deep':
+          return 'Sueño profundo'
+        case 'app.web.hear-my-health.mood.segment':
+          return 'Estado de animo'
         default:
-          return "desconocido";
+          return 'desconocido'
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>
