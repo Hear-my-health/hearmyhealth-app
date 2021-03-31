@@ -79,6 +79,11 @@ export default {
           icon: 'mdi-numeric',
           title: 'Valores',
           to: '/values'
+        },
+        {
+          icon: 'mdi-account',
+          title: 'Perfil',
+          to: '/account'
         }
         /*         {
           icon: 'mdi-alert-circle',

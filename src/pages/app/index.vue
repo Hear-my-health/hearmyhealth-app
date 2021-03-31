@@ -1,20 +1,20 @@
 <template>
   <div>
     <v-btn elevation="0" outlined raised @click="dialog = !dialog">
-      Agregar pensamiento
+      Nueva entrada
     </v-btn>
 
     <h5 class="text-h6">
-      Pensamientos
+      Diario
     </h5>
     <v-timeline dense>
       <v-timeline-item v-for="(thought, ith) in thoughts" :key="ith">
         <v-card class="elevation-1">
           <v-card-title class="headline">
-            {{ formatDateT(thought.date)+ "  " + " " +formatHour(thought.date) }}
-          </v-card-title>
-          <v-card-text>
             {{ thought.thought }}
+          </v-card-title>
+          <v-card-text style="font-size: 1.2rem">
+            {{ formatDateT(thought.date) }}
           </v-card-text>
         </v-card>
       </v-timeline-item>
@@ -51,7 +51,6 @@
                     outlined
                     name="input-7-4"
                     label="Pensamiento"
-                    value="The Woodman set to work at once, and so sharp was his axe that the tree was soon chopped nearly through."
                   />
                 </v-col>
               </v-row>
@@ -83,7 +82,7 @@ export default {
       form: {
         thought: ''
       },
-      formTitle: 'Agregar pensamiento',
+      formTitle: '¿Cómo te va?',
       moods: [
         {
           id: 1,

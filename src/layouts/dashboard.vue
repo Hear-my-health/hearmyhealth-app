@@ -69,8 +69,8 @@ export default {
       fixed: false,
       items: [
         {
-          icon: 'mdi-brain',
-          title: 'Pensamientos',
+          icon: 'mdi-notebook',
+          title: 'Diario',
           to: '/app'
         },
         {

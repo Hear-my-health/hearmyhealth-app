@@ -4,8 +4,8 @@
       <v-img
         class="mx-2"
         src="https://firebasestorage.googleapis.com/v0/b/hear-my-health.appspot.com/o/LOGOS-DAVID-FINAL-mini.jpg?alt=media&token=0ccbe5a5-7e2b-4754-8b11-c43b0801006e"
-        max-height="60"
-        max-width="61"
+        max-height="57"
+        max-width="57"
         contain
       />
       <v-spacer />
