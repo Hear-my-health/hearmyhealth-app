@@ -5,22 +5,22 @@
 </template>
 
 <script>
-import Data from "~/components/uid/Data";
+import Data from '~/components/uid/Data'
 export default {
   components: {
-    Data,
+    Data
   },
 
-  layout: "dashboard",
-  middleware: "authenticated",
+  layout: 'dashboard',
+  middleware: 'authenticated',
 
-  mounted() {
-    const { authUser } = this.$store.state;
+  mounted () {
+    const { authUser } = this.$store.state
     if (!authUser) {
-      this.$router.push("/");
+      this.$router.push('/')
     } else {
-      this.$store.dispatch("getDataSet", { uid: authUser.uid });
+      this.$store.dispatch('getDataSet', { uid: authUser.uid })
     }
-  },
-};
+  }
+}
 </script>

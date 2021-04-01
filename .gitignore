@@ -76,3 +76,8 @@ build/Release
 
 # OS crap
 .DS_Store
+
+# static
+data.json
+firebase-auth-sw.js
+sw.js

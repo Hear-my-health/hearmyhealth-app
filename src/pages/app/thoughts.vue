@@ -10,6 +10,13 @@
     <v-timeline dense>
       <v-timeline-item v-for="(thought, ith) in thoughts" :key="ith">
         <v-card class="elevation-1">
+          <div v-if="thought.name ">
+            <img
+              :src="`/images/${thought.name}.svg`"
+              alt="google-auth"
+              style="width: 48px; height: 48px"
+            >
+          </div>
           <v-card-title class="headline">
             {{ thought.date }}
           </v-card-title>
@@ -201,7 +208,8 @@ export default {
           await this.$fire.firestore.collection('thoughts').doc().set({
             date,
             thought,
-            uid
+            uid,
+            ...item
           })
           console.log(item)
           const obj = {
