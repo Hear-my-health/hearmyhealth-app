@@ -70,6 +70,7 @@ export default {
     const res = this.$fire.firestore
       .collection('thoughts')
       .where('uid', '==', uid)
+      .orderBy('date', 'desc').limit(100)
 
     await bindFirestoreRef('thoughts', res, { wait: true })
   }),

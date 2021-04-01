@@ -189,7 +189,7 @@
 </template>
 <script>
 export default {
-  layout: 'dashboard',
+  layout: 'back',
   middleware: 'authenticated',
 
   data () {
@@ -266,14 +266,17 @@ export default {
           weight,
           height
         } = this.form
-        await this.$fire.firestore.collection('users').doc(uid).update({
-          name,
-          dni,
-          clinicHistory,
-          dateOfBirth,
-          weight,
-          height
-        })
+        await this.$fire.firestore
+          .collection('users')
+          .doc(uid)
+          .update({
+            name,
+            dni,
+            clinicHistory,
+            dateOfBirth,
+            weight,
+            height
+          })
         this.isEditing = true
       } catch (error) {
         console.log('error', error)

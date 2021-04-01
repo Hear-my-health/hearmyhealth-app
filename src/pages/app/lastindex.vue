@@ -1,17 +1,18 @@
 <template>
   <div>
-    <Dashboard />
+    <Data />
   </div>
 </template>
 
 <script>
-import Dashboard from '~/components/uid/Dashboard'
+import Data from '~/components/uid/Data'
 export default {
   components: {
-    Dashboard
+    Data
   },
 
   layout: 'dashboard',
+  middleware: 'authenticated',
 
   mounted () {
     const { authUser } = this.$store.state

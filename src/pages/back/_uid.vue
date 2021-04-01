@@ -26,10 +26,10 @@
           <v-timeline-item v-for="(thought, ith) in thoughts" :key="ith">
             <v-card class="elevation-1">
               <v-card-title class="headline">
-                {{ thought.date }}
-              </v-card-title>
-              <v-card-text>
                 {{ thought.thought }}
+              </v-card-title>
+              <v-card-text style="font-size: 1.2rem">
+                {{ "Fecha: " + formatDateTable(thought.date) + "  Hora: " + formatDateHour(thought.date) }}
               </v-card-text>
             </v-card>
           </v-timeline-item>
@@ -45,18 +45,12 @@
         <v-row justify="center" align="center">
           <v-col v-for="(alert, ilt) in alerts" :key="ilt" cols="12">
             <v-card classdark>
-              <v-row>
-                <v-col cols="12" sm="8">
-                  <v-card-subtitle class="headline">
-                    {{ alert.alert }}
-                  </v-card-subtitle>
-                </v-col>
-                <v-col cols="12" sm="4">
-                  <v-card-title>
-                    {{ formatDateTable(alert.date) }}
-                  </v-card-title>
-                </v-col>
-              </v-row>
+              <v-card-title class="headline">
+                {{ alert.alert }}
+              </v-card-title>
+              <v-card-text style="font-size: 1.2rem">
+                {{ formatDateTable(alert.date) }}
+              </v-card-text>
             </v-card>
             <v-spacer />
           </v-col>
@@ -362,7 +356,6 @@ export default {
     },
 
     async createAlert () {
-      // document.getElementsByTagName('user')[0].__vue__.$store.state
       try {
         const { uid } = this.$store.state.authUser
         const { alert, type } = this.form
@@ -386,7 +379,10 @@ export default {
       const ss = new Date(Number(item)).toISOString().substr(0, 10)
       return ss
     },
-
+    formatDateHour (item) {
+      const ss = new Date(Number(item)).toISOString().substr(11, 5)
+      return ss
+    },
     async updatePatientInfo () {
       try {
         // eslint-disable-next-line camelcase

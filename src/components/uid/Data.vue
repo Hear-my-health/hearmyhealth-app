@@ -390,22 +390,6 @@ export default {
             s => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
           )
 
-          if (this.$store.state.dataSet.length > 0) {
-            console.log('this.$store.state.dataSet.length', this.$store.state.dataSet.length)
-
-            this.$store.state.dataSet.forEach(
-              (s) => {
-                const s1 = new Date(start)
-                const s2 = new Date(dateEnd)
-                const s3 = new Date(s.endTimeMillis)
-                console.log(s1)
-                console.log(s2)
-                console.log(s3)
-                console.log('-----------------')
-              }
-            )
-          }
-
           const ee = {
             dateStart: start,
             dateEnd,
@@ -450,7 +434,6 @@ export default {
       }
     }
   },
-
   created () {
     const date = new Date()
     this.dateEnd = date.toISOString().substr(0, 10)
@@ -493,10 +476,8 @@ export default {
     },
 
     submit () {
-      console.log(this.$v.$touch())
       this.$v.$touch()
     },
-
     async updateInfo () {
       try {
         const { uid } = this.auth
@@ -510,7 +491,6 @@ export default {
         console.log('error', error)
       }
     },
-
     findState (key) {
       const state = [
         {
