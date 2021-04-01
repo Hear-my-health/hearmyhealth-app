@@ -144,7 +144,7 @@ export default {
               .set(obj)
           })
         } catch (error) {
-          console.log('error', error)
+          this.$store.dispatch('SET_MESSAGE', { message: error })
         }
       })
     },

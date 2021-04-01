@@ -1,53 +1,48 @@
 <template>
   <v-row justify="center" align="center">
     <v-col cols="12" sm="8" md="6">
-      <v-col cols="12" sm="6" md="6">
-        <h4 class="text-h4 mb-4 font-weight-medium">
-          Doctor
-        </h4>
-        <form @submit.prevent="createDoctor">
-          <div>
-            <p class="mb-1">
-              Correo
-            </p>
-            <v-text-field
-              v-model="form.email"
-              placeholder="Correo"
-              :rules="emailRules"
-              outlined
-              color="black"
-              dense
-              type="email"
-            />
-          </div>
-          <div class="mb-3">
-            <p class="mb-1">
-              Contraseña
-            </p>
-            <v-text-field
-              v-model="form.password"
-              placeholder="Contraseña"
-              :rules="passwordRules"
-              color="black"
-              outlined
-              dense
-              type="password"
-            />
-          </div>
-          <v-btn
-            elevation="0"
+      <h4 class="text-h4 mb-4 font-weight-medium">
+        Doctor
+      </h4>
+      <form @submit.prevent="createDoctor">
+        <div>
+          <p class="mb-1">
+            Correo
+          </p>
+          <v-text-field
+            v-model="form.email"
+            placeholder="Correo"
+            :rules="emailRules"
             outlined
-            raised
-            block
-            type="submit"
-          >
-            Crear doctor
-          </v-btn>
-        </form>
-      </v-col>
-      <div>
-        users {{ users }}
-      </div>
+            color="black"
+            dense
+            type="email"
+          />
+        </div>
+        <div class="mb-3">
+          <p class="mb-1">
+            Contraseña
+          </p>
+          <v-text-field
+            v-model="form.password"
+            placeholder="Contraseña"
+            :rules="passwordRules"
+            color="black"
+            outlined
+            dense
+            type="password"
+          />
+        </div>
+        <v-btn
+          elevation="0"
+          outlined
+          raised
+          block
+          type="submit"
+        >
+          Crear doctor
+        </v-btn>
+      </form>
     </v-col>
   </v-row>
 </template>
@@ -100,7 +95,7 @@ export default {
           .auth()
           .createUserWithEmailAndPassword(email, password)
       } catch (error) {
-        console.log('error', error)
+        this.$store.dispatch('SET_MESSAGE', { message: error })
       }
     },
 

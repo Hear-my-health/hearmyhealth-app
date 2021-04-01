@@ -57,7 +57,7 @@
         :sort-by="['dataTypeName', 'type']"
         :sort-desc="[true, true]"
         multi-sort
-        class="elevation-1"
+        class="elevation-0"
       >
         <template #top>
           <v-toolbar flat>
@@ -252,13 +252,20 @@
 import { validationMixin } from 'vuelidate'
 import { required, maxLength, minLength } from 'vuelidate/lib/validators'
 export default {
-  /*  data: (vm) => ({ */
   mixins: [validationMixin],
-  props: ['myUid'],
+
+  props: {
+    myUid: {
+      type: String,
+      default: ''
+    }
+  },
+
   validations: {
     dni: { required, minLength: minLength(8), maxLength: maxLength(8) },
     dateOfBirth: { required }
   },
+
   data () {
     return {
       uid: this.$props.myUid,
@@ -341,7 +348,6 @@ export default {
       end: 0
     }
   },
-  /*   }), */
 
   computed: {
     auth () {
@@ -460,9 +466,6 @@ export default {
     overageValueDataSet (dd) {
       const valueFilter = dd.filter(
         t => t.dataTypeName === 'app.web.hear-my-health.mood.segment')
-
-      console.log('valueFilter', valueFilter)
-
       const initialValue = 0
       const average = valueFilter.reduce(function (total, currentValue) {
         return total + currentValue.value || 0
@@ -488,7 +491,7 @@ export default {
         })
         this.noData = false
       } catch (error) {
-        console.log('error', error)
+        this.$store.dispatch('SET_MESSAGE', { message: error })
       }
     },
     findState (key) {

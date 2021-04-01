@@ -7,7 +7,7 @@
         :sort-by="['type', 'type']"
         :sort-desc="[false, true]"
         multi-sort
-        class="elevation-1"
+        class="elevation-0"
       >
         <template #top>
           <v-toolbar flat>
@@ -37,6 +37,13 @@
 </template>
 <script>
 export default {
+  props: {
+    myUid: {
+      type: String,
+      default: ''
+    }
+  },
+
   data () {
     return {
       headers: [
