@@ -50,7 +50,7 @@
                     v-model="form.thought"
                     outlined
                     name="input-7-4"
-                    label="Pensamiento"
+                    label="Escribe cómo te sientes"
                   />
                 </v-col>
               </v-row>
