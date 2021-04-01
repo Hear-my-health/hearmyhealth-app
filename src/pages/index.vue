@@ -33,9 +33,8 @@
           <div class="text-xs-center">
             <h2 class="headline">
               Piloto de monitoreo continuo de pacientes con anorexia y bulimia
-            </h2>
-            <br>
-            <div class="display-2" style="text-align: center; color: #0bc5c3">
+            </h2><br>
+            <div class="display-2" style="text-align: center; color: #0BC5C3">
               ¿Qué ofrecemos?
             </div>
           </div>

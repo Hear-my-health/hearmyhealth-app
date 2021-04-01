@@ -15,7 +15,7 @@
       <v-tab-item value="devices" class="mt-3">
         <Device />
       </v-tab-item>
-      <v-tab-item value="thoughts">
+      <v-tab-item value="pensamientos">
         <h5 class="text-h5">
           Pensamientos
         </h5>
@@ -37,7 +37,7 @@
           </v-timeline-item>
         </v-timeline>
       </v-tab-item>
-      <v-tab-item value="alerts">
+      <v-tab-item value="alertas">
         <h5 class="text-h5">
           Alertas
         </h5>
@@ -146,28 +146,28 @@ export default {
       },
       {
         name: 'Datos',
-        slug: 'data',
-        value: 'data'
+        slug: 'datos',
+        value: 'datos'
       },
       {
         name: 'Dispositivos',
-        slug: 'devices',
-        value: 'devices'
+        slug: 'dispositivos',
+        value: 'dispositivos'
       },
       {
         name: 'Pensamientos',
-        slug: 'thoughts',
-        value: 'thoughts'
+        slug: 'pensamientos',
+        value: 'pensamientos'
       },
       {
         name: 'Alertas',
-        slug: 'alerts',
-        value: 'alerts'
+        slug: 'alertas',
+        value: 'alertas'
       },
       {
         name: 'Información',
-        slug: 'profile',
-        value: 'profile'
+        slug: 'perfil paciente',
+        value: 'perfil paciente'
       }
     ],
     text: 'loremos'

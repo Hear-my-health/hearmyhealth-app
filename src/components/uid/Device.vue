@@ -11,7 +11,7 @@
       >
         <template #top>
           <v-toolbar flat>
-            <v-toolbar-title>Fuente de datos </v-toolbar-title>
+            <v-toolbar-title>Dispositivos IoT </v-toolbar-title>
             <v-divider class="mx-4" inset vertical />
             <v-spacer />
           </v-toolbar>
@@ -47,20 +47,20 @@ export default {
   data () {
     return {
       headers: [
+        // {
+        //   text: 'Name',
+        //   align: 'start',
+        //   sortable: false,
+        //   value: 'device'
+        // },
         {
-          text: 'Name',
-          align: 'start',
-          sortable: false,
-          value: 'device'
-        },
-        {
-          text: 'Tipo',
+          text: 'Dispositivo',
           align: 'start',
           sortable: false,
           value: 'type'
         },
         {
-          text: 'Aplicación',
+          text: 'Modelo',
           align: 'start',
           sortable: false,
           value: 'application'

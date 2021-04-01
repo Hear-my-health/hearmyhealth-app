@@ -11,7 +11,7 @@
       >
         <template #top>
           <v-toolbar flat>
-            <v-toolbar-title>Usuarios</v-toolbar-title>
+            <v-toolbar-title>Pacientes</v-toolbar-title>
             <v-divider class="mx-4" inset vertical />
             <v-spacer />
           </v-toolbar>
