@@ -37,7 +37,7 @@
       </v-col>
     </v-row>
 
-    <v-dialog v-model="dialog" max-width="500px" elevation="0">
+    <v-dialog v-model="dialog" max-width="600px" elevation="0">
       <form @submit.prevent="createValue">
         <v-card>
           <v-card-title>
@@ -47,104 +47,102 @@
           <v-card-text>
             <v-container>
               <v-row>
-                <v-col cols="12" md="6">
+                <!-- <v-col cols="12" md="6">
                   <v-text-field
                     v-model="form.key"
                     outlined
-                    :counter="10"
                     label="key"
-                    required
+                    disabled
                   />
-                </v-col>
-                <v-col cols="12" md="6">
+                </v-col> -->
+                <v-col cols="12" md="4">
                   <v-text-field
                     v-model="form.name"
                     outlined
-                    :counter="20"
-                    label="Nombre"
-                    required
+                    label="Indicador"
+                    disabled
                   />
                 </v-col>
-                <v-col cols="12" md="6">
+                <!-- <v-col cols="12" md="4">
                   <v-text-field
                     v-model="form.indicator"
                     outlined
-                    :counter="10"
                     label="Indicador"
-                    required
+                    disabled
                   />
-                </v-col>
-                <v-col cols="12" md="6">
+                </v-col> -->
+                <v-col cols="12" md="4">
                   <v-text-field
                     v-model="form.indicatorUnit"
                     outlined
-                    :counter="10"
                     label="Unidad Indicador"
-                    required
+                    disabled
                   />
                 </v-col>
-                <v-col cols="12" md="12">
+                <!-- <v-col cols="12" md="12">
                   <v-text-field
                     v-model="form.dataTypeName"
                     outlined
-                    name="input-7-4"
+                    disabled
                     label="Tipo dato"
                   />
-                </v-col>
-                <v-col cols="12" md="6">
+                </v-col> -->
+                <v-col cols="12" md="4">
                   <v-text-field
                     v-model="form.type"
                     outlined
+                    disabled
                     name="input-7-4"
                     label="Tipo"
                   />
                 </v-col>
-                <v-col cols="12" md="6">
+                <!-- <v-col cols="12" md="6">
                   <v-text-field
                     v-model="form.frequency"
                     outlined
                     name="input-7-4"
                     label="Frecuencia"
                   />
-                </v-col>
-                <v-col cols="12" md="4">
-                  <v-text-field
-                    v-model="form.maxSalud"
-                    outlined
-                    name="input-7-4"
-                    label="Máximo saludable"
-                  />
-                </v-col>
-                <v-col cols="12" md="4">
-                  <v-text-field
-                    v-model="form.minSalud"
-                    outlined
-                    name="input-7-4"
-                    label="Mínimo saludable"
-                  />
-                </v-col>
-                <v-col cols="12" md="4">
-                  <v-text-field
-                    v-model="form.maxAcept"
-                    outlined
-                    name="input-7-4"
-                    label="Máximo aceptable"
-                  />
-                </v-col>
-                <v-col cols="12" md="4">
+                </v-col> -->
+                <v-col cols="12" md="3">
                   <v-text-field
                     v-model="form.minAcept"
                     outlined
                     name="input-7-4"
-                    label="Mínimo aceptable"
+                    label="Mín aceptable"
                   />
                 </v-col>
-                <v-col cols="12" md="4">
+                <v-col cols="12" md="3">
+                  <v-text-field
+                    v-model="form.minSalud"
+                    outlined
+                    name="input-7-4"
+                    label="Mín saludable"
+                  />
+                </v-col>
+                <v-col cols="12" md="3">
+                  <v-text-field
+                    v-model="form.maxSalud"
+                    outlined
+                    name="input-7-4"
+                    label="Máx saludable"
+                  />
+                </v-col>
+                <v-col cols="12" md="3">
+                  <v-text-field
+                    v-model="form.maxAcept"
+                    outlined
+                    name="input-7-4"
+                    label="Máx aceptable"
+                  />
+                </v-col>
+                <!-- <v-col cols="12" md="4">
                   <v-text-field
                     v-model="form.weight"
                     outlined
                     name="input-7-4"
-                    label="Pensamiento"
+                    label="Peso"
+                    disabled
                   />
                 </v-col>
                 <v-col cols="12" md="4">
@@ -152,9 +150,10 @@
                     v-model="form.weightPercentage"
                     outlined
                     name="input-7-4"
-                    label="Pensamiento"
+                    label="Porcentaje"
+                    disabled
                   />
-                </v-col>
+                </v-col> -->
               </v-row>
             </v-container>
           </v-card-text>
@@ -228,12 +227,12 @@ export default {
         //   sortable: false,
         //   value: 'dataTypeName'
         // },
-        // {
-        //   text: 'Tipo',
-        //   align: 'start',
-        //   sortable: false,
-        //   value: 'type'
-        // },
+        {
+          text: 'Tipo',
+          align: 'start',
+          sortable: false,
+          value: 'type'
+        },
         // {
         //   text: 'Frecuencia',
         //   align: 'start',
@@ -241,28 +240,28 @@ export default {
         //   value: 'frequency'
         // },
         {
-          text: 'Max',
+          text: 'Min Aceptable',
           align: 'start',
           sortable: false,
-          value: 'maxSalud'
+          value: 'minAcept'
         },
         {
-          text: 'Min',
+          text: 'Min Saludable',
           align: 'start',
           sortable: false,
           value: 'minSalud'
         },
         {
-          text: 'Max Acept',
+          text: 'Max Saludable',
+          align: 'start',
+          sortable: false,
+          value: 'maxSalud'
+        },
+        {
+          text: 'Max Aceptable',
           align: 'start',
           sortable: false,
           value: 'maxAcept'
-        },
-        {
-          text: 'Min Acept',
-          align: 'start',
-          sortable: false,
-          value: 'minAcept'
         },
         // {
         //   text: 'Peso',

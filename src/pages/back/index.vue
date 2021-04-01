@@ -11,14 +11,14 @@
       >
         <template #top>
           <v-toolbar flat>
-            <v-toolbar-title>Usuarios</v-toolbar-title>
+            <v-toolbar-title>Pacientes</v-toolbar-title>
             <v-divider class="mx-4" inset vertical />
             <v-spacer />
           </v-toolbar>
         </template>
         <template #[`item.picture`]="{ item }">
           <v-avatar size="36">
-            <img :src="item.picture" alt="John" />
+            <img :src="item.picture" alt="John">
           </v-avatar>
         </template>
 
@@ -32,7 +32,9 @@
           >
             Ver
 
-            <v-icon small class="mr-2"> mdi-arrow-right </v-icon>
+            <v-icon small class="mr-2">
+              mdi-arrow-right
+            </v-icon>
           </v-btn>
         </template>
       </v-data-table>
@@ -42,91 +44,91 @@
 
 <script>
 export default {
-  layout: "back",
+  layout: 'back',
 
-  data() {
+  data () {
     return {
       form: {
-        email: "",
-        password: "",
+        email: '',
+        password: ''
       },
 
-      passwordRules: [(v) => !!v || "Password is required"],
+      passwordRules: [v => !!v || 'Password is required'],
 
       emailRules: [
-        (v) => !!v || "E-mail is required",
-        (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
+        v => !!v || 'E-mail is required',
+        v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
       ],
 
       headers: [
         {
-          text: "Imagen",
-          align: "start",
+          text: 'Imagen',
+          align: 'start',
           sortable: false,
-          value: "picture",
+          value: 'picture'
         },
         {
-          text: "Email",
-          align: "start",
+          text: 'Email',
+          align: 'start',
           sortable: false,
-          value: "email",
+          value: 'email'
         },
         {
-          text: "Id",
-          align: "start",
+          text: 'Id',
+          align: 'start',
           sortable: false,
-          value: "uid",
+          value: 'uid'
         },
         {
-          text: "Nombre",
-          align: "start",
+          text: 'Nombre',
+          align: 'start',
           sortable: false,
-          value: "name",
+          value: 'name'
         },
-        {
-          text: "Rol",
-          align: "start",
-          sortable: false,
-          value: "role",
-        },
-        { text: "Acciones", value: "actions" },
-      ],
-    };
+        // {
+        //   text: 'Rol',
+        //   align: 'start',
+        //   sortable: false,
+        //   value: 'role'
+        // },
+        { text: 'Acciones', value: 'actions' }
+      ]
+    }
   },
 
-  async fetch({ store }) {
+  async fetch ({ store }) {
     try {
-      await store.dispatch("getUsers");
+      await store.dispatch('getUsers')
     } catch (e) {
-      return "error";
+      return 'error'
     }
   },
 
   computed: {
-    users() {
-      return this.$store.state.users.filter((user) => user.role === "user");
-    },
+    users () {
+      return this.$store.state.users.filter(user => user.role === 'user')
+    }
   },
 
-  mounted() {
-    this.$store.dispatch("getUsers");
+  mounted () {
+    this.$store.dispatch('getUsers')
   },
 
   methods: {
-    async createDoctor() {
+    async createDoctor () {
       try {
-        const { email, password } = this.form;
+        const { email, password } = this.form
         await this.$fireModule
           .auth()
-          .createUserWithEmailAndPassword(email, password);
+          .createUserWithEmailAndPassword(email, password)
       } catch (error) {
-        console.log("error", error);
+        console.log('error', error)
       }
     },
 
-    resetValidation() {
-      this.$refs.form.resetValidation();
-    },
-  },
-};
+    resetValidation () {
+      this.$refs.form.resetValidation()
+    }
+  }
+}
 </script>

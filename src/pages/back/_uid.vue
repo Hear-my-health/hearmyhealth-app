@@ -9,16 +9,16 @@
       <v-tab-item value="dashboard">
         <Dashboard :my-uid="uid" />
       </v-tab-item>
-      <v-tab-item value="data">
+      <v-tab-item value="datos">
         <h1>data</h1>
         <div>Información del usuario</div>
         <div>uid {{ uid }}</div>
         <Data :my-uid="uid" />
       </v-tab-item>
-      <v-tab-item value="devices">
+      <v-tab-item value="dispositivos">
         <Device />
       </v-tab-item>
-      <v-tab-item value="thoughts">
+      <v-tab-item value="pensamientos">
         <h5 class="text-h5">
           Pensamientos
         </h5>
@@ -35,7 +35,7 @@
           </v-timeline-item>
         </v-timeline>
       </v-tab-item>
-      <v-tab-item value="alerts">
+      <v-tab-item value="alertas">
         <h5 class="text-h5">
           Alertas
         </h5>
@@ -56,7 +56,7 @@
           </v-col>
         </v-row>
       </v-tab-item>
-      <v-tab-item value="profile">
+      <v-tab-item value="perfil paciente">
         <h1>profile</h1>
         <div>Información del usuario</div>
         <div>uid {{ uid }}</div>
@@ -267,28 +267,28 @@ export default {
       },
       {
         name: 'Datos',
-        slug: 'data',
-        value: 'data'
+        slug: 'datos',
+        value: 'datos'
       },
       {
         name: 'Dispositivos',
-        slug: 'devices',
-        value: 'devices'
+        slug: 'dispositivos',
+        value: 'dispositivos'
       },
       {
         name: 'Pensamientos',
-        slug: 'thoughts',
-        value: 'thoughts'
+        slug: 'pensamientos',
+        value: 'pensamientos'
       },
       {
         name: 'Alertas',
-        slug: 'alerts',
-        value: 'alerts'
+        slug: 'alertas',
+        value: 'alertas'
       },
       {
         name: 'Información',
-        slug: 'profile',
-        value: 'profile'
+        slug: 'perfil paciente',
+        value: 'perfil paciente'
       }
     ],
     text: 'loremos'
