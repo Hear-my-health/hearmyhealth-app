@@ -1,0 +1,32 @@
+[
+  {
+    "starDate": 1610150400000,
+    "endDate": 1610236800000,
+    "heartRate": 52,
+    "calories": 206.91,
+    "steps": 123,
+    "sleep": 4.87,
+    "deepSleep": 0.38,
+    "moodbyDay": 0.5
+  },
+  {
+    "starDate": 1610236800000,
+    "endDate": 1610323200000,
+    "heartRate": 50,
+    "calories": 187.64,
+    "steps": 195,
+    "sleep": 8.78,
+    "deepSleep": 0.44,
+    "moodbyDay": 1
+  },
+  {
+    "starDate": 1610323200000,
+    "endDate": 1610409600000,
+    "heartRate": 61,
+    "calories": 236.66,
+    "steps": 147,
+    "sleep": 8.52,
+    "deepSleep": 0.86,
+    "moodbyDay": 0.5
+  }
+]
