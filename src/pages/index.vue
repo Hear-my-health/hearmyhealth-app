@@ -22,7 +22,8 @@
             href="/login"
           >
             Ir a la app
-          </v-btn><div id="product" />
+          </v-btn>
+          <div id="product" />
         </v-layout>
       </v-parallax>
     </section>
@@ -34,7 +35,6 @@
               Piloto de monitoreo continuo de pacientes con anorexia y bulimia
             </h2><br>
             <div class="display-2" style="text-align: center; color: #0BC5C3">
-            
               ¿Qué ofrecemos?
             </div>
           </div>
@@ -50,12 +50,15 @@
                 src="https://firebasestorage.googleapis.com/v0/b/mace-d54b3.appspot.com/o/disponibilidad2.png?alt=media&token=d66d381e-bfc3-4a56-b4e9-37704244fb33"
               />
               <v-card-title primary-title class="layout justify-center">
-
                 <div class="headline text-xs-center">
                   Datos e indicadores
                 </div>
-              </v-card-title>       <v-card-text class="text-center">
-                El piloto almacena y analiza los datos del paciente recopilados de wearables como pulseras o relojes inteligentes, con el fin de generar indicadores fisiológicos, psicológicos y nutricionales útiles
+              </v-card-title>
+              <v-card-text class="text-center">
+                El piloto almacena y analiza los datos del paciente recopilados
+                de wearables como pulseras o relojes inteligentes, con el fin de
+                generar indicadores fisiológicos, psicológicos y nutricionales
+                útiles
               </v-card-text>
             </v-card>
           </v-flex>
@@ -67,10 +70,14 @@
                 src="https://firebasestorage.googleapis.com/v0/b/mace-d54b3.appspot.com/o/especialistas.png?alt=media&token=5e6bdfc7-5b1b-49d7-b44f-e40e7214fa06"
               />
               <v-card-title primary-title class="layout justify-center">
-                <div class="headline">Soporte a especialistas</div>
+                <div class="headline">
+                  Soporte a especialistas
+                </div>
               </v-card-title>
               <v-card-text class="text-center">
-                El piloto genera recomendaciones en base a los datos recopilados del paciente con el fin de servir de soporte en las decisiones del especialista y así brindar mejores tratamientos
+                El piloto genera recomendaciones en base a los datos recopilados
+                del paciente con el fin de servir de soporte en las decisiones
+                del especialista y así brindar mejores tratamientos
               </v-card-text>
             </v-card>
           </v-flex>
@@ -91,14 +98,19 @@
             <v-layout row wrap align-top>
               <v-flex xs12 md4>
                 <v-card class="elevation-0 transparent">
-                  <v-img class="ma-auto" max-width="80" src="https://firebasestorage.googleapis.com/v0/b/mace-d54b3.appspot.com/o/saludmental.png?alt=media&token=a25e9959-b060-47ff-a6df-8a04029e29ab" />
+                  <v-img
+                    class="ma-auto"
+                    max-width="80"
+                    src="https://firebasestorage.googleapis.com/v0/b/mace-d54b3.appspot.com/o/saludmental.png?alt=media&token=a25e9959-b060-47ff-a6df-8a04029e29ab"
+                  />
                   <v-card-title primary-title class="layout justify-center">
                     <div class="headline text-xs-center">
                       Datos de salud mental
                     </div>
                   </v-card-title>
                   <v-card-text class="text-center">
-                    Medimos la salud mental a través del estado de ánimo del paciente y horas de sueño incluyendo el profundo
+                    Medimos la salud mental a través del estado de ánimo del
+                    paciente y horas de sueño incluyendo el profundo
                   </v-card-text>
                 </v-card>
               </v-flex>
@@ -112,23 +124,32 @@
                     />
                   </v-card-text>
                   <v-card-title primary-title class="layout justify-center">
-                    <div class="headline">Datos nutricionales</div>
+                    <div class="headline">
+                      Datos nutricionales
+                    </div>
                   </v-card-title>
                   <v-card-text class="text-center">
-                    Medimos la salud nutricional a través de la ingesta total de alimentos, el peso sobrante de la comida y la duración de la ingesta
+                    Medimos la salud nutricional a través de la ingesta total de
+                    alimentos, el peso sobrante de la comida y la duración de la
+                    ingesta
                   </v-card-text>
                 </v-card>
               </v-flex>
               <v-flex xs12 md4>
                 <v-card class="elevation-0 transparent">
-                  <v-img class="ma-auto" max-width="46" src="https://firebasestorage.googleapis.com/v0/b/mace-d54b3.appspot.com/o/saludfisica.png?alt=media&token=0f631f06-9158-41db-bdee-93c17a91f8fa" />
+                  <v-img
+                    class="ma-auto"
+                    max-width="46"
+                    src="https://firebasestorage.googleapis.com/v0/b/mace-d54b3.appspot.com/o/saludfisica.png?alt=media&token=0f631f06-9158-41db-bdee-93c17a91f8fa"
+                  />
                   <v-card-title primary-title class="layout justify-center">
                     <div class="headline text-xs-center">
                       Datos fisiológicos
                     </div>
                   </v-card-title>
                   <v-card-text class="text-center">
-                    Medimos la salud física a través de la frecuencia cardíaca, cantidad de pasos y calorías quemadas
+                    Medimos la salud física a través de la frecuencia cardíaca,
+                    cantidad de pasos y calorías quemadas
                   </v-card-text>
                 </v-card>
               </v-flex>
@@ -141,9 +162,13 @@
       <v-parallax :src="imageLink.social_cover" height="220">
         <v-layout column align-center justify-center>
           <div class="headline white--text mb-3">
-            Actualmente, la anorexia y bulimia son las enfermedades mentales más mortales del mundo
+            Actualmente, la anorexia y bulimia son las enfermedades mentales más
+            mortales del mundo
             <br>
-          </div><v-text style="font-style: italic; font-size: medium; text-align: right">
+          </div>
+          <v-text
+            style="font-style: italic; font-size: medium; text-align: right"
+          >
             -Centro de Excelencia para Trastornos Alimentarios de EEUU
           </v-text>
         </v-layout>
@@ -174,8 +199,10 @@
       <v-container grid-list-md>
         <v-layout row wrap>
           <v-flex xs12 text-xs-center class="mt-5">
-            <div class="headline">¡Contáctanos!</div>
-            <br />
+            <div class="headline">
+              ¡Contáctanos!
+            </div>
+            <br>
             <div>
               Escríbenos tus sugerencias, recomendaciones o si deseas mayor
               información sobre este proyecto.
@@ -259,49 +286,45 @@ export default {
   layout: 'landing',
   data () {
     return {
-      title: "Endorfine",
+      title: 'Endorfine',
       imageLink: {
         main:
-          "https://firebasestorage.googleapis.com/v0/b/hear-my-health.appspot.com/o/FotoJet%20(5).jpg?alt=media&token=2a0943a1-cb3d-4701-83d9-161deb0b83db",
-        sub_main:
-          "https://firebasestorage.googleapis.com/v0/b/mace-d54b3.appspot.com/o/yellow.jpg?alt=media&token=4cdeefc5-835a-4adb-9978-642001548372",
-        logo:
-          "https://firebasestorage.googleapis.com/v0/b/endorfinevue.appspot.com/o/assets%2Fandroid-chrome-512x512.png?alt=media&token=8a0a66f6-4741-4ff6-8f28-eb9ec74374df",
+          'https://firebasestorage.googleapis.com/v0/b/hear-my-health.appspot.com/o/banprin.webp?alt=media&token=947e3460-665f-4a25-bf54-993e7b0f2347',
         social_cover:
-          'https://firebasestorage.googleapis.com/v0/b/hear-my-health.appspot.com/o/fondo%20slide1.jpg?alt=media&token=3516bc21-bee5-414b-acef-1134a5a809ff'
+          'https://firebasestorage.googleapis.com/v0/b/hear-my-health.appspot.com/o/slide.webp?alt=media&token=26aa3238-964a-498e-9c19-841786e4b648'
       },
-      email: "",
+      email: '',
       emailRules: [
         (v) => {
-          return !!v || "E-mail is required";
+          return !!v || 'E-mail is required'
         },
-        (v) =>
+        v =>
           /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
-          "E-mail must be valid",
+          'E-mail must be valid'
       ],
-      subscribed: false,
-    };
+      subscribed: false
+    }
   },
   computed: {
-    imgHeight() {
-      const offset = 320;
-      return this.pageHeight - offset;
-    },
+    imgHeight () {
+      const offset = 320
+      return this.pageHeight - offset
+    }
   },
 
-  mounted() {
-    const { authUser } = this.$store.state;
+  mounted () {
+    const { authUser } = this.$store.state
     if (authUser) {
-      this.$router.push("/app");
+      this.$router.push('/app')
     }
   },
 
   methods: {
-    subscribe() {
-      this.subscribed = !this.subscribed;
-    },
-  },
-};
+    subscribe () {
+      this.subscribed = !this.subscribed
+    }
+  }
+}
 </script>
 
 <style scoped>

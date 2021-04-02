@@ -7,11 +7,11 @@
         :sort-by="['type', 'type']"
         :sort-desc="[false, true]"
         multi-sort
-        class="elevation-1"
+        class="elevation-0"
       >
         <template #top>
           <v-toolbar flat>
-            <v-toolbar-title>Fuente de datos </v-toolbar-title>
+            <v-toolbar-title>Dispositivos IoT </v-toolbar-title>
             <v-divider class="mx-4" inset vertical />
             <v-spacer />
           </v-toolbar>
@@ -72,6 +72,12 @@ export default {
       uid: this.$props.myUid,
       uniqueDevices: [],
       headers: [
+        // {
+        //   text: 'Name',
+        //   align: 'start',
+        //   sortable: false,
+        //   value: 'device'
+        // },
         {
           text: "Name",
           align: "start",
@@ -79,14 +85,14 @@ export default {
           value: "uid",
         },
         {
-          text: "Tipo",
-          align: "start",
+          text: 'Dispositivo',
+          align: 'start',
           sortable: false,
           value: "type",
         },
         {
-          text: "Aplicación",
-          align: "start",
+          text: 'Modelo',
+          align: 'start',
           sortable: false,
           value: "model",
         },

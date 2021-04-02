@@ -5,21 +5,20 @@
         {{ item.slug }}
       </v-tab>
     </v-tabs>
-    <v-tabs-items v-model="tab">
+    <v-tabs-items v-model="tab" class="grey lighten-5">
       <v-tab-item value="dashboard">
-        <Dashboard :my-uid="uid" />
+        <Dashboard :my-uid="uid" class="mt-3" />
       </v-tab-item>
       <v-tab-item value="data">
-        <h1>data</h1>
-        <div>Información del usuario</div>
-        <div>uid {{ uid }}</div>
-        <Data :my-uid="uid" />
+        <Data :my-uid="uid" class="mt-3" />
       </v-tab-item>
-      <v-tab-item value="devices">
+      <v-tab-item value="devices" class="mt-3">
         <Device :my-uid="uid" />
       </v-tab-item>
-      <v-tab-item value="thoughts">
-        <h5 class="text-h5">Pensamientos</h5>
+      <v-tab-item value="pensamientos">
+        <h5 class="text-h5">
+          Pensamientos
+        </h5>
         <v-timeline dense>
           <v-timeline-item v-for="(thought, ith) in thoughts" :key="ith">
             <v-card class="elevation-1">
@@ -32,16 +31,18 @@
                   formatDateTable(thought.date) +
                   "  Hora: " +
                   formatDateHour(thought.date)
+
                 }}
               </v-card-text>
             </v-card>
           </v-timeline-item>
         </v-timeline>
       </v-tab-item>
-      <v-tab-item value="alerts">
+      <v-tab-item value="alertas">
         <h5 class="text-h5">Alertas</h5>
         <Alert :my-uid="uid" />
         <!--         <v-btn elevation="0" outlined raised @click="dialog = !dialog">
+
           Agregar alerta
         </v-btn>
         <v-row justify="center" align="center">
@@ -59,130 +60,7 @@
         </v-row> -->
       </v-tab-item>
       <v-tab-item value="profile">
-        <h1>profile</h1>
-        <div>Información del usuario</div>
-        <div>uid {{ uid }}</div>
-        <!-- <v-card>
-          <v-card-title>Información del paciente</v-card-title>
-          <form @submit.prevent="updatePatientInfo">
-            <div>
-              <p class="mb-1">Nombres</p>
-              <v-text-field
-                v-model="profile.name"
-                placeholder="Nombres"
-                value="name"
-                color="black"
-                outlined
-                dense
-                type="text"
-                disabled
-              />
-            </div>
-            <div v-if="user.role === 'user'">
-              <div>
-                <p class="mb-1">DNI</p>
-                <v-text-field
-                  v-model="profile.dni"
-                  placeholder="DNI"
-                  color="black"
-                  outlined
-                  dense
-                  type="text"
-                  disabled
-                />
-              </div>
-              <div>
-                <p class="mb-1">Número de historia clínica</p>
-                <v-text-field
-                  v-model="profile.clinic_history"
-                  placeholder="Número de historia clínica"
-                  color="black"
-                  outlined
-                  dense
-                  type="text"
-                  :disabled="isEditing"
-                />
-              </div>
-              <div>
-                <v-row>
-                  <v-col>
-                    <p class="mb-1">Edad</p>
-                    <v-text-field
-                      v-model="profile.age"
-                      placeholder="Edad"
-                      color="black"
-                      outlined
-                      dense
-                      type="text"
-                      disabled
-                    />
-                  </v-col>
-                  <v-col>
-                    <p class="mb-1">Peso</p>
-                    <v-text-field
-                      v-model="profile.weight"
-                      placeholder="Peso"
-                      color="black"
-                      outlined
-                      dense
-                      type="text"
-                      :disabled="isEditing"
-                    />
-                  </v-col>
-                  <v-col>
-                    <p class="mb-1">Altura</p>
-                    <v-text-field
-                      v-model="profile.height"
-                      placeholder="Altura"
-                      color="black"
-                      outlined
-                      dense
-                      type="text"
-                      :disabled="isEditing"
-                    />
-                  </v-col>
-                </v-row>
-              </div>
-            </div>
-            <v-row>
-              <v-col>
-                <v-btn
-                  v-if="isEditing === false"
-                  elevation="0"
-                  large
-                  outlined
-                  raised
-                  type="submit"
-                >
-                  Actualizar
-                </v-btn>
-              </v-col>
-              <v-col>
-                <v-btn
-                  v-if="isEditing === false"
-                  elevation="0"
-                  large
-                  outlined
-                  raised
-                  @click="isEditing = !isEditing"
-                >
-                  Cancelar
-                </v-btn>
-              </v-col>
-            </v-row>
-          </form>
-          <v-btn
-            v-if="isEditing === true"
-            elevation="0"
-            large
-            outlined
-            raised
-            @click="isEditing = !isEditing"
-          >
-            Editar
-          </v-btn>
-        </v-card> -->
-        <Profile :my-uid="uid" />
+        <Profile :my-uid="uid" class="mt-3" />
       </v-tab-item>
     </v-tabs-items>
 
@@ -268,30 +146,31 @@ export default {
         value: "dashboard",
       },
       {
-        name: "Datos",
-        slug: "data",
-        value: "data",
+
+        name: 'Datos',
+        slug: 'datos',
+        value: 'datos'
       },
       {
-        name: "Dispositivos",
-        slug: "devices",
-        value: "devices",
+        name: 'Dispositivos',
+        slug: 'dispositivos',
+        value: 'dispositivos'
       },
       {
-        name: "Pensamientos",
-        slug: "thoughts",
-        value: "thoughts",
+        name: 'Pensamientos',
+        slug: 'pensamientos',
+        value: 'pensamientos'
       },
       {
-        name: "Alertas",
-        slug: "alerts",
-        value: "alerts",
+        name: 'Alertas',
+        slug: 'alertas',
+        value: 'alertas'
       },
       {
-        name: "Información",
-        slug: "profile",
-        value: "profile",
-      },
+        name: 'Información',
+        slug: 'perfil paciente',
+        value: 'perfil paciente'
+      }
     ],
     text: "loremos",
   }),

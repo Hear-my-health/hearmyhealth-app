@@ -5,43 +5,6 @@
         <v-avatar color="primary" size="64" class="mt-5 mb-7">
           <v-img :src="auth.photoURL" />
         </v-avatar>
-        <!--         <div>
-          <p class="mb-1">UID</p>
-          <v-text-field
-            v-model="auth.uid"
-            placeholder="UID"
-            color="black"
-            outlined
-            dense
-            type="text"
-            disabled
-          />
-        </div>
-        <div>
-          <p class="mb-1">Correo</p>
-          <v-text-field
-            v-model="auth.email"
-            placeholder="Correo"
-            outlined
-            color="black"
-            dense
-            type="email"
-            disabled
-          />
-        </div> -->
-
-        <!-- <div>
-            <p class="mb-1">Nombres</p>
-            <v-text-field
-              v-model="auth.providerData.displayName"
-              placeholder="Nombres"
-              color="black"
-              outlined
-              dense
-              type="text"
-              required
-            />
-          </div> -->
         <form @submit.prevent="updateInfo">
           <div>
             <p class="mb-1">Nombres</p>
@@ -141,43 +104,6 @@
             </div>
           </div>
           <v-row>
-            <!--             <v-col>
-              <v-btn
-                v-if="isEditing === false"
-                elevation="0"
-                large
-                outlined
-                raised
-                type="submit"
-              >
-                Actualizar
-              </v-btn>
-            </v-col>
-            <v-col>
-              <v-btn
-                v-if="isEditing === false"
-                elevation="0"
-                large
-                outlined
-                raised
-                @click="isEditing = !isEditing"
-              >
-                Cancelar
-              </v-btn>
-            </v-col>
-            <v-col>
-              <v-btn
-                v-if="isEditing === true"
-                elevation="0"
-                large
-                outlined
-                raised
-                type="button"
-                @click="isEditing = !isEditing"
-              >
-                Editar
-              </v-btn>
-            </v-col> -->
             <v-col>
               <v-btn elevation="0" large outlined raised @click="signOut">
                 Cerrar sesión

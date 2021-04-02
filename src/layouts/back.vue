@@ -82,7 +82,7 @@ export default {
         },
         {
           icon: 'mdi-account',
-          title: 'Perfil',
+          title: 'Mi Perfil',
           to: '/account'
         }
         /*         {

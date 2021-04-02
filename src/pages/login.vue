@@ -55,13 +55,7 @@ export default {
   async mounted () {
     const { authUser } = this.$store.state
 
-    console.log('authUser', authUser)
     if (authUser) {
-      /*       console.log('logueqado')
-      await this.$store.dispatch('getUser', { uid: authUser.uid })
-      const { role } = this.$store.state.user
-      console.log('role', role)
- */
       await this.$router.push('/app')
     }
   },
@@ -159,7 +153,7 @@ export default {
         )
         this.saveDataSourcesByUsers(res.dataSource, user, accessToken)
       } catch (error) {
-        console.log('LOGIN getMeDataSources error', error)
+        this.$store.dispatch('SET_MESSAGE', { message: error })
       }
     },
 
@@ -332,7 +326,7 @@ export default {
           }
         }
       } catch (error) {
-        return error
+        this.$store.dispatch('SET_MESSAGE', { message: error })
       }
     },
 
@@ -443,13 +437,11 @@ export default {
                 stateSleepDeep
               })
           } catch (error) {
-            console.log('error', error)
+            this.$store.dispatch('SET_MESSAGE', { message: error })
           }
         })
-
-        console.log('LOGIN getMeSessionsSleep res', res)
       } catch (error) {
-        console.log('LOGIN getMeSessionsSleep error', error)
+        this.$store.dispatch('SET_MESSAGE', { message: error })
       }
     }
   }
