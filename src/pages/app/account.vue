@@ -5,43 +5,6 @@
         <v-avatar color="primary" size="64" class="mt-5 mb-7">
           <v-img :src="auth.photoURL" />
         </v-avatar>
-        <!--         <div>
-          <p class="mb-1">UID</p>
-          <v-text-field
-            v-model="auth.uid"
-            placeholder="UID"
-            color="black"
-            outlined
-            dense
-            type="text"
-            disabled
-          />
-        </div>
-        <div>
-          <p class="mb-1">Correo</p>
-          <v-text-field
-            v-model="auth.email"
-            placeholder="Correo"
-            outlined
-            color="black"
-            dense
-            type="email"
-            disabled
-          />
-        </div> -->
-
-        <!-- <div>
-            <p class="mb-1">Nombres</p>
-            <v-text-field
-              v-model="auth.providerData.displayName"
-              placeholder="Nombres"
-              color="black"
-              outlined
-              dense
-              type="text"
-              required
-            />
-          </div> -->
         <form @submit.prevent="updateInfo">
           <div>
             <p class="mb-1">
@@ -139,43 +102,6 @@
             </div>
           </div>
           <v-row>
-            <!--             <v-col>
-              <v-btn
-                v-if="isEditing === false"
-                elevation="0"
-                large
-                outlined
-                raised
-                type="submit"
-              >
-                Actualizar
-              </v-btn>
-            </v-col>
-            <v-col>
-              <v-btn
-                v-if="isEditing === false"
-                elevation="0"
-                large
-                outlined
-                raised
-                @click="isEditing = !isEditing"
-              >
-                Cancelar
-              </v-btn>
-            </v-col>
-            <v-col>
-              <v-btn
-                v-if="isEditing === true"
-                elevation="0"
-                large
-                outlined
-                raised
-                type="button"
-                @click="isEditing = !isEditing"
-              >
-                Editar
-              </v-btn>
-            </v-col> -->
             <v-col>
               <v-btn elevation="0" large outlined raised @click="signOut">
                 Cerrar sesión
@@ -251,11 +177,10 @@ export default {
         await this.$fireModule.auth().signOut()
         this.$router.push('/')
       } catch (error) {
-        console.log('error', error)
+        this.$store.dispatch('SET_MESSAGE', { message: error })
       }
     },
     async updateInfo () {
-      console.log(this.auth.uid)
       try {
         const { uid } = this.auth
         const {
@@ -276,7 +201,7 @@ export default {
         })
         this.isEditing = true
       } catch (error) {
-        console.log('error', error)
+        this.$store.dispatch('SET_MESSAGE', { message: error })
       }
     }
   }

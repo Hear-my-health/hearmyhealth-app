@@ -22,7 +22,8 @@
             href="/login"
           >
             Ir a la app
-          </v-btn><div id="product" />
+          </v-btn>
+          <div id="product" />
         </v-layout>
       </v-parallax>
     </section>
@@ -52,8 +53,12 @@
                 <div class="headline text-xs-center">
                   Datos e indicadores
                 </div>
-              </v-card-title>       <v-card-text class="text-center">
-                El piloto almacena y analiza los datos del paciente recopilados de wearables como pulseras o relojes inteligentes, con el fin de generar indicadores fisiológicos, psicológicos y nutricionales útiles
+              </v-card-title>
+              <v-card-text class="text-center">
+                El piloto almacena y analiza los datos del paciente recopilados
+                de wearables como pulseras o relojes inteligentes, con el fin de
+                generar indicadores fisiológicos, psicológicos y nutricionales
+                útiles
               </v-card-text>
             </v-card>
           </v-flex>
@@ -70,7 +75,9 @@
                 </div>
               </v-card-title>
               <v-card-text class="text-center">
-                El piloto genera recomendaciones en base a los datos recopilados del paciente con el fin de servir de soporte en las decisiones del especialista y así brindar mejores tratamientos
+                El piloto genera recomendaciones en base a los datos recopilados
+                del paciente con el fin de servir de soporte en las decisiones
+                del especialista y así brindar mejores tratamientos
               </v-card-text>
             </v-card>
           </v-flex>
@@ -91,14 +98,19 @@
             <v-layout row wrap align-top>
               <v-flex xs12 md4>
                 <v-card class="elevation-0 transparent">
-                  <v-img class="ma-auto" max-width="80" src="https://firebasestorage.googleapis.com/v0/b/mace-d54b3.appspot.com/o/saludmental.png?alt=media&token=a25e9959-b060-47ff-a6df-8a04029e29ab" />
+                  <v-img
+                    class="ma-auto"
+                    max-width="80"
+                    src="https://firebasestorage.googleapis.com/v0/b/mace-d54b3.appspot.com/o/saludmental.png?alt=media&token=a25e9959-b060-47ff-a6df-8a04029e29ab"
+                  />
                   <v-card-title primary-title class="layout justify-center">
                     <div class="headline text-xs-center">
                       Datos de salud mental
                     </div>
                   </v-card-title>
                   <v-card-text class="text-center">
-                    Medimos la salud mental a través del estado de ánimo del paciente y horas de sueño incluyendo el profundo
+                    Medimos la salud mental a través del estado de ánimo del
+                    paciente y horas de sueño incluyendo el profundo
                   </v-card-text>
                 </v-card>
               </v-flex>
@@ -117,20 +129,27 @@
                     </div>
                   </v-card-title>
                   <v-card-text class="text-center">
-                    Medimos la salud nutricional a través de la ingesta total de alimentos, el peso sobrante de la comida y la duración de la ingesta
+                    Medimos la salud nutricional a través de la ingesta total de
+                    alimentos, el peso sobrante de la comida y la duración de la
+                    ingesta
                   </v-card-text>
                 </v-card>
               </v-flex>
               <v-flex xs12 md4>
                 <v-card class="elevation-0 transparent">
-                  <v-img class="ma-auto" max-width="46" src="https://firebasestorage.googleapis.com/v0/b/mace-d54b3.appspot.com/o/saludfisica.png?alt=media&token=0f631f06-9158-41db-bdee-93c17a91f8fa" />
+                  <v-img
+                    class="ma-auto"
+                    max-width="46"
+                    src="https://firebasestorage.googleapis.com/v0/b/mace-d54b3.appspot.com/o/saludfisica.png?alt=media&token=0f631f06-9158-41db-bdee-93c17a91f8fa"
+                  />
                   <v-card-title primary-title class="layout justify-center">
                     <div class="headline text-xs-center">
                       Datos fisiológicos
                     </div>
                   </v-card-title>
                   <v-card-text class="text-center">
-                    Medimos la salud física a través de la frecuencia cardíaca, cantidad de pasos y calorías quemadas
+                    Medimos la salud física a través de la frecuencia cardíaca,
+                    cantidad de pasos y calorías quemadas
                   </v-card-text>
                 </v-card>
               </v-flex>
@@ -143,9 +162,13 @@
       <v-parallax :src="imageLink.social_cover" height="220">
         <v-layout column align-center justify-center>
           <div class="headline white--text mb-3">
-            Actualmente, la anorexia y bulimia son las enfermedades mentales más mortales del mundo
+            Actualmente, la anorexia y bulimia son las enfermedades mentales más
+            mortales del mundo
             <br>
-          </div><v-text style="font-style: italic; font-size: medium; text-align: right">
+          </div>
+          <v-text
+            style="font-style: italic; font-size: medium; text-align: right"
+          >
             -Centro de Excelencia para Trastornos Alimentarios de EEUU
           </v-text>
         </v-layout>

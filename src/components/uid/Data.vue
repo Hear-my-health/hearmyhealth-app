@@ -57,7 +57,7 @@
         :sort-by="['dataTypeName', 'type']"
         :sort-desc="[true, true]"
         multi-sort
-        class="elevation-1"
+        class="elevation-0"
       >
         <template #top>
           <v-toolbar flat>
@@ -186,8 +186,8 @@
     <v-dialog
       v-if="
         noData === true &&
-          this.user.role === 'user' &&
-          this.$store.state.authUser.uid === this.user.uid
+          user.role === 'user' &&
+          auth.uid === user.uid
       "
       v-model="info"
       max-width="500px"
@@ -252,13 +252,20 @@
 import { validationMixin } from 'vuelidate'
 import { required, maxLength, minLength } from 'vuelidate/lib/validators'
 export default {
-  /*  data: (vm) => ({ */
   mixins: [validationMixin],
-  props: ['myUid'],
+
+  props: {
+    myUid: {
+      type: String,
+      default: ''
+    }
+  },
+
   validations: {
     dni: { required, minLength: minLength(8), maxLength: maxLength(8) },
     dateOfBirth: { required }
   },
+
   data () {
     return {
       uid: this.$props.myUid,
@@ -341,7 +348,6 @@ export default {
       end: 0
     }
   },
-  /*   }), */
 
   computed: {
     auth () {
@@ -389,6 +395,7 @@ export default {
           const dd = this.$store.state.dataSet.filter(
             s => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
           )
+
           const ee = {
             dateStart: start,
             dateEnd,
@@ -407,10 +414,9 @@ export default {
             deepSleep: dd.find(
               t => t.dataTypeName === 'app.web.hear-my-health.sleep.deep'
             ),
-            mood: dd.find(
-              t => t.dataTypeName === 'app.web.hear-my-health.mood.segment'
-            )
+            mood: this.overageValueDataSet(dd)
           }
+
           start = dateEnd
           tt.push(ee)
         }
@@ -456,8 +462,23 @@ export default {
   },
 
   methods: {
+
+    overageValueDataSet (dd) {
+      const valueFilter = dd.filter(
+        t => t.dataTypeName === 'app.web.hear-my-health.mood.segment')
+      const initialValue = 0
+      const average = valueFilter.reduce(function (total, currentValue) {
+        return total + currentValue.value || 0
+      }, initialValue) / valueFilter.length
+
+      if (average) {
+        return { ...dd[0], value: average }
+      }
+
+      return dd[0]
+    },
+
     submit () {
-      console.log(this.$v.$touch())
       this.$v.$touch()
     },
     async updateInfo () {
@@ -470,7 +491,7 @@ export default {
         })
         this.noData = false
       } catch (error) {
-        console.log('error', error)
+        this.$store.dispatch('SET_MESSAGE', { message: error })
       }
     },
     findState (key) {

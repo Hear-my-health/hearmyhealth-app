@@ -1,18 +1,14 @@
 <template>
   <div>
-    <!-- <v-btn elevation="0" outlined raised @click="dialog = !dialog">
-      Agregar value
-    </v-btn> -->
-
     <v-row justify="center" align="center">
-      <v-col cols="12" sm="12" md="12">
+      <v-col cols="12" sm="10" md="10">
         <v-data-table
           :headers="headers"
           :items="values"
           :sort-by="['email', 'name']"
           :sort-desc="[false, true]"
           multi-sort
-          class="elevation-1"
+          class="elevation-0"
         >
           <template #top>
             <v-toolbar flat>

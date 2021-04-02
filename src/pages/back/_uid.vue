@@ -5,17 +5,14 @@
         {{ item.slug }}
       </v-tab>
     </v-tabs>
-    <v-tabs-items v-model="tab">
+    <v-tabs-items v-model="tab" class="grey lighten-5">
       <v-tab-item value="dashboard">
-        <Dashboard :my-uid="uid" />
+        <Dashboard :my-uid="uid" class="mt-3" />
       </v-tab-item>
-      <v-tab-item value="datos">
-        <h1>data</h1>
-        <div>Información del usuario</div>
-        <div>uid {{ uid }}</div>
-        <Data :my-uid="uid" />
+      <v-tab-item value="data">
+        <Data :my-uid="uid" class="mt-3" />
       </v-tab-item>
-      <v-tab-item value="dispositivos">
+      <v-tab-item value="devices" class="mt-3">
         <Device />
       </v-tab-item>
       <v-tab-item value="pensamientos">
@@ -29,7 +26,12 @@
                 {{ thought.thought }}
               </v-card-title>
               <v-card-text style="font-size: 1.2rem">
-                {{ "Fecha: " + formatDateTable(thought.date) + "  Hora: " + formatDateHour(thought.date) }}
+                {{
+                  "Fecha: " +
+                    formatDateTable(thought.date) +
+                    "  Hora: " +
+                    formatDateHour(thought.date)
+                }}
               </v-card-text>
             </v-card>
           </v-timeline-item>
@@ -56,131 +58,8 @@
           </v-col>
         </v-row>
       </v-tab-item>
-      <v-tab-item value="perfil paciente">
-        <h1>profile</h1>
-        <div>Información del usuario</div>
-        <div>uid {{ uid }}</div>
-        <!-- <v-card>
-          <v-card-title>Información del paciente</v-card-title>
-          <form @submit.prevent="updatePatientInfo">
-            <div>
-              <p class="mb-1">Nombres</p>
-              <v-text-field
-                v-model="profile.name"
-                placeholder="Nombres"
-                value="name"
-                color="black"
-                outlined
-                dense
-                type="text"
-                disabled
-              />
-            </div>
-            <div v-if="user.role === 'user'">
-              <div>
-                <p class="mb-1">DNI</p>
-                <v-text-field
-                  v-model="profile.dni"
-                  placeholder="DNI"
-                  color="black"
-                  outlined
-                  dense
-                  type="text"
-                  disabled
-                />
-              </div>
-              <div>
-                <p class="mb-1">Número de historia clínica</p>
-                <v-text-field
-                  v-model="profile.clinic_history"
-                  placeholder="Número de historia clínica"
-                  color="black"
-                  outlined
-                  dense
-                  type="text"
-                  :disabled="isEditing"
-                />
-              </div>
-              <div>
-                <v-row>
-                  <v-col>
-                    <p class="mb-1">Edad</p>
-                    <v-text-field
-                      v-model="profile.age"
-                      placeholder="Edad"
-                      color="black"
-                      outlined
-                      dense
-                      type="text"
-                      disabled
-                    />
-                  </v-col>
-                  <v-col>
-                    <p class="mb-1">Peso</p>
-                    <v-text-field
-                      v-model="profile.weight"
-                      placeholder="Peso"
-                      color="black"
-                      outlined
-                      dense
-                      type="text"
-                      :disabled="isEditing"
-                    />
-                  </v-col>
-                  <v-col>
-                    <p class="mb-1">Altura</p>
-                    <v-text-field
-                      v-model="profile.height"
-                      placeholder="Altura"
-                      color="black"
-                      outlined
-                      dense
-                      type="text"
-                      :disabled="isEditing"
-                    />
-                  </v-col>
-                </v-row>
-              </div>
-            </div>
-            <v-row>
-              <v-col>
-                <v-btn
-                  v-if="isEditing === false"
-                  elevation="0"
-                  large
-                  outlined
-                  raised
-                  type="submit"
-                >
-                  Actualizar
-                </v-btn>
-              </v-col>
-              <v-col>
-                <v-btn
-                  v-if="isEditing === false"
-                  elevation="0"
-                  large
-                  outlined
-                  raised
-                  @click="isEditing = !isEditing"
-                >
-                  Cancelar
-                </v-btn>
-              </v-col>
-            </v-row>
-          </form>
-          <v-btn
-            v-if="isEditing === true"
-            elevation="0"
-            large
-            outlined
-            raised
-            @click="isEditing = !isEditing"
-          >
-            Editar
-          </v-btn>
-        </v-card> -->
-        <Profile :my-uid="uid" />
+      <v-tab-item value="profile">
+        <Profile :my-uid="uid" class="mt-3" />
       </v-tab-item>
     </v-tabs-items>
 
@@ -336,17 +215,7 @@ export default {
     } else {
       this.$store.dispatch('getAlerts', { uid: this.uid })
       this.$store.dispatch('getThoughts', { uid: this.uid })
-      /* this.$store.dispatch("getDataSet", { uid: this.uid }); */
       this.$store.dispatch('getDevices', { uid: this.uid })
-      /*  this.$store.dispatch("getUser", { uid: this.uid });
-           if (this.user) {
-        this.profile.name = this.user.name;
-        this.profile.dni = this.user.dni;
-        this.profile.clinic_history = this.user.clinic_history;
-        this.profile.age = this.user.age;
-        this.profile.weight = this.user.weight;
-        this.profile.height = this.user.height;
-      } */
     }
   },
 
@@ -371,7 +240,7 @@ export default {
 
         this.close()
       } catch (error) {
-        console.log('error', error)
+        this.$store.dispatch('SET_MESSAGE', { message: error })
       }
     },
 
@@ -394,7 +263,7 @@ export default {
         })
         this.isEditing = true
       } catch (error) {
-        console.log('error', error)
+        this.$store.dispatch('SET_MESSAGE', { message: error })
       }
     }
   }

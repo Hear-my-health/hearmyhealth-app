@@ -1,39 +1,34 @@
 <template>
   <div>
-    <v-row justify="center" align="center">
-      <v-col cols="12" md="10">
-        <v-toolbar
-          flat
-          class="grey lighten-5"
-        >
-          <v-toolbar-title class="headline">
-            Diario
-          </v-toolbar-title>
-          <v-spacer />
-          <v-btn elevation="0" outlined raised @click="dialog = !dialog">
-            Nueva entrada
-          </v-btn>
-        </v-toolbar>
-      </v-col>
+    <v-btn elevation="0" outlined raised @click="dialog = !dialog">
+      Agregar pensamiento
+    </v-btn>
 
-      <v-col cols="12" md="10">
-        <v-timeline dense>
-          <v-timeline-item v-for="(thought, ith) in thoughts" :key="ith" small>
-            <v-card class="elevation-0 blue-grey lighten-5">
-              <v-card-title class="title font-weight-regular">
-                {{ thought.thought }}
-              </v-card-title>
-              <v-card-text class="subtitle-1 font-weight-light">
-                {{ formatDateT(thought.date) }}
-              </v-card-text>
-            </v-card>
-          </v-timeline-item>
-        </v-timeline>
-      </v-col>
-    </v-row>
+    <h5 class="text-h6">
+      Pensamientos
+    </h5>
+    <v-timeline dense>
+      <v-timeline-item v-for="(thought, ith) in thoughts" :key="ith">
+        <v-card class="elevation-1">
+          <div v-if="thought.name ">
+            <img
+              :src="`/images/${thought.name}.svg`"
+              alt="google-auth"
+              style="width: 48px; height: 48px"
+            >
+          </div>
+          <v-card-title class="headline">
+            {{ thought.date }}
+          </v-card-title>
+          <v-card-text>
+            {{ thought.thought }}
+          </v-card-text>
+        </v-card>
+      </v-timeline-item>
+    </v-timeline>
 
     <v-dialog v-model="dialog" max-width="500px" elevation="0">
-      <form @submit.prevent="createThought">
+      <form @submit.prevent="createDoctor">
         <v-card>
           <v-card-title>
             <span class="headline">{{ formTitle }}</span>
@@ -62,7 +57,8 @@
                     v-model="form.thought"
                     outlined
                     name="input-7-4"
-                    label="Escribe cómo te sientes"
+                    label="Pensamiento"
+                    value="The Woodman set to work at once, and so sharp was his axe that the tree was soon chopped nearly through."
                   />
                 </v-col>
               </v-row>
@@ -94,7 +90,7 @@ export default {
       form: {
         thought: ''
       },
-      formTitle: '¿Cómo te va?',
+      formTitle: 'Agregar pensamiento',
       moods: [
         {
           id: 1,
@@ -120,7 +116,7 @@ export default {
 
   computed: {
     thoughts () {
-      return this.$store.state.thoughts.filter(e => !!e.thought)
+      return this.$store.state.thoughts
     }
   },
 
@@ -135,14 +131,6 @@ export default {
   },
 
   methods: {
-    formatDateT (item) {
-      const ss = new Date(Number(item)).toISOString().substr(0, 10)
-      return ss
-    },
-    formatHour (item) {
-      const ss = new Date(Number(item)).toISOString().substr(11, 5)
-      return ss
-    },
     select (item) {
       const ss = this.moods.map((e) => {
         e.select = e.id === item.id
@@ -185,9 +173,11 @@ export default {
     getState (obj) {
       const { value } = obj
       if (value >= 0) {
+        console.log(this.$store.state.values)
         const dd = this.$store.state.values.find(
           v => v.dataTypeName === obj.dataTypeName
         )
+        console.log(dd)
         if (value >= dd.minSalud && value <= dd.maxSalud) {
           return 'green'
         }
@@ -204,11 +194,13 @@ export default {
       this.dialog = !this.dialog
     },
 
-    async createThought () {
-      const moodSelect = this.moods.filter(e => e.select)
-      if (moodSelect.length) {
+    async createDoctor () {
+      const ss = this.moods.filter(e => e.select)
+      console.log(ss)
+
+      if (ss.length) {
         try {
-          const item = moodSelect[0]
+          const item = ss[0]
           const { uid } = this.$store.state.authUser
           const { thought } = this.form
           const date = new Date().getTime()
@@ -216,8 +208,10 @@ export default {
           await this.$fire.firestore.collection('thoughts').doc().set({
             date,
             thought,
-            uid
+            uid,
+            ...item
           })
+          console.log(item)
           const obj = {
             dataSourceId: '',
             dataTypeName: 'app.web.hear-my-health.mood.segment',
@@ -234,7 +228,10 @@ export default {
             modifiedTimeMillis: '',
             activityType: ''
           }
+          console.log(obj)
+
           const stateSleep = this.getState(obj)
+          console.log(stateSleep)
           await this.$fire.firestore
             .collection('dataSet')
             .doc()
@@ -243,10 +240,13 @@ export default {
               ...obj,
               stateSleep
             })
+          console.log('davidprueb')
           this.close()
         } catch (error) {
           return error
         }
+      } else {
+        console.log('seleccione emoción')
       }
     }
   }

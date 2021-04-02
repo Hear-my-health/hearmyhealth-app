@@ -7,7 +7,7 @@
         :sort-by="['email', 'name']"
         :sort-desc="[false, true]"
         multi-sort
-        class="elevation-1"
+        class="elevation-0"
       >
         <template #top>
           <v-toolbar flat>
@@ -85,12 +85,12 @@ export default {
           sortable: false,
           value: 'name'
         },
-        // {
-        //   text: 'Rol',
-        //   align: 'start',
-        //   sortable: false,
-        //   value: 'role'
-        // },
+        {
+          text: 'Rol',
+          align: 'start',
+          sortable: false,
+          value: 'role'
+        },
         { text: 'Acciones', value: 'actions' }
       ]
     }
@@ -122,7 +122,7 @@ export default {
           .auth()
           .createUserWithEmailAndPassword(email, password)
       } catch (error) {
-        console.log('error', error)
+        this.$store.dispatch('SET_MESSAGE', { message: error })
       }
     },
 
