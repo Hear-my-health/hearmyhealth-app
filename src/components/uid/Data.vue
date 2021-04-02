@@ -136,7 +136,7 @@
         </template>
 
         <template #[`item.fisica`]="{ item }">
-          <span v-if="item.heartRate && item.calories && item.steps">
+          <div v-if="item.heartRate && item.calories && item.steps" class="text-center">
             {{
               round(
                 0.5 * findState(item.heartRate.state).value +
@@ -144,11 +144,11 @@
                   0.33 * findState(item.calories.state).value
               )
             }}
-          </span>
+          </div>
         </template>
 
         <template #[`item.mental`]="{ item }">
-          <span v-if="item.sleep && item.deepSleep && item.mood">
+          <div v-if="item.sleep && item.deepSleep && item.mood" class="text-center">
             {{
               round(
                 0.5 * findState(item.sleep.state).value +
@@ -156,7 +156,7 @@
                   0.33 * findState(item.deepSleep.state).value
               )
             }}
-          </span>
+          </div>
         </template>
 
         <template #[`item.actions`]="{ item }">
@@ -181,28 +181,28 @@
             <th rowspan="2">
               PROMEDIO
             </th>
-            <th>
+            <th class="text-center">
               {{ sumField("heartRate") }}
             </th>
-            <th>
+            <th class="text-center">
               {{ sumField("calories") }}
             </th>
-            <th>
+            <th class="text-center">
               {{ sumField("steps") }}
             </th>
-            <th>
+            <th class="text-center">
               {{ sumField("sleep") }}
             </th>
-            <th>
+            <th class="text-center">
               {{ sumField("mood") }}
             </th>
-            <th>
-              {{ sumField("heartRate") }}
+            <th class="text-center">
+              {{ sumField("deepSleep") }}
             </th>
-            <th>
+            <th class="text-center">
               {{ sumFisica() }}
             </th>
-            <th>
+            <th class="text-center">
               {{ sumMental() }}
             </th>
           </tr>
@@ -258,10 +258,6 @@
 
           <v-card-actions>
             <v-spacer />
-
-            <!-- <v-btn @click="submit" elevation="0" outlined raised type="submit">
-              Actualizar
-            </v-btn> -->
             <v-btn type="submit" elevation="0" outlined raised @click="submit">
               Actualizar
             </v-btn>
@@ -490,29 +486,37 @@ export default {
 
   methods: {
     findState (key) {
-      const state = [
-        {
-          key: 'green',
-          value: 1,
-          percentaje: 100
-        },
-        {
-          key: 'yellow',
-          value: 0.5,
-          percentaje: 100
-        },
-        {
-          key: 'red',
-          value: 0,
-          percentaje: 100
-        },
-        {
-          key: 'not',
-          value: -0.01,
-          percentaje: 100
-        }
-      ]
-      return state.find(e => e.key === key)
+      if (key) {
+        const state = [
+          {
+            key: 'green',
+            value: 1,
+            percentaje: 100
+          },
+          {
+            key: 'yellow',
+            value: 0.5,
+            percentaje: 100
+          },
+          {
+            key: 'red',
+            value: 0,
+            percentaje: 100
+          },
+          {
+            key: 'not',
+            value: -0.01,
+            percentaje: 100
+          }
+        ]
+        return state.find(e => e.key === key)
+      }
+
+      return {
+        key: 'not',
+        value: -0.01,
+        percentaje: 100
+      }
     },
 
     sumField (key) {
@@ -561,11 +565,11 @@ export default {
           const average =
             dataSetByKey.reduce(function (total, item) {
               const heartRateValue =
-                0.5 * states.find(e => e.key === item.heartRate.state).value
+                0.5 * states.find(e => e.key === item.heartRate.state || 'not').value
               const stepsValue =
-                0.17 * states.find(e => e.key === item.steps.state).value
+                0.17 * states.find(e => e.key === item.steps.state || 'not').value
               const caloriesValue =
-                0.33 * states.find(e => e.key === item.calories.state).value
+                0.33 * states.find(e => e.key === item.calories.state || 'not').value
 
               return total + (heartRateValue + stepsValue + caloriesValue) || 0
             }, initialValue) / dataSetByKey.length
@@ -607,11 +611,11 @@ export default {
           const average =
             dataSetByKey.reduce(function (total, item) {
               const sleepValue =
-                0.5 * states.find(e => e.key === item.sleep.state).value
+                0.5 * states.find(e => e.key === item.sleep ? item.sleep.state : 'not').value
               const moodValue =
-                0.17 * states.find(e => e.key === item.mood.state).value
+                0.17 * states.find(e => e.key === item.mood ? item.mood.state : 'not').value
               const deepSleepValue =
-                0.33 * states.find(e => e.key === item.deepSleep.state).value
+                0.33 * states.find(e => e.key === item.deepSleep ? item.deepSleep.state : 'not').value
 
               return total + (sleepValue + moodValue + deepSleepValue) || 0
             }, initialValue) / dataSetByKey.length

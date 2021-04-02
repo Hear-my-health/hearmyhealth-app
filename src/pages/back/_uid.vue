@@ -2,7 +2,7 @@
   <div>
     <v-tabs v-model="tab" background-color="transparent" color="basil" grow>
       <v-tab v-for="item in tabs" :key="item.slug" :to="`#${item.slug}`">
-        {{ item.slug }}
+        {{ item.name }}
       </v-tab>
     </v-tabs>
     <v-tabs-items v-model="tab" class="grey lighten-5">
@@ -15,7 +15,7 @@
       <v-tab-item value="devices" class="mt-3">
         <Device />
       </v-tab-item>
-      <v-tab-item value="pensamientos">
+      <v-tab-item value="thoughts">
         <h5 class="text-h5">
           Pensamientos
         </h5>
@@ -37,7 +37,7 @@
           </v-timeline-item>
         </v-timeline>
       </v-tab-item>
-      <v-tab-item value="alertas">
+      <v-tab-item value="alerts">
         <h5 class="text-h5">
           Alertas
         </h5>
@@ -146,28 +146,28 @@ export default {
       },
       {
         name: 'Datos',
-        slug: 'datos',
-        value: 'datos'
+        slug: 'data',
+        value: 'data'
       },
       {
         name: 'Dispositivos',
-        slug: 'dispositivos',
-        value: 'dispositivos'
+        slug: 'devices',
+        value: 'devices'
       },
       {
         name: 'Pensamientos',
-        slug: 'pensamientos',
-        value: 'pensamientos'
+        slug: 'thoughts',
+        value: 'thoughts'
       },
       {
         name: 'Alertas',
-        slug: 'alertas',
-        value: 'alertas'
+        slug: 'alerts',
+        value: 'alerts'
       },
       {
         name: 'Información',
-        slug: 'perfil paciente',
-        value: 'perfil paciente'
+        slug: 'profile',
+        value: 'profile'
       }
     ],
     text: 'loremos'
