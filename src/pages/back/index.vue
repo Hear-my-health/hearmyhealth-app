@@ -37,15 +37,106 @@
         </template>
       </v-data-table>
     </v-col>
+    <v-dialog
+      v-if="
+        noData === true &&
+        this.user.role === 'admin' &&
+        this.$store.state.authUser.uid === this.user.uid
+      "
+      v-model="info"
+      max-width="500px"
+      elevation="0"
+    >
+      <form @submit.prevent="updateInfo">
+        <!-- <form> -->
+        <v-card>
+          <v-card-title>
+            <span class="headline">Actualice sus datos</span>
+          </v-card-title>
+
+          <v-card-text>
+            <v-container>
+              <v-row>
+                <v-col cols="12" md="12">
+                  <v-text-field
+                    v-model="dni"
+                    outlined
+                    label="DNI"
+                    required
+                    :error-messages="dniErrors"
+                    @input="$v.dni.$touch()"
+                    @blur="$v.dni.$touch()"
+                  />
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="12" md="12">
+                  <v-text-field
+                    v-model="specialty"
+                    outlined
+                    label="Especialidad"
+                    required
+                    :error-messages="specialtyErrors"
+                    @input="$v.specialty.$touch()"
+                    @blur="$v.specialty.$touch()"
+                  />
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="12" md="12">
+                  <v-text-field
+                    v-model="dateOfBirth"
+                    type="date"
+                    outlined
+                    label="Fecha de nacimiento"
+                    required
+                    :error-messages="dateOfBirthErrors"
+                    @input="$v.dateOfBirth.$touch()"
+                    @blur="$v.dateOfBirth.$touch()"
+                  />
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card-text>
+
+          <v-card-actions>
+            <v-spacer />
+
+            <!-- <v-btn @click="submit" elevation="0" outlined raised type="submit">
+              Actualizar
+            </v-btn> -->
+            <v-btn type="submit" elevation="0" outlined raised @click="submit">
+              Actualizar
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </form>
+    </v-dialog>
   </v-row>
 </template>
 
 <script>
+import { validationMixin } from "vuelidate";
+import { required, maxLength, minLength } from "vuelidate/lib/validators";
 export default {
   layout: "back",
-
+  mixins: [validationMixin],
+  validations: {
+    dni: { required, minLength: minLength(8), maxLength: maxLength(8) },
+    specialty: { required, minLength: minLength(3) },
+    dateOfBirth: { required },
+  },
   data() {
     return {
+      noData: false,
+      dni: "",
+      specialty: "",
+      dateOfBirth: "",
+      info: {
+        dni: "",
+        specialty: "",
+        dateOfBirth: "",
+      },
       form: {
         email: "",
         password: "",
@@ -103,16 +194,86 @@ export default {
   },
 
   computed: {
+    user() {
+      return this.$store.state.user;
+    },
     users() {
       return this.$store.state.users.filter((user) => user.role === "user");
+    },
+    dniErrors() {
+      const errors = [];
+      if (!this.$v.dni.$dirty) {
+        return errors;
+      }
+      (!this.$v.dni.maxLength || !this.$v.dni.minLength) &&
+        errors.push("El DNI debe tener 8 caracteres");
+      !this.$v.dni.required && errors.push("El DNI es requerido");
+      return errors;
+    },
+
+    specialtyErrors() {
+      const errors = [];
+      if (!this.$v.specialty.$dirty) {
+        return errors;
+      }
+      !this.$v.specialty.minLength &&
+        errors.push("La especialidad debe tener 5 caracteres como mínimo");
+      !this.$v.specialty.required &&
+        errors.push("La especialidad es requerida");
+      return errors;
+    },
+
+    dateOfBirthErrors() {
+      const errors = [];
+      if (!this.$v.dateOfBirth.$dirty) {
+        return errors;
+      }
+      !this.$v.dateOfBirth.required &&
+        errors.push("La fecha de nacimiento es requerida");
+      return errors;
     },
   },
 
   mounted() {
-    this.$store.dispatch("getUsers");
+    const { authUser } = this.$store.state;
+    if (!authUser) {
+      this.$router.push("/");
+    } else {
+      /* this.$store.dispatch("getDataSet", { uid: authUser.uid }); */
+      this.$store.dispatch("getUsers");
+      this.$store.dispatch("getUser", { uid: authUser.uid });
+    }
+  },
+
+  watch: {
+    user() {
+      if (!this.user.dni || !this.user.dateOfBirth || !this.user.specialty) {
+        this.noData = true;
+      } else {
+        this.noData = false;
+      }
+    },
   },
 
   methods: {
+    submit() {
+      console.log(this.$v.$touch());
+      this.$v.$touch();
+    },
+    async updateInfo() {
+      try {
+        const { uid } = this.$store.state.authUser;
+        const { dni, specialty, dateOfBirth } = this;
+        await this.$fire.firestore.collection("users").doc(uid).update({
+          dni,
+          specialty,
+          dateOfBirth,
+        });
+        this.noData = false;
+      } catch (error) {
+        console.log("error", error);
+      }
+    },
     async createDoctor() {
       try {
         const { email, password } = this.form;
