@@ -21,14 +21,14 @@
               :disabled="isEditing"
             />
           </div>
-          <div v-if="user.role === 'user'">
+          <div v-if="user.role === 'admin'">
             <div>
               <p class="mb-1">
-                DNI
+                Especialidad
               </p>
               <v-text-field
-                v-model="form.dni"
-                placeholder="DNI"
+                v-model="form.specialty"
+                placeholder="Especialidad"
                 color="black"
                 outlined
                 dense
@@ -36,6 +36,22 @@
                 :disabled="isEditing"
               />
             </div>
+          </div>
+          <div>
+            <p class="mb-1">
+              DNI
+            </p>
+            <v-text-field
+              v-model="form.dni"
+              placeholder="DNI"
+              color="black"
+              outlined
+              dense
+              type="text"
+              :disabled="isEditing"
+            />
+          </div>
+          <div v-if="user.role === 'user'">
             <div>
               <v-row>
                 <v-col>
@@ -124,6 +140,7 @@ export default {
       isEditing: true,
       form: {
         name: '',
+        specialty: '',
         dni: '',
         clinicHistory: '',
         dateOfBirth: '',
@@ -145,6 +162,7 @@ export default {
   watch: {
     user () {
       this.form.name = this.user.name
+      this.form.specialty = this.user.specialty
       this.form.dni = this.user.dni
       this.form.clinicHistory = this.user.clinicHistory
       this.form.dateOfBirth = this.user.dateOfBirth
@@ -163,6 +181,7 @@ export default {
     }
     if (this.user) {
       this.form.name = this.user.name
+      this.form.specialty = this.user.specialty
       this.form.dni = this.user.dni
       this.form.clinicHistory = this.user.clinicHistory
       this.form.dateOfBirth = this.user.dateOfBirth
@@ -177,31 +196,48 @@ export default {
         await this.$fireModule.auth().signOut()
         this.$router.push('/')
       } catch (error) {
-        this.$store.dispatch('SET_MESSAGE', { message: error })
+        console.log('error', error)
       }
     },
     async updateInfo () {
-      try {
-        const { uid } = this.auth
-        const {
-          name,
-          dni,
-          clinicHistory,
-          dateOfBirth,
-          weight,
-          height
-        } = this.form
-        await this.$fire.firestore.collection('users').doc(uid).update({
-          name,
-          dni,
-          clinicHistory,
-          dateOfBirth,
-          weight,
-          height
-        })
-        this.isEditing = true
-      } catch (error) {
-        this.$store.dispatch('SET_MESSAGE', { message: error })
+      console.log(this.auth.uid)
+      if (this.user.role === 'user') {
+        try {
+          const { uid } = this.auth
+          const {
+            name,
+            dni,
+            clinicHistory,
+            dateOfBirth,
+            weight,
+            height
+          } = this.form
+          await this.$fire.firestore.collection('users').doc(uid).update({
+            name,
+            dni,
+            clinicHistory,
+            dateOfBirth,
+            weight,
+            height
+          })
+          this.isEditing = true
+        } catch (error) {
+          console.log('error', error)
+        }
+      } else {
+        try {
+          const { uid } = this.auth
+          const { name, dni, specialty, dateOfBirth } = this.form
+          await this.$fire.firestore.collection('users').doc(uid).update({
+            name,
+            dni,
+            specialty,
+            dateOfBirth
+          })
+          this.isEditing = true
+        } catch (error) {
+          console.log('error', error)
+        }
       }
     }
   }

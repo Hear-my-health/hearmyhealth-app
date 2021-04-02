@@ -13,7 +13,7 @@
         <Data :my-uid="uid" class="mt-3" />
       </v-tab-item>
       <v-tab-item value="devices" class="mt-3">
-        <Device />
+        <Device :my-uid="uid" />
       </v-tab-item>
       <v-tab-item value="thoughts">
         <h5 class="text-h5">
@@ -31,6 +31,7 @@
                     formatDateTable(thought.date) +
                     "  Hora: " +
                     formatDateHour(thought.date)
+
                 }}
               </v-card-text>
             </v-card>
@@ -41,7 +42,9 @@
         <h5 class="text-h5">
           Alertas
         </h5>
-        <v-btn elevation="0" outlined raised @click="dialog = !dialog">
+        <Alert :my-uid="uid" />
+        <!--         <v-btn elevation="0" outlined raised @click="dialog = !dialog">
+
           Agregar alerta
         </v-btn>
         <v-row justify="center" align="center">
@@ -56,14 +59,14 @@
             </v-card>
             <v-spacer />
           </v-col>
-        </v-row>
+        </v-row> -->
       </v-tab-item>
       <v-tab-item value="profile">
         <Profile :my-uid="uid" class="mt-3" />
       </v-tab-item>
     </v-tabs-items>
 
-    <v-dialog v-model="dialog" max-width="500px" elevation="0">
+    <!--     <v-dialog v-model="dialog" max-width="500px" elevation="0">
       <form @submit.prevent="createAlert">
         <v-card>
           <v-card-title>
@@ -92,13 +95,11 @@
               Cancelar
             </v-btn>
 
-            <v-btn elevation="0" outlined raised type="submit">
-              Guardar
-            </v-btn>
+            <v-btn elevation="0" outlined raised type="submit"> Guardar </v-btn>
           </v-card-actions>
         </v-card>
       </form>
-    </v-dialog>
+    </v-dialog> -->
   </div>
 </template>
 <script>
@@ -106,13 +107,15 @@ import Data from '~/components/uid/Data'
 import Device from '~/components/uid/Device'
 import Dashboard from '~/components/uid/Dashboard'
 import Profile from '~/components/uid/Profile'
+import Alert from '~/components/uid/Alert'
 
 export default {
   components: {
     Data,
     Device,
     Dashboard,
-    Profile
+    Profile,
+    Alert
   },
   layout: 'back',
   asyncData ({ params }) {
@@ -145,6 +148,7 @@ export default {
         value: 'dashboard'
       },
       {
+
         name: 'Datos',
         slug: 'data',
         value: 'data'
@@ -197,16 +201,16 @@ export default {
     }, */
   },
 
-  /*   watch: {
-    user() {
-      this.profile.name = this.user.name;
-      this.profile.dni = this.user.dni;
-      this.profile.clinic_history = this.user.clinic_history;
-      this.profile.age = this.user.age;
-      this.profile.weight = this.user.weight;
-      this.profile.height = this.user.height;
-    },
-  }, */
+  watch: {
+    user () {
+      this.profile.name = this.user.name
+      this.profile.dni = this.user.dni
+      this.profile.clinic_history = this.user.clinic_history
+      this.profile.age = this.user.age
+      this.profile.weight = this.user.weight
+      this.profile.height = this.user.height
+    }
+  },
 
   mounted () {
     const { authUser } = this.$store.state
@@ -215,7 +219,17 @@ export default {
     } else {
       this.$store.dispatch('getAlerts', { uid: this.uid })
       this.$store.dispatch('getThoughts', { uid: this.uid })
+      /* this.$store.dispatch("getDataSet", { uid: this.uid }); */
       this.$store.dispatch('getDevices', { uid: this.uid })
+      this.$store.dispatch('getUser', { uid: this.uid })
+      if (this.user) {
+        this.profile.name = this.user.name
+        this.profile.dni = this.user.dni
+        this.profile.clinic_history = this.user.clinic_history
+        this.profile.age = this.user.age
+        this.profile.weight = this.user.weight
+        this.profile.height = this.user.height
+      }
     }
   },
 
@@ -226,7 +240,7 @@ export default {
 
     async createAlert () {
       try {
-        const { uid } = this.$store.state.authUser
+        const { uid } = this.uid
         const { alert, type } = this.form
         const date = new Date().getTime()
 
@@ -235,12 +249,12 @@ export default {
           alert,
           type,
           uid,
-          createdBy: this.uid
+          createdBy: this.$store.state.authUser
         })
 
         this.close()
       } catch (error) {
-        this.$store.dispatch('SET_MESSAGE', { message: error })
+        console.log('error', error)
       }
     },
 
@@ -263,7 +277,7 @@ export default {
         })
         this.isEditing = true
       } catch (error) {
-        this.$store.dispatch('SET_MESSAGE', { message: error })
+        console.log('error', error)
       }
     }
   }
