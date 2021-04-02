@@ -157,37 +157,6 @@ export default {
       this.moods = ss
     },
 
-    async selectMood (item) {
-      const { uid } = this.$store.state.authUser
-
-      const obj = {
-        dataSourceId: '',
-        dataTypeName: 'app.web.hear-my-health.mood.segment',
-        endTimeMillis: '',
-        endTimeNanos: '',
-        originDataSourceId: '',
-        point: item,
-        startTimeMillis: '',
-        startTimeNanos: '',
-
-        value: item.value,
-
-        name: item.name,
-        modifiedTimeMillis: '',
-        activityType: ''
-      }
-      const stateSleep = this.getState(item)
-
-      await this.$fire.firestore
-        .collection('dataSet')
-        .doc()
-        .set({
-          uid,
-          ...obj,
-          stateSleep
-        })
-    },
-
     getState (obj) {
       const { value } = obj
       if (value >= 0) {
