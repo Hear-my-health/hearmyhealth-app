@@ -21,6 +21,12 @@
           <v-timeline-item v-for="(thought, ith) in thoughts" :key="ith" small>
             <v-card class="elevation-0 blue-grey lighten-5">
               <v-card-title class="title font-weight-regular">
+                <img
+                  :src="`/images/${thought.name}.svg`"
+                  alt="google-auth"
+                  style="width: 32px; height: 32px"
+                  class="mr-3"
+                >
                 {{ thought.thought }}
               </v-card-title>
               <v-card-text class="subtitle-1 font-weight-light">
@@ -151,37 +157,6 @@ export default {
       this.moods = ss
     },
 
-    async selectMood (item) {
-      const { uid } = this.$store.state.authUser
-
-      const obj = {
-        dataSourceId: '',
-        dataTypeName: 'app.web.hear-my-health.mood.segment',
-        endTimeMillis: '',
-        endTimeNanos: '',
-        originDataSourceId: '',
-        point: item,
-        startTimeMillis: '',
-        startTimeNanos: '',
-
-        value: item.value,
-
-        name: item.name,
-        modifiedTimeMillis: '',
-        activityType: ''
-      }
-      const stateSleep = this.getState(item)
-
-      await this.$fire.firestore
-        .collection('dataSet')
-        .doc()
-        .set({
-          uid,
-          ...obj,
-          stateSleep
-        })
-    },
-
     getState (obj) {
       const { value } = obj
       if (value >= 0) {
@@ -216,7 +191,8 @@ export default {
           await this.$fire.firestore.collection('thoughts').doc().set({
             date,
             thought,
-            uid
+            uid,
+            ...item
           })
           const obj = {
             dataSourceId: '',
