@@ -50,7 +50,7 @@
       </v-menu>
     </v-col>
 
-    <v-col cols="12" sm="10" md="10">
+    <v-col v-if="dataSet.length" cols="12" sm="10" md="10">
       <v-data-table
         :headers="headers"
         :items="dataSet"
@@ -66,6 +66,7 @@
             <v-spacer />
           </v-toolbar>
         </template>
+
         <template #[`item.dateStart`]="{ item }">
           {{ formatDateTable(item.dateStart) }}
         </template>
@@ -83,6 +84,7 @@
             {{ round(item.heartRate.value || 0) }}
           </div>
         </template>
+
         <template #[`item.calories`]="{ item }">
           <div
             v-if="item.calories"
@@ -92,6 +94,7 @@
             {{ round(item.calories.value || 0) }}
           </div>
         </template>
+
         <template #[`item.steps`]="{ item }">
           <div
             v-if="item.steps"
@@ -171,24 +174,45 @@
             </v-icon>
           </v-btn>
         </template>
+
+        <template slot="body.append">
+          <tr>
+            <th />
+            <th rowspan="2">
+              PROMEDIO
+            </th>
+            <th>
+              {{ sumField("heartRate") }}
+            </th>
+            <th>
+              {{ sumField("calories") }}
+            </th>
+            <th>
+              {{ sumField("steps") }}
+            </th>
+            <th>
+              {{ sumField("sleep") }}
+            </th>
+            <th>
+              {{ sumField("mood") }}
+            </th>
+            <th>
+              {{ sumField("heartRate") }}
+            </th>
+            <th>
+              {{ sumFisica() }}
+            </th>
+            <th>
+              {{ sumMental() }}
+            </th>
+          </tr>
+        </template>
       </v-data-table>
     </v-col>
 
-    <div v-if="false">
-      <div>dataSetSleep {{ dataSetSleep.length }}</div>
-      <div v-for="(item, index) in dataSetSleep" :key="index">
-        <div class="card">
-          item {{ item.point }}
-        </div>
-      </div>
-    </div>
     <!-- AGE AND DNI VERIFICATION -->
     <v-dialog
-      v-if="
-        noData === true &&
-          user.role === 'user' &&
-          auth.uid === user.uid
-      "
+      v-if="noData === true && user.role === 'user' && auth.uid === user.uid"
       v-model="info"
       max-width="500px"
       elevation="0"
@@ -360,7 +384,9 @@ export default {
 
     dniErrors () {
       const errors = []
-      if (!this.$v.dni.$dirty) { return errors }
+      if (!this.$v.dni.$dirty) {
+        return errors
+      }
       (!this.$v.dni.maxLength || !this.$v.dni.minLength) &&
         errors.push('El DNI debe tener 8 caracteres')
       /* !this.$v.dni.minLength && errors.push("El DNI debe tener 8 caracteres");  */
@@ -370,7 +396,9 @@ export default {
 
     dateOfBirthErrors () {
       const errors = []
-      if (!this.$v.dateOfBirth.$dirty) { return errors }
+      if (!this.$v.dateOfBirth.$dirty) {
+        return errors
+      }
       !this.$v.dateOfBirth.required &&
         errors.push('La fecha de nacimiento es requerida')
       return errors
@@ -395,7 +423,6 @@ export default {
           const dd = this.$store.state.dataSet.filter(
             s => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
           )
-
           const ee = {
             dateStart: start,
             dateEnd,
@@ -462,38 +489,6 @@ export default {
   },
 
   methods: {
-
-    overageValueDataSet (dd) {
-      const valueFilter = dd.filter(
-        t => t.dataTypeName === 'app.web.hear-my-health.mood.segment')
-      const initialValue = 0
-      const average = valueFilter.reduce(function (total, currentValue) {
-        return total + currentValue.value || 0
-      }, initialValue) / valueFilter.length
-
-      if (average) {
-        return { ...dd[0], value: average }
-      }
-
-      return dd[0]
-    },
-
-    submit () {
-      this.$v.$touch()
-    },
-    async updateInfo () {
-      try {
-        const { uid } = this.auth
-        const { dni, dateOfBirth } = this
-        await this.$fire.firestore.collection('users').doc(uid).update({
-          dni,
-          dateOfBirth
-        })
-        this.noData = false
-      } catch (error) {
-        this.$store.dispatch('SET_MESSAGE', { message: error })
-      }
-    },
     findState (key) {
       const state = [
         {
@@ -518,6 +513,148 @@ export default {
         }
       ]
       return state.find(e => e.key === key)
+    },
+
+    sumField (key) {
+      if (this.dataSet.length) {
+        const dataSetByKey = this.dataSet.filter(e => e[key])
+        if (dataSetByKey.length) {
+          const initialValue = 0
+          const average =
+            dataSetByKey.reduce(function (total, currentValue) {
+              return total + currentValue[key].value || 0
+            }, initialValue) / dataSetByKey.length
+          return this.round(average)
+        }
+        return 0
+      }
+      return 0
+    },
+
+    sumFisica () {
+      const states = [
+        {
+          key: 'green',
+          value: 1,
+          percentaje: 100
+        },
+        {
+          key: 'yellow',
+          value: 0.5,
+          percentaje: 100
+        },
+        {
+          key: 'red',
+          value: 0,
+          percentaje: 100
+        },
+        {
+          key: 'not',
+          value: -0.01,
+          percentaje: 100
+        }
+      ]
+      if (this.dataSet.length) {
+        const dataSetByKey = this.dataSet.filter(e => e.heartRate)
+        if (dataSetByKey.length) {
+          const initialValue = 0
+          const average =
+            dataSetByKey.reduce(function (total, item) {
+              const heartRateValue =
+                0.5 * states.find(e => e.key === item.heartRate.state).value
+              const stepsValue =
+                0.17 * states.find(e => e.key === item.steps.state).value
+              const caloriesValue =
+                0.33 * states.find(e => e.key === item.calories.state).value
+
+              return total + (heartRateValue + stepsValue + caloriesValue) || 0
+            }, initialValue) / dataSetByKey.length
+
+          return this.round(average)
+        }
+        return 0
+      }
+      return 0
+    },
+
+    sumMental () {
+      const states = [
+        {
+          key: 'green',
+          value: 1,
+          percentaje: 100
+        },
+        {
+          key: 'yellow',
+          value: 0.5,
+          percentaje: 100
+        },
+        {
+          key: 'red',
+          value: 0,
+          percentaje: 100
+        },
+        {
+          key: 'not',
+          value: -0.01,
+          percentaje: 100
+        }
+      ]
+      if (this.dataSet.length) {
+        const dataSetByKey = this.dataSet.filter(e => e.sleep)
+        if (dataSetByKey.length) {
+          const initialValue = 0
+          const average =
+            dataSetByKey.reduce(function (total, item) {
+              const sleepValue =
+                0.5 * states.find(e => e.key === item.sleep.state).value
+              const moodValue =
+                0.17 * states.find(e => e.key === item.mood.state).value
+              const deepSleepValue =
+                0.33 * states.find(e => e.key === item.deepSleep.state).value
+
+              return total + (sleepValue + moodValue + deepSleepValue) || 0
+            }, initialValue) / dataSetByKey.length
+
+          return this.round(average)
+        }
+        return 0
+      }
+      return 0
+    },
+
+    overageValueDataSet (dd) {
+      const valueFilter = dd.filter(
+        t => t.dataTypeName === 'app.web.hear-my-health.mood.segment'
+      )
+      const initialValue = 0
+      const average =
+        valueFilter.reduce(function (total, currentValue) {
+          return total + currentValue.value || 0
+        }, initialValue) / valueFilter.length
+
+      if (average) {
+        return { ...dd[0], value: average }
+      }
+
+      return dd[0]
+    },
+
+    submit () {
+      this.$v.$touch()
+    },
+    async updateInfo () {
+      try {
+        const { uid } = this.auth
+        const { dni, dateOfBirth } = this
+        await this.$fire.firestore.collection('users').doc(uid).update({
+          dni,
+          dateOfBirth
+        })
+        this.noData = false
+      } catch (error) {
+        this.$store.dispatch('SET_MESSAGE', { message: error })
+      }
     },
 
     round (num) {
