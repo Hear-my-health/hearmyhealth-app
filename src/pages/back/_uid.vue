@@ -13,7 +13,7 @@
         <Data :my-uid="uid" class="mt-3" />
       </v-tab-item>
       <v-tab-item value="devices" class="mt-3">
-        <Device />
+        <Device :my-uid="uid" />
       </v-tab-item>
       <v-tab-item value="pensamientos">
         <h5 class="text-h5">
@@ -28,9 +28,10 @@
               <v-card-text style="font-size: 1.2rem">
                 {{
                   "Fecha: " +
-                    formatDateTable(thought.date) +
-                    "  Hora: " +
-                    formatDateHour(thought.date)
+                  formatDateTable(thought.date) +
+                  "  Hora: " +
+                  formatDateHour(thought.date)
+
                 }}
               </v-card-text>
             </v-card>
@@ -38,10 +39,10 @@
         </v-timeline>
       </v-tab-item>
       <v-tab-item value="alertas">
-        <h5 class="text-h5">
-          Alertas
-        </h5>
-        <v-btn elevation="0" outlined raised @click="dialog = !dialog">
+        <h5 class="text-h5">Alertas</h5>
+        <Alert :my-uid="uid" />
+        <!--         <v-btn elevation="0" outlined raised @click="dialog = !dialog">
+
           Agregar alerta
         </v-btn>
         <v-row justify="center" align="center">
@@ -56,14 +57,14 @@
             </v-card>
             <v-spacer />
           </v-col>
-        </v-row>
+        </v-row> -->
       </v-tab-item>
       <v-tab-item value="profile">
         <Profile :my-uid="uid" class="mt-3" />
       </v-tab-item>
     </v-tabs-items>
 
-    <v-dialog v-model="dialog" max-width="500px" elevation="0">
+    <!--     <v-dialog v-model="dialog" max-width="500px" elevation="0">
       <form @submit.prevent="createAlert">
         <v-card>
           <v-card-title>
@@ -92,41 +93,41 @@
               Cancelar
             </v-btn>
 
-            <v-btn elevation="0" outlined raised type="submit">
-              Guardar
-            </v-btn>
+            <v-btn elevation="0" outlined raised type="submit"> Guardar </v-btn>
           </v-card-actions>
         </v-card>
       </form>
-    </v-dialog>
+    </v-dialog> -->
   </div>
 </template>
 <script>
-import Data from '~/components/uid/Data'
-import Device from '~/components/uid/Device'
-import Dashboard from '~/components/uid/Dashboard'
-import Profile from '~/components/uid/Profile'
+import Data from "~/components/uid/Data";
+import Device from "~/components/uid/Device";
+import Dashboard from "~/components/uid/Dashboard";
+import Profile from "~/components/uid/Profile";
+import Alert from "~/components/uid/Alert";
 
 export default {
   components: {
     Data,
     Device,
     Dashboard,
-    Profile
+    Profile,
+    Alert,
   },
-  layout: 'back',
-  asyncData ({ params }) {
-    const { uid } = params
+  layout: "back",
+  asyncData({ params }) {
+    const { uid } = params;
 
-    return { uid }
+    return { uid };
   },
 
-  data: vm => ({
+  data: (vm) => ({
     dialog: false,
     isEditing: true,
     form: {
-      alert: '',
-      type: 'Alta'
+      alert: "",
+      type: "Alta",
     },
     /*     profile: {
       name: "",
@@ -136,15 +137,16 @@ export default {
       weight: "",
       height: "",
     }, */
-    formTitle: 'Agregar alerta',
+    formTitle: "Agregar alerta",
     tab: null,
     tabs: [
       {
-        name: 'Dashboard',
-        slug: 'dashboard',
-        value: 'dashboard'
+        name: "Dashboard",
+        slug: "dashboard",
+        value: "dashboard",
       },
       {
+
         name: 'Datos',
         slug: 'datos',
         value: 'datos'
@@ -170,34 +172,34 @@ export default {
         value: 'perfil paciente'
       }
     ],
-    text: 'loremos'
+    text: "loremos",
   }),
 
-  async fetch ({ store }) {
+  async fetch({ store }) {
     try {
-      await store.dispatch('getAlerts', { uid: this.uid })
-      await store.dispatch('getThoughts', { uid: this.uid })
+      await store.dispatch("getAlerts", { uid: this.uid });
+      await store.dispatch("getThoughts", { uid: this.uid });
       /* await store.dispatch("getDataSet", { uid: this.uid }); */
-      await store.dispatch('getDevices', { uid: this.uid })
+      await store.dispatch("getDevices", { uid: this.uid });
       /*       await store.dispatch("getUser", { uid: this.uid }); */
     } catch (e) {
-      return 'error'
+      return "error";
     }
   },
 
   computed: {
-    alerts () {
-      return this.$store.state.alerts
+    alerts() {
+      return this.$store.state.alerts;
     },
-    thoughts () {
-      return this.$store.state.thoughts
-    }
+    thoughts() {
+      return this.$store.state.thoughts;
+    },
     /*     user() {
       return this.$store.state.user;
     }, */
   },
 
-  /*   watch: {
+  watch: {
     user() {
       this.profile.name = this.user.name;
       this.profile.dni = this.user.dni;
@@ -206,66 +208,76 @@ export default {
       this.profile.weight = this.user.weight;
       this.profile.height = this.user.height;
     },
-  }, */
+  },
 
-  mounted () {
-    const { authUser } = this.$store.state
+  mounted() {
+    const { authUser } = this.$store.state;
     if (!authUser) {
-      this.$router.push('/')
+      this.$router.push("/");
     } else {
-      this.$store.dispatch('getAlerts', { uid: this.uid })
-      this.$store.dispatch('getThoughts', { uid: this.uid })
-      this.$store.dispatch('getDevices', { uid: this.uid })
+      this.$store.dispatch("getAlerts", { uid: this.uid });
+      this.$store.dispatch("getThoughts", { uid: this.uid });
+      /* this.$store.dispatch("getDataSet", { uid: this.uid }); */
+      this.$store.dispatch("getDevices", { uid: this.uid });
+      this.$store.dispatch("getUser", { uid: this.uid });
+      if (this.user) {
+        this.profile.name = this.user.name;
+        this.profile.dni = this.user.dni;
+        this.profile.clinic_history = this.user.clinic_history;
+        this.profile.age = this.user.age;
+        this.profile.weight = this.user.weight;
+        this.profile.height = this.user.height;
+      }
     }
   },
 
   methods: {
-    close () {
-      this.dialog = !this.dialog
+    close() {
+      this.dialog = !this.dialog;
     },
 
-    async createAlert () {
+    async createAlert() {
       try {
-        const { uid } = this.$store.state.authUser
-        const { alert, type } = this.form
-        const date = new Date().getTime()
+        const { uid } = this.uid;
+        const { alert, type } = this.form;
+        const date = new Date().getTime();
 
-        await this.$fire.firestore.collection('alerts').doc().set({
+        await this.$fire.firestore.collection("alerts").doc().set({
           date,
           alert,
           type,
           uid,
-          createdBy: this.uid
-        })
+          createdBy: this.$store.state.authUser,
+        });
 
-        this.close()
+        this.close();
       } catch (error) {
-        this.$store.dispatch('SET_MESSAGE', { message: error })
+        console.log("error", error);
       }
     },
 
-    formatDateTable (item) {
-      const ss = new Date(Number(item)).toISOString().substr(0, 10)
-      return ss
+    formatDateTable(item) {
+      const ss = new Date(Number(item)).toISOString().substr(0, 10);
+      return ss;
     },
-    formatDateHour (item) {
-      const ss = new Date(Number(item)).toISOString().substr(11, 5)
-      return ss
+    formatDateHour(item) {
+      const ss = new Date(Number(item)).toISOString().substr(11, 5);
+      return ss;
     },
-    async updatePatientInfo () {
+    async updatePatientInfo() {
       try {
         // eslint-disable-next-line camelcase
-        const { clinic_history, weight, height } = this.profile
-        await this.$fire.firestore.collection('users').doc(this.uid).update({
+        const { clinic_history, weight, height } = this.profile;
+        await this.$fire.firestore.collection("users").doc(this.uid).update({
           clinic_history,
           weight,
-          height
-        })
-        this.isEditing = true
+          height,
+        });
+        this.isEditing = true;
       } catch (error) {
-        this.$store.dispatch('SET_MESSAGE', { message: error })
+        console.log("error", error);
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
