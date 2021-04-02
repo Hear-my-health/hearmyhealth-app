@@ -289,13 +289,9 @@ export default {
       title: 'Endorfine',
       imageLink: {
         main:
-          'https://firebasestorage.googleapis.com/v0/b/hear-my-health.appspot.com/o/FotoJet%20(5).jpg?alt=media&token=2a0943a1-cb3d-4701-83d9-161deb0b83db',
-        sub_main:
-          'https://firebasestorage.googleapis.com/v0/b/mace-d54b3.appspot.com/o/yellow.jpg?alt=media&token=4cdeefc5-835a-4adb-9978-642001548372',
-        logo:
-          'https://firebasestorage.googleapis.com/v0/b/endorfinevue.appspot.com/o/assets%2Fandroid-chrome-512x512.png?alt=media&token=8a0a66f6-4741-4ff6-8f28-eb9ec74374df',
+          'https://firebasestorage.googleapis.com/v0/b/hear-my-health.appspot.com/o/banprin.webp?alt=media&token=947e3460-665f-4a25-bf54-993e7b0f2347',
         social_cover:
-          'https://firebasestorage.googleapis.com/v0/b/hear-my-health.appspot.com/o/fondo%20slide1.jpg?alt=media&token=3516bc21-bee5-414b-acef-1134a5a809ff'
+          'https://firebasestorage.googleapis.com/v0/b/hear-my-health.appspot.com/o/slide.webp?alt=media&token=26aa3238-964a-498e-9c19-841786e4b648'
       },
       email: '',
       emailRules: [
