@@ -39,9 +39,7 @@
     </v-col>
     <v-dialog
       v-if="
-        noData === true &&
-        this.user.role === 'admin' &&
-        this.$store.state.authUser.uid === this.user.uid
+        noData === true && user.role === 'admin' && authUser.uid === user.uid
       "
       v-model="info"
       max-width="500px"
@@ -101,10 +99,6 @@
 
           <v-card-actions>
             <v-spacer />
-
-            <!-- <v-btn @click="submit" elevation="0" outlined raised type="submit">
-              Actualizar
-            </v-btn> -->
             <v-btn type="submit" elevation="0" outlined raised @click="submit">
               Actualizar
             </v-btn>
@@ -116,15 +110,15 @@
 </template>
 
 <script>
-import { validationMixin } from "vuelidate";
-import { required, maxLength, minLength } from "vuelidate/lib/validators";
+import { validationMixin } from 'vuelidate'
+import { required, maxLength, minLength } from 'vuelidate/lib/validators'
 export default {
-  layout: "back",
   mixins: [validationMixin],
+  layout: 'back',
   validations: {
     dni: { required, minLength: minLength(8), maxLength: maxLength(8) },
     specialty: { required, minLength: minLength(3) },
-    dateOfBirth: { required },
+    dateOfBirth: { required }
   },
   data() {
     return {
@@ -134,9 +128,9 @@ export default {
       specialty: "",
       dateOfBirth: "",
       info: {
-        dni: "",
-        specialty: "",
-        dateOfBirth: "",
+        dni: '',
+        specialty: '',
+        dateOfBirth: ''
       },
       form: {
         email: "",
@@ -195,54 +189,46 @@ export default {
   },
 
   computed: {
-    user() {
-      return this.$store.state.user;
+    authUser () {
+      return this.$store.state.authUser
     },
-    users() {
-      return this.$store.state.users.filter((user) => user.role === "user");
+    user () {
+      return this.$store.state.user
     },
-    dniErrors() {
-      const errors = [];
+    users () {
+      return this.$store.state.users.filter(user => user.role === 'user')
+    },
+    dniErrors () {
+      const errors = []
       if (!this.$v.dni.$dirty) {
-        return errors;
+        return errors
       }
       (!this.$v.dni.maxLength || !this.$v.dni.minLength) &&
-        errors.push("El DNI debe tener 8 caracteres");
-      !this.$v.dni.required && errors.push("El DNI es requerido");
-      return errors;
+        errors.push('El DNI debe tener 8 caracteres')
+      !this.$v.dni.required && errors.push('El DNI es requerido')
+      return errors
     },
 
-    specialtyErrors() {
-      const errors = [];
+    specialtyErrors () {
+      const errors = []
       if (!this.$v.specialty.$dirty) {
-        return errors;
+        return errors
       }
       !this.$v.specialty.minLength &&
-        errors.push("La especialidad debe tener 5 caracteres como mínimo");
+        errors.push('La especialidad debe tener 5 caracteres como mínimo')
       !this.$v.specialty.required &&
-        errors.push("La especialidad es requerida");
-      return errors;
+        errors.push('La especialidad es requerida')
+      return errors
     },
 
-    dateOfBirthErrors() {
-      const errors = [];
+    dateOfBirthErrors () {
+      const errors = []
       if (!this.$v.dateOfBirth.$dirty) {
-        return errors;
+        return errors
       }
       !this.$v.dateOfBirth.required &&
-        errors.push("La fecha de nacimiento es requerida");
-      return errors;
-    },
-  },
-
-  mounted() {
-    const { authUser } = this.$store.state;
-    if (!authUser) {
-      this.$router.push("/");
-    } else {
-      /* this.$store.dispatch("getDataSet", { uid: authUser.uid }); */
-      this.$store.dispatch("getUsers");
-      this.$store.dispatch("getUser", { uid: authUser.uid });
+        errors.push('La fecha de nacimiento es requerida')
+      return errors
     }
   },
 
@@ -252,23 +238,33 @@ export default {
         localStorage.setItem("doctorSpecialty", this.user.specialty);
       }
       if (!this.user.dni || !this.user.dateOfBirth || !this.user.specialty) {
-        this.noData = true;
+        this.noData = true
       } else {
-        this.noData = false;
+        this.noData = false
       }
-    },
+    }
+  },
+
+  mounted () {
+    const { authUser } = this.$store.state
+    if (!authUser) {
+      this.$router.push('/')
+    } else {
+      this.$store.dispatch('getUsers')
+      this.$store.dispatch('getUser', { uid: authUser.uid })
+    }
   },
 
   methods: {
-    submit() {
-      console.log(this.$v.$touch());
-      this.$v.$touch();
+    submit () {
+      this.$v.$touch()
     },
-    async updateInfo() {
+
+    async updateInfo () {
       try {
-        const { uid } = this.$store.state.authUser;
-        const { dni, specialty, dateOfBirth } = this;
-        await this.$fire.firestore.collection("users").doc(uid).update({
+        const { uid } = this.$store.state.authUser
+        const { dni, specialty, dateOfBirth } = this
+        await this.$fire.firestore.collection('users').doc(uid).update({
           dni,
           specialty,
           dateOfBirth,
