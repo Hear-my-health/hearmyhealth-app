@@ -9,10 +9,15 @@
       <v-col v-for="(alert, ilt) in alerts" :key="ilt" cols="12">
         <v-card classdark>
           <v-card-title class="headline">
-            {{ alert.alert }}
+            <v-row>
+              <v-col>Tipo: {{ alert.type }} - Alerta: {{ alert.alert }}</v-col>
+            </v-row>
           </v-card-title>
           <v-card-text style="font-size: 1.2rem">
-            {{ formatDateTable(alert.date) }}
+            Fecha: {{ formatDateTable(alert.date) }}
+            <span v-if="alert.doctorSpecialty">
+              - Doctor: {{ alert.doctorSpecialty }}</span
+            >
           </v-card-text>
         </v-card>
         <v-spacer />
@@ -36,6 +41,16 @@
                   />
                 </v-col>
               </v-row>
+              <v-row>
+                <v-col cols="12" md="12">
+                  <v-select
+                    v-model="form.type"
+                    outlined
+                    :items="types"
+                    label="Tipo de alerta"
+                  ></v-select>
+                </v-col>
+              </v-row>
             </v-container>
           </v-card-text>
           <v-card-actions>
@@ -57,9 +72,11 @@ export default {
   data() {
     return {
       dialog: false,
+      doctorSpecialty: this.$props.specialty,
+      types: ["Alta", "Media", "Baja"],
       form: {
         alert: "",
-        type: "Alta",
+        type: "",
       },
       uid: this.$props.myUid,
     };
@@ -108,11 +125,14 @@ export default {
           date: date,
           alert: alert,
           type: type,
+          doctorSpecialty: localStorage.getItem("doctorSpecialty"),
           uid: this.uid,
           createdBy: this.$store.state.authUser.uid,
         });
 
         this.close();
+        this.form.alert = "";
+        this.form.type = "";
       } catch (error) {
         console.log("error", error);
       }

@@ -2,7 +2,7 @@
 import { firestoreAction } from 'vuexfire'
 
 export default {
-  async nuxtServerInit ({ dispatch, commit }, ctx) {
+  async nuxtServerInit({ dispatch, commit }, ctx) {
     if (this.$fire.auth === null) {
       throw 'nuxtServerInit Example not working - this.$fire.auth cannot be accessed.'
     }
@@ -42,7 +42,7 @@ export default {
     }
   },
 
-  onAuthStateChanged ({ commit }, { authUser, claims }) {
+  onAuthStateChanged({ commit }, { authUser, claims }) {
     if (!authUser) {
       commit('RESET_STORE')
       return
