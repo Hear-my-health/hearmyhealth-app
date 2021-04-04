@@ -3,6 +3,21 @@
     <v-row>
       <v-col cols="12" sm="12" md="9">
         <v-row justify="center" align="center">
+          <v-col
+            class="d-flex"
+            cols="12"
+            sm="12"
+            md="3"
+          >
+            <v-select
+              v-model="selectName"
+              :items="selectNames"
+              :item-text="'name'"
+              :item-value="'id'"
+              label="Seleccione tipo"
+              outlined
+            />
+          </v-col>
           <v-col cols="12" sm="8" md="3">
             <v-menu
               ref="menu1"
@@ -95,6 +110,15 @@
           <h4 class="mb-3">
             Recomendaciones
           </h4>
+          <v-select
+            v-model="selectNotification"
+            :item-text="'name'"
+            :item-value="'id'"
+            :items="notificationItems"
+            label="Seleccione tipo"
+            dense
+            outlined
+          />
           <div class="fixed-container">
             <div v-for="(item, index) in dataSetNotification" :key="index">
               <div v-if="item.data.length">
@@ -156,11 +180,88 @@ export default {
       chartOptions: {
         responsive: true,
         maintainAspectRatio: false
-      }
+      },
+      selectItems: [
+        'Ritmo cardiaco',
+        'Cadencia de conteo de pasos',
+        'Delta de recuento de pasos',
+        'Calorías quemadas',
+        'Sueño',
+        'Sueño profundo',
+        'Estado de animo'
+      ],
+
+      notificationSelectData: 'all',
+      notificationItems: [
+        {
+          id: 'all',
+          name: 'Todos'
+        },
+        {
+          id: 'red',
+          name: 'Alertas'
+        },
+        {
+          id: 'yellow',
+          name: 'Advertencias'
+        }
+      ],
+
+      selectNameData: 'all',
+
+      selectNames: [
+        {
+          id: 'all',
+          name: 'Todos'
+        },
+        {
+          id: 'com.google.heart_rate.bpm',
+          name: 'Ritmo cardiaco'
+        },
+        {
+          id: 'com.google.step_count.delta',
+          name: 'Delta de recuento de pasos'
+        },
+        {
+          id: 'com.google.calories.expended',
+          name: 'Calorías quemadas'
+        },
+        {
+          id: 'com.google.sleep.segment',
+          name: 'Sueño'
+        },
+        {
+          id: 'app.web.hear-my-health.sleep.deep',
+          name: 'Sueño profundo'
+        },
+        {
+          id: 'app.web.hear-my-health.mood.segment',
+          name: 'Estado de animo'
+        }
+      ]
     }
   },
 
   computed: {
+
+    selectNotification: {
+      get () {
+        return this.notificationSelectData
+      },
+      set (newValue) {
+        this.notificationSelectData = newValue
+      }
+    },
+
+    selectName: {
+      get () {
+        return this.selectNameData
+      },
+      set (newValue) {
+        this.selectNameData = newValue
+      }
+    },
+
     auth () {
       return this.$store.state.authUser || null
     },
@@ -255,6 +356,13 @@ export default {
       return tt
     },
 
+    dataSetFilterSelect () {
+      if (this.selectNameData === 'all') {
+        return this.$store.state.dataSet
+      }
+      return this.$store.state.dataSet.filter(e => e.dataTypeName === this.selectNameData)
+    },
+
     dataSetNotification () {
       const tt = []
       const dateStartTime = new Date(this.dateStart).getTime()
@@ -262,10 +370,19 @@ export default {
       const dd = (dateEndTime - dateStartTime) / 86400000
       let start = dateStartTime
 
-      if (this.$store.state.dataSet.length > 0) {
-        const dataSetState = this.$store.state.dataSet.filter(
-          s => s.state === 'yellow' || s.state === 'red'
-        )
+      if (this.dataSetFilterSelect.length > 0) {
+        let dataSetState = []
+
+        if (this.notificationSelectData === 'all') {
+          dataSetState = this.dataSetFilterSelect.filter(
+            s => s.state === 'yellow' || s.state === 'red'
+          )
+        } else {
+          dataSetState = this.dataSetFilterSelect.filter(
+            s => s.state === this.notificationSelectData
+          )
+        }
+
         for (let index = 1; index <= Math.floor(dd); index++) {
           const dateEnd = start + 86400000
 
