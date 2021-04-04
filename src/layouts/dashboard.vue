@@ -15,7 +15,7 @@
             src="~/assets/images/logo-white.svg"
             alt="logo-icon"
             height="24"
-          />
+          >
         </v-list-item>
         <v-list-item
           v-for="(item, i) in items"
@@ -51,7 +51,9 @@
       <v-list>
         <v-list-item @click.native="right = !right">
           <v-list-item-action>
-            <v-icon light> mdi-repeat </v-icon>
+            <v-icon light>
+              mdi-repeat
+            </v-icon>
           </v-list-item-action>
           <v-list-item-title>Switch drawer (click me)</v-list-item-title>
         </v-list-item>

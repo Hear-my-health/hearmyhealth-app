@@ -43,63 +43,11 @@
           Alertas
         </h5>
         <Alert :my-uid="uid" />
-        <!--         <v-btn elevation="0" outlined raised @click="dialog = !dialog">
-
-          Agregar alerta
-        </v-btn>
-        <v-row justify="center" align="center">
-          <v-col v-for="(alert, ilt) in alerts" :key="ilt" cols="12">
-            <v-card classdark>
-              <v-card-title class="headline">
-                {{ alert.alert }}
-              </v-card-title>
-              <v-card-text style="font-size: 1.2rem">
-                {{ formatDateTable(alert.date) }}
-              </v-card-text>
-            </v-card>
-            <v-spacer />
-          </v-col>
-        </v-row> -->
       </v-tab-item>
       <v-tab-item value="profile">
         <Profile :my-uid="uid" class="mt-3" />
       </v-tab-item>
     </v-tabs-items>
-
-    <!--     <v-dialog v-model="dialog" max-width="500px" elevation="0">
-      <form @submit.prevent="createAlert">
-        <v-card>
-          <v-card-title>
-            <span class="headline">{{ formTitle }}</span>
-          </v-card-title>
-
-          <v-card-text>
-            <v-container>
-              <v-row>
-                <v-col cols="12" md="12">
-                  <v-textarea
-                    v-model="form.alert"
-                    outlined
-                    name="input-7-4"
-                    label="Alerta"
-                    value="The Woodman set to work at once, and so sharp was his axe that the tree was soon chopped nearly through."
-                  />
-                </v-col>
-              </v-row>
-            </v-container>
-          </v-card-text>
-
-          <v-card-actions>
-            <v-spacer />
-            <v-btn elevation="0" raised @click="dialog = !dialog">
-              Cancelar
-            </v-btn>
-
-            <v-btn elevation="0" outlined raised type="submit"> Guardar </v-btn>
-          </v-card-actions>
-        </v-card>
-      </form>
-    </v-dialog> -->
   </div>
 </template>
 <script>
@@ -131,14 +79,6 @@ export default {
       alert: '',
       type: 'Alta'
     },
-    /*     profile: {
-      name: "",
-      dni: "",
-      clinic_history: "",
-      age: "",
-      weight: "",
-      height: "",
-    }, */
     formTitle: 'Agregar alerta',
     tab: null,
     tabs: [
@@ -254,7 +194,7 @@ export default {
 
         this.close()
       } catch (error) {
-        console.log('error', error)
+        this.$store.dispatch('SET_MESSAGE', { message: error })
       }
     },
 
@@ -277,7 +217,7 @@ export default {
         })
         this.isEditing = true
       } catch (error) {
-        console.log('error', error)
+        this.$store.dispatch('SET_MESSAGE', { message: error })
       }
     }
   }
