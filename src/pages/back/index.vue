@@ -18,7 +18,7 @@
         </template>
         <template #[`item.picture`]="{ item }">
           <v-avatar size="36">
-            <img :src="item.picture" alt="John">
+            <img :src="item.picture" alt="John" />
           </v-avatar>
         </template>
 
@@ -32,9 +32,7 @@
           >
             Ver
 
-            <v-icon small class="mr-2">
-              mdi-arrow-right
-            </v-icon>
+            <v-icon small class="mr-2"> mdi-arrow-right </v-icon>
           </v-btn>
         </template>
       </v-data-table>
@@ -71,15 +69,15 @@
               </v-row>
               <v-row>
                 <v-col cols="12" md="12">
-                  <v-text-field
+                  <v-select
                     v-model="specialty"
                     outlined
+                    :items="specialties"
                     label="Especialidad"
-                    required
                     :error-messages="specialtyErrors"
                     @input="$v.specialty.$touch()"
                     @blur="$v.specialty.$touch()"
-                  />
+                  ></v-select>
                 </v-col>
               </v-row>
               <v-row>
@@ -122,70 +120,71 @@ export default {
     specialty: { required, minLength: minLength(3) },
     dateOfBirth: { required }
   },
-  data () {
+  data() {
     return {
       noData: false,
-      dni: '',
-      specialty: '',
-      dateOfBirth: '',
+      specialties: ["Psicólogo", "Nutricionista", "Médico general", "Otro"],
+      dni: "",
+      specialty: "",
+      dateOfBirth: "",
       info: {
         dni: '',
         specialty: '',
         dateOfBirth: ''
       },
       form: {
-        email: '',
-        password: ''
+        email: "",
+        password: "",
       },
 
-      passwordRules: [v => !!v || 'Password is required'],
+      passwordRules: [(v) => !!v || "Password is required"],
 
       emailRules: [
-        v => !!v || 'E-mail is required',
-        v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
+        (v) => !!v || "E-mail is required",
+        (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
       ],
 
       headers: [
         {
-          text: 'Imagen',
-          align: 'start',
+          text: "Imagen",
+          align: "start",
           sortable: false,
-          value: 'picture'
+          value: "picture",
         },
         {
-          text: 'Email',
-          align: 'start',
+          text: "Email",
+          align: "start",
           sortable: false,
-          value: 'email'
+          value: "email",
         },
         {
-          text: 'Id',
-          align: 'start',
+          text: "Id",
+          align: "start",
           sortable: false,
-          value: 'uid'
+          value: "uid",
         },
         {
-          text: 'Nombre',
-          align: 'start',
+          text: "Nombre",
+          align: "start",
           sortable: false,
-          value: 'name'
+          value: "name",
         },
         {
-          text: 'Rol',
-          align: 'start',
+          text: "Rol",
+          align: "start",
           sortable: false,
-          value: 'role'
+          value: "role",
         },
-        { text: 'Acciones', value: 'actions' }
-      ]
-    }
+        { text: "Acciones", value: "actions" },
+      ],
+    };
   },
 
-  async fetch ({ store }) {
+  async fetch({ store }) {
     try {
-      await store.dispatch('getUsers')
+      await store.dispatch("getUsers");
     } catch (e) {
-      return 'error'
+      return "error";
     }
   },
 
@@ -234,7 +233,10 @@ export default {
   },
 
   watch: {
-    user () {
+    user() {
+      if (this.user.specialty) {
+        localStorage.setItem("doctorSpecialty", this.user.specialty);
+      }
       if (!this.user.dni || !this.user.dateOfBirth || !this.user.specialty) {
         this.noData = true
       } else {
@@ -265,17 +267,27 @@ export default {
         await this.$fire.firestore.collection('users').doc(uid).update({
           dni,
           specialty,
-          dateOfBirth
-        })
-        this.noData = false
+          dateOfBirth,
+        });
+        this.noData = false;
       } catch (error) {
-        this.$store.dispatch('SET_MESSAGE', { message: error })
+        console.log("error", error);
+      }
+    },
+    async createDoctor() {
+      try {
+        const { email, password } = this.form;
+        await this.$fireModule
+          .auth()
+          .createUserWithEmailAndPassword(email, password);
+      } catch (error) {
+        this.$store.dispatch("SET_MESSAGE", { message: error });
       }
     },
 
-    resetValidation () {
-      this.$refs.form.resetValidation()
-    }
-  }
-}
+    resetValidation() {
+      this.$refs.form.resetValidation();
+    },
+  },
+};
 </script>
