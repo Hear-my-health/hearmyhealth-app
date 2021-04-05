@@ -352,7 +352,7 @@ export default {
         if (value >= dd.minSalud && value <= dd.maxSalud) {
           return 'green'
         }
-        if (value >= dd.minAcept && value <= dd.maxAcept) {
+        if (value >= dd.minAcept && (value < dd.minSalud || value > dd.maxSalud) && value <= dd.maxAcept && value !== 0) {
           return 'yellow'
         }
         return 'red'
@@ -439,7 +439,7 @@ export default {
               .set({
                 uid,
                 ...sleepObj,
-                stateSleep
+                state: stateSleep
               })
             await this.$fire.firestore
               .collection('dataSet')
@@ -447,7 +447,7 @@ export default {
               .set({
                 uid,
                 ...sleepDeepObj,
-                stateSleepDeep
+                state: stateSleepDeep
               })
           } catch (error) {
             this.$store.dispatch('SET_MESSAGE', { message: error })

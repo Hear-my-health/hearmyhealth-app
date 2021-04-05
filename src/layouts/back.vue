@@ -85,21 +85,6 @@ export default {
           title: 'Mi Perfil',
           to: '/account'
         }
-        /*         {
-          icon: 'mdi-alert-circle',
-          title: 'Alertas',
-          to: '/alerts'
-        },
-        {
-          icon: 'mdi-watch',
-          title: 'Dispositivos',
-          to: '/device'
-        },
-        {
-          icon: 'mdi-brain',
-          title: 'Pensamientos',
-          to: '/thoughts'
-        } */
       ],
       miniVariant: false,
       right: true,

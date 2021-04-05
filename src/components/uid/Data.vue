@@ -215,61 +215,6 @@
         </template>
       </v-data-table>
     </v-col>
-
-    <!-- AGE AND DNI VERIFICATION -->
-    <!-- <v-dialog
-      v-if="noData === true && user.role === 'user' && auth.uid === user.uid"
-      v-model="info"
-      max-width="500px"
-      elevation="0"
-    >
-      <form @submit.prevent="updateInfo">
-        <v-card>
-          <v-card-title>
-            <span class="headline">Actualice su DNI y Fecha de nacimiento</span>
-          </v-card-title>
-
-          <v-card-text>
-            <v-container>
-              <v-row>
-                <v-col cols="12" md="12">
-                  <v-text-field
-                    v-model="dni"
-                    outlined
-                    label="DNI"
-                    required
-                    :error-messages="dniErrors"
-                    @input="$v.dni.$touch()"
-                    @blur="$v.dni.$touch()"
-                  />
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col cols="12" md="12">
-                  <v-text-field
-                    v-model="dateOfBirth"
-                    type="date"
-                    outlined
-                    label="Fecha de nacimiento"
-                    required
-                    :error-messages="dateOfBirthErrors"
-                    @input="$v.dateOfBirth.$touch()"
-                    @blur="$v.dateOfBirth.$touch()"
-                  />
-                </v-col>
-              </v-row>
-            </v-container>
-          </v-card-text>
-
-          <v-card-actions>
-            <v-spacer />
-            <v-btn type="submit" elevation="0" outlined raised @click="submit">
-              Actualizar
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </form>
-    </v-dialog> -->
   </v-row>
 </template>
 
