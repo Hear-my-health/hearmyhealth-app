@@ -211,24 +211,24 @@ export default {
         //   sortable: false,
         //   value: 'indicator'
         // },
-        // {
-        //   text: 'Unidad Indicador',
-        //   align: 'start',
-        //   sortable: false,
-        //   value: 'indicatorUnit'
-        // },
+        {
+          text: 'Unidad Indicador',
+          align: 'start',
+          sortable: false,
+          value: 'indicatorUnit'
+        },
         // {
         //   text: 'Tipo dato',
         //   align: 'start',
         //   sortable: false,
         //   value: 'dataTypeName'
         // },
-        {
-          text: 'Tipo',
-          align: 'start',
-          sortable: false,
-          value: 'type'
-        },
+        // {
+        //   text: 'Tipo',
+        //   align: 'start',
+        //   sortable: false,
+        //   value: 'type'
+        // },
         // {
         //   text: 'Frecuencia',
         //   align: 'start',

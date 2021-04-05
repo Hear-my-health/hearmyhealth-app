@@ -28,7 +28,7 @@
             elevation="0"
             outlined
             raised
-            :to="`/back/${item.uid}#data`"
+            :to="`/back/${item.uid}#dashboard`"
           >
             Ver
 
@@ -171,13 +171,7 @@ export default {
           sortable: false,
           value: 'name'
         },
-        {
-          text: 'Rol',
-          align: 'start',
-          sortable: false,
-          value: 'role'
-        },
-        { text: 'Acciones', value: 'actions' }
+        { text: '', value: 'actions', sortable: false }
       ]
     }
   },

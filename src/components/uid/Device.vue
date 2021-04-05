@@ -40,15 +40,10 @@
       >
         <template #top>
           <v-toolbar flat>
-            <v-toolbar-title>Fuente de datos </v-toolbar-title>
+            <v-toolbar-title>Dispositivos </v-toolbar-title>
             <v-divider class="mx-4" inset vertical />
             <v-spacer />
           </v-toolbar>
-        </template>
-        <template>
-          <span>
-            {{ uniqueDevices.uid }}
-          </span>
         </template>
         <template>
           <span>
@@ -72,18 +67,6 @@ export default {
       uid: this.$props.myUid,
       uniqueDevices: [],
       headers: [
-        // {
-        //   text: 'Name',
-        //   align: 'start',
-        //   sortable: false,
-        //   value: 'device'
-        // },
-        {
-          text: 'Name',
-          align: 'start',
-          sortable: false,
-          value: 'uid'
-        },
         {
           text: 'Dispositivo',
           align: 'start',
@@ -122,7 +105,6 @@ export default {
     dataSourceState () {
       if (this.dataSourceState) {
         this.setUniqueDevices()
-        /*  console.log(this.uniqueDevices); */
       }
     }
   },
@@ -147,11 +129,16 @@ export default {
         c.uid = e.device.uid
         c.type =
           e.device.type === 'phone'
-            ? 'Pulsera inteligente'
-            : this.uniqueDevices.type === 'watch'
-              ? 'Reloj inteligente'
+            ? 'Smartband'
+            : e.device.type === 'watch'
+              ? 'Smartwatch'
               : 'Otro dispositivo'
-        c.model = e.device.model
+        c.model =
+          e.device.model === 'Redmi Note 8'
+            ? 'Mi Band'
+            : e.device.model === 'iphone'
+              ? 'Mi Band'
+              : e.device.model
         return c
       })
       const v = []
