@@ -16,19 +16,27 @@
         <Device :my-uid="uid" />
       </v-tab-item>
       <v-tab-item value="thoughts">
-        <h5 class="text-h5">Pensamientos</h5>
+        <h5 class="text-h5">
+          Pensamientos
+        </h5>
         <v-timeline dense>
           <v-timeline-item v-for="(thought, ith) in thoughts" :key="ith">
-            <v-card class="elevation-1">
-              <v-card-title class="headline">
+            <v-card class="elevation-0 blue-grey lighten-5">
+              <v-card-title class="title font-weight-regular">
+                <img
+                  :src="`/images/${thought.name}.svg`"
+                  alt="google-auth"
+                  style="width: 32px; height: 32px"
+                  class="mr-3"
+                >
                 {{ thought.thought }}
               </v-card-title>
-              <v-card-text style="font-size: 1.2rem">
+              <v-card-text class="subtitle-1 font-weight-light">
                 {{
                   "Fecha: " +
-                  formatDateTable(thought.date) +
-                  "  Hora: " +
-                  formatDateHour(thought.date)
+                    formatDateTable(thought.date) +
+                    "  Hora: " +
+                    formatDateHour(thought.date)
                 }}
               </v-card-text>
             </v-card>
@@ -36,7 +44,9 @@
         </v-timeline>
       </v-tab-item>
       <v-tab-item value="alerts">
-        <h5 class="text-h5">Alertas</h5>
+        <h5 class="text-h5">
+          Alertas
+        </h5>
         <Alert :my-uid="uid" />
       </v-tab-item>
       <v-tab-item value="profile">
@@ -46,11 +56,11 @@
   </div>
 </template>
 <script>
-import Data from "~/components/uid/Data";
-import Device from "~/components/uid/Device";
-import Dashboard from "~/components/uid/Dashboard";
-import Profile from "~/components/uid/Profile";
-import Alert from "~/components/uid/Alert";
+import Data from '~/components/uid/Data'
+import Device from '~/components/uid/Device'
+import Dashboard from '~/components/uid/Dashboard'
+import Profile from '~/components/uid/Profile'
+import Alert from '~/components/uid/Alert'
 
 export default {
   components: {
@@ -58,103 +68,103 @@ export default {
     Device,
     Dashboard,
     Profile,
-    Alert,
+    Alert
   },
-  layout: "back",
-  asyncData({ params }) {
-    const { uid } = params;
+  layout: 'back',
+  asyncData ({ params }) {
+    const { uid } = params
 
-    return { uid };
+    return { uid }
   },
 
-  data: (vm) => ({
+  data: vm => ({
     dialog: false,
     isEditing: true,
-    specialty: "",
+    specialty: '',
     form: {
-      alert: "",
-      type: "Alta",
+      alert: '',
+      type: ''
     },
 
     formTitle: 'Agregar alerta',
     tab: null,
     tabs: [
       {
-        name: "Dashboard",
-        slug: "dashboard",
-        value: "dashboard",
+        name: 'Dashboard',
+        slug: 'dashboard',
+        value: 'dashboard'
       },
       {
-        name: "Datos",
-        slug: "data",
-        value: "data",
+        name: 'Datos',
+        slug: 'data',
+        value: 'data'
       },
       {
-        name: "Dispositivos",
-        slug: "devices",
-        value: "devices",
+        name: 'Dispositivos',
+        slug: 'devices',
+        value: 'devices'
       },
       {
-        name: "Pensamientos",
-        slug: "thoughts",
-        value: "thoughts",
+        name: 'Pensamientos',
+        slug: 'thoughts',
+        value: 'thoughts'
       },
       {
-        name: "Alertas",
-        slug: "alerts",
-        value: "alerts",
+        name: 'Alertas',
+        slug: 'alerts',
+        value: 'alerts'
       },
       {
-        name: "Información",
-        slug: "profile",
-        value: "profile",
-      },
+        name: 'Información',
+        slug: 'profile',
+        value: 'profile'
+      }
     ],
-    text: "loremos",
+    text: 'loremos'
   }),
 
-  async fetch({ store }) {
+  async fetch ({ store }) {
     try {
-      await store.dispatch("getAlerts", { uid: this.uid });
-      await store.dispatch("getThoughts", { uid: this.uid });
+      await store.dispatch('getAlerts', { uid: this.uid })
+      await store.dispatch('getThoughts', { uid: this.uid })
       /* await store.dispatch("getDataSet", { uid: this.uid }); */
-      await store.dispatch("getDevices", { uid: this.uid });
+      await store.dispatch('getDevices', { uid: this.uid })
       /* await store.dispatch("getUser", { uid: this.$store.state.authUser.uid }); */
     } catch (e) {
-      return "error";
+      return 'error'
     }
   },
 
   computed: {
-    alerts() {
-      return this.$store.state.alerts;
+    alerts () {
+      return this.$store.state.alerts
     },
-    thoughts() {
-      return this.$store.state.thoughts;
-    },
+    thoughts () {
+      return this.$store.state.thoughts
+    }
     /* user() {
       return this.$store.state.user;
     }, */
   },
 
   watch: {
-    user() {
-      this.specialty = this.user.specialty;
+    user () {
+      this.specialty = this.user.specialty
       /* if (this.user.specialty) {
         localStorage.setItem("doctorSpecialty", this.user.specialty);
       } */
-    },
+    }
   },
 
-  mounted() {
-    const { authUser } = this.$store.state;
+  mounted () {
+    const { authUser } = this.$store.state
     if (!authUser) {
-      this.$router.push("/");
+      this.$router.push('/')
     } else {
-      this.$store.dispatch("getAlerts", { uid: this.uid });
-      this.$store.dispatch("getThoughts", { uid: this.uid });
+      this.$store.dispatch('getAlerts', { uid: this.uid })
+      this.$store.dispatch('getThoughts', { uid: this.uid })
       /* this.$store.dispatch("getDataSet", { uid: this.uid }); */
-      this.$store.dispatch("getDevices", { uid: this.uid });
+      this.$store.dispatch('getDevices', { uid: this.uid })
       /* this.$store.dispatch("getUser", { uid: this.$store.state.authUser.uid }); */
       /* if (this.user) {
         this.specialty = this.user.specialty;
@@ -163,38 +173,38 @@ export default {
   },
 
   methods: {
-    close() {
-      this.dialog = !this.dialog;
+    close () {
+      this.dialog = !this.dialog
     },
 
-    async createAlert() {
+    async createAlert () {
       try {
-        const { uid } = this.uid;
-        const { alert, type } = this.form;
-        const date = new Date().getTime();
+        const { uid } = this.uid
+        const { alert, type } = this.form
+        const date = new Date().getTime()
 
-        await this.$fire.firestore.collection("alerts").doc().set({
+        await this.$fire.firestore.collection('alerts').doc().set({
           date,
           alert,
           type,
           uid,
-          createdBy: this.$store.state.authUser,
-        });
+          createdBy: this.$store.state.authUser
+        })
 
-        this.close();
+        this.close()
       } catch (error) {
         this.$store.dispatch('SET_MESSAGE', { message: error })
       }
     },
 
-    formatDateTable(item) {
-      const ss = new Date(Number(item)).toISOString().substr(0, 10);
-      return ss;
+    formatDateTable (item) {
+      const ss = new Date(Number(item)).toISOString().substr(0, 10)
+      return ss
     },
-    formatDateHour(item) {
-      const ss = new Date(Number(item)).toISOString().substr(11, 5);
-      return ss;
-    },
-  },
-};
+    formatDateHour (item) {
+      const ss = new Date(Number(item)).toISOString().substr(11, 5)
+      return ss
+    }
+  }
+}
 </script>

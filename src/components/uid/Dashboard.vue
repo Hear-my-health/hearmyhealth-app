@@ -77,7 +77,7 @@
           </v-col>
         </v-row>
 
-   <!-- <v-row justify="center" align="center">
+        <!-- <v-row justify="center" align="center">
       <v-col
         v-if="dataPhysicalHealth < 30 && dataPhysicalHealth > 0"
         cols="12"
@@ -146,132 +146,134 @@
           label="Mood"
         /> -->
         <v-row justify="center" align="center">
-      <v-col
-        v-if="dataPhysicalHealth < 30 && dataPhysicalHealth > 0"
-        cols="12"
-        sm="12"
-        md="4"
-        justify="center"
-        align="center"
-      >
-        <v-progress-circular
-          :rotate="-90"
-          :size="100"
-          :width="15"
-          :value="dataPhysicalHealth"
-          color="red"
-        >
-          {{ Math.trunc(dataPhysicalHealth, 0) }}
-        </v-progress-circular>
-      </v-col>
-      <v-col
-        v-if="dataPhysicalHealth < 60 && dataPhysicalHealth >= 30"
-        cols="12"
-        sm="12"
-        md="4"
-        justify="center"
-        align="center"
-      >
-        <v-progress-circular
-          :rotate="-90"
-          :size="100"
-          :width="15"
-          :value="dataPhysicalHealth"
-          color="amber"
-        >
-          {{ Math.trunc(dataPhysicalHealth, 0) }}
-        </v-progress-circular>
-      </v-col>
-      <v-col
-        v-if="dataPhysicalHealth >= 60"
-        cols="12"
-        sm="12"
-        md="4"
-        justify="center"
-        align="center"
-      >
-        <v-progress-circular
-          :rotate="-90"
-          :size="100"
-          :width="15"
-          :value="dataPhysicalHealth"
-          color="green"
-        >
-          {{ Math.trunc(dataPhysicalHealth, 0) }}
-        </v-progress-circular>
-      </v-col>
-      <v-col
-        v-if="dataMood.length > 0"
-        cols="12"
-        sm="12"
-        md="8"
-        justify="center"
-        align="center"
-      >
-        <line-chart
-          :chart-data="dataMood"
-          :options="chartOptions"
-          label="Mood"
-        />
-      </v-col>
-      <v-col cols="12" sm="12" md="3">
-        <div class="fixed-height-container">
-          <h4 class="mb-3">
-            Recomendaciones
-          </h4>
-          <v-select
-            v-model="selectNotification"
-            :item-text="'name'"
-            :item-value="'id'"
-            :items="notificationItems"
-            label="Seleccione tipo"
-            dense
-            outlined
-          />
-          <div class="fixed-container">
-            <div v-for="(item, index) in dataSetNotification" :key="index">
-              <div v-if="item.data.length">
-                <div v-for="(idata, idx) in item.data" :key="idx">
-                  <v-card class="mb-1 pa-2" elevation="0">
-                    <div class="mb-2">
-                      <span class="mr-2">
-                        <v-icon v-if="idata.state === 'red'" light>
-                          mdi-close-circle
-                        </v-icon>
-                        <v-icon v-if="idata.state === 'yellow'" light>
-                          mdi-alert-circle
-                        </v-icon>
-                      </span>
-                      {{ nameData(idata.dataTypeName) }}
+          <v-col
+            v-if="dataPhysicalHealth < 30 && dataPhysicalHealth > 0"
+            cols="12"
+            sm="12"
+            md="4"
+            justify="center"
+            align="center"
+          >
+            <v-progress-circular
+              :rotate="-90"
+              :size="100"
+              :width="15"
+              :value="dataPhysicalHealth"
+              color="red"
+            >
+              {{ Math.trunc(dataPhysicalHealth, 0) }}
+            </v-progress-circular>
+          </v-col>
+          <v-col
+            v-if="dataPhysicalHealth < 60 && dataPhysicalHealth >= 30"
+            cols="12"
+            sm="12"
+            md="4"
+            justify="center"
+            align="center"
+          >
+            <v-progress-circular
+              :rotate="-90"
+              :size="100"
+              :width="15"
+              :value="dataPhysicalHealth"
+              color="amber"
+            >
+              {{ Math.trunc(dataPhysicalHealth, 0) }}
+            </v-progress-circular>
+          </v-col>
+          <v-col
+            v-if="dataPhysicalHealth >= 60"
+            cols="12"
+            sm="12"
+            md="4"
+            justify="center"
+            align="center"
+          >
+            <v-progress-circular
+              :rotate="-90"
+              :size="100"
+              :width="15"
+              :value="dataPhysicalHealth"
+              color="green"
+            >
+              {{ Math.trunc(dataPhysicalHealth, 0) }}
+            </v-progress-circular>
+          </v-col>
+          <v-col
+            v-if="dataMood.length > 0"
+            cols="12"
+            sm="12"
+            md="8"
+            justify="center"
+            align="center"
+          >
+            <line-chart
+              :chart-data="dataMood"
+              :options="chartOptions"
+              label="Mood"
+            />
+          </v-col>
+          <v-col cols="12" sm="12" md="3">
+            <div class="fixed-height-container">
+              <h4 class="mb-3">
+                Recomendaciones
+              </h4>
+              <v-select
+                v-model="selectNotification"
+                :item-text="'name'"
+                :item-value="'id'"
+                :items="notificationItems"
+                label="Seleccione tipo"
+                dense
+                outlined
+              />
+              <div class="fixed-container">
+                <div v-for="(item, index) in dataSetNotification" :key="index">
+                  <div v-if="item.data.length">
+                    <div v-for="(idata, idx) in item.data" :key="idx">
+                      <v-card class="mb-1 pa-2" elevation="0">
+                        <div class="mb-2">
+                          <span class="mr-2">
+                            <v-icon v-if="idata.state === 'red'" light>
+                              mdi-close-circle
+                            </v-icon>
+                            <v-icon v-if="idata.state === 'yellow'" light>
+                              mdi-alert-circle
+                            </v-icon>
+                          </span>
+                          {{ nameData(idata.dataTypeName) }}
+                        </div>
+                        <div>
+                          <div class="font-weight-light">
+                            {{ formatDateTable(item.dateStart) }} -
+                            {{ formatDateTable(item.dateEnd) }}
+                          </div>
+                        </div>
+                      </v-card>
                     </div>
-                    <div>
-                      <div class="font-weight-light">
-                        {{ formatDateTable(item.dateStart) }} -
-                        {{ formatDateTable(item.dateEnd) }}
-                      </div>
-                    </div>
-                  </v-card>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+          </v-col>
+        </v-row>
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
-import LineChart from "~/components/uid/charts/LineChart";
+import LineChart from '~/components/uid/charts/LineChart'
 
 export default {
   components: {
-    LineChart,
+    LineChart
   },
 
-  //props: ["myUid"],
+  // props: ["myUid"],
   /*   data: (vm) => ({ */
-  //data() {
+  // data() {
   props: {
     myUid: {
       type: String,
@@ -282,10 +284,10 @@ export default {
   data () {
     return {
       uid: this.$props.myUid,
-      dateStart: "",
-      dateStarFormatted: "",
-      dateEnd: "",
-      dateEndFormatted: "",
+      dateStart: '',
+      dateStarFormatted: '',
+      dateEnd: '',
+      dateEndFormatted: '',
       menu1: false,
       menu2: false,
       start: 0,
@@ -379,118 +381,117 @@ export default {
       return this.$store.state.authUser || null
     },
 
-    dataPhysicalHealth() {
-      const avgPhysical = [];
-      const dateStartTimePyshical = new Date(this.dateStart).getTime();
-      const dateEndTimePyshical = new Date(this.dateEnd).getTime();
+    dataPhysicalHealth () {
+      const avgPhysical = []
+      const dateStartTimePyshical = new Date(this.dateStart).getTime()
+      const dateEndTimePyshical = new Date(this.dateEnd).getTime()
       const ddPyshical =
-        (dateEndTimePyshical - dateStartTimePyshical) / 86400000;
-      let start = dateStartTimePyshical;
+        (dateEndTimePyshical - dateStartTimePyshical) / 86400000
+      let start = dateStartTimePyshical
 
       if (this.$store.state.dataSet.length > 0) {
         for (let index = 1; index <= Math.floor(ddPyshical); index++) {
-          const dateEndPyshical = start + 86400000;
+          const dateEndPyshical = start + 86400000
           const ddPyshical = this.$store.state.dataSet.filter(
-            (s) =>
+            s =>
               s.startTimeMillis >= start && s.endTimeMillis <= dateEndPyshical
-          );
+          )
           const heartRateTemp = ddPyshical.filter(
-            (s) => s.dataTypeName === "com.google.heart_rate.bpm"
-          );
+            s => s.dataTypeName === 'com.google.heart_rate.bpm'
+          )
           const stepsTemp = ddPyshical.filter(
-            (s) => s.dataTypeName === "com.google.step_count.delta"
-          );
+            s => s.dataTypeName === 'com.google.step_count.delta'
+          )
           const caloriesTemp = ddPyshical.filter(
-            (s) => s.dataTypeName === "com.google.calories.expended"
-          );
+            s => s.dataTypeName === 'com.google.calories.expended'
+          )
 
           const hr = heartRateTemp.map((e) => {
             return e.value !== null || e.value !== undefined
-              ? e.state === "green"
+              ? e.state === 'green'
                 ? 1
-                : e.state === "yellow"
-                ? 0.5
-                : 0
-              : 0;
-          });
+                : e.state === 'yellow'
+                  ? 0.5
+                  : 0
+              : 0
+          })
           const st = stepsTemp.map((e) => {
             return e.value !== null || e.value !== undefined
-              ? e.state === "green"
+              ? e.state === 'green'
                 ? 1
-                : e.state === "yellow"
-                ? 0.5
-                : 0
-              : 0;
-          });
+                : e.state === 'yellow'
+                  ? 0.5
+                  : 0
+              : 0
+          })
           const c = caloriesTemp.map((e) => {
             return e.value !== null || e.value !== undefined
-              ? e.state === "green"
+              ? e.state === 'green'
                 ? 1
-                : e.state === "yellow"
-                ? 0.5
-                : 0
-              : 0;
-          });
-          let avg = 0;
-          console.log("values", hr, st, c);
+                : e.state === 'yellow'
+                  ? 0.5
+                  : 0
+              : 0
+          })
+          let avg = 0
+          console.log('values', hr, st, c)
           for (let x = 0; x < heartRateTemp.length; x++) {
             avg +=
               Math.round(0.5 * hr[x]) +
               Math.round(0.17 * st[x]) +
-              Math.round(0.33 * c[x]);
+              Math.round(0.33 * c[x])
           /*    ? Math.round(e.value)
               : 0
           })
           let avg = 0
           for (let x = 0; x < heartRateTemp.length; x++) {
-            avg += this.round(0.5 * hr[x] + 0.17 * st[x] + 0.33 * c[x])*/
+            avg += this.round(0.5 * hr[x] + 0.17 * st[x] + 0.33 * c[x]) */
           }
-          avgPhysical.push(avg);
-          start = dateEndPyshical;
+          avgPhysical.push(avg)
+          start = dateEndPyshical
         }
       }
       let myAvg = 0
       for (let y = 0; y < avgPhysical.length; y++) {
         if (isNaN(avgPhysical[y])) {
-          myAvg += 0;
+          myAvg += 0
         } else {
-          myAvg += avgPhysical[y];
+          myAvg += avgPhysical[y]
         }
       }
-      myAvg = myAvg / avgPhysical.length;
-      console.log(myAvg);
-      return myAvg * 100;
+      myAvg = myAvg / avgPhysical.length
+      console.log(myAvg)
+      return myAvg * 100
 
-      /*myAvg = myAvg / avgPhysical.length
-      return Math.trunc(myAvg, 0)*/
-
+      /* myAvg = myAvg / avgPhysical.length
+      return Math.trunc(myAvg, 0) */
     },
 
-    dataMood() {
-      const tt = [];
-      const dateStartTime = new Date(this.dateStart).getTime();
-      const dateEndTime = new Date(this.dateEnd).getTime();
-      const dd = (dateEndTime - dateStartTime) / 86400000;
-      let start = dateStartTime;
+    dataMood () {
+      const tt = []
+      const dateStartTime = new Date(this.dateStart).getTime()
+      const dateEndTime = new Date(this.dateEnd).getTime()
+      const dd = (dateEndTime - dateStartTime) / 86400000
+      let start = dateStartTime
 
       if (this.$store.state.dataSet.length > 0) {
         for (let index = 1; index <= Math.floor(dd); index++) {
-          const dateEnd = start + 86400000;
+          const dateEnd = start + 86400000
           const dd = this.$store.state.dataSet.filter(
             s => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
           )
           const moodTemp = dd.filter(
-            (s) => s.dataTypeName === "com.google.step_count.delta"
-          );
+            s => s.dataTypeName === 'com.google.step_count.delta'
+          )
           moodTemp.forEach((e) => {
             const ee = {
               date: this.formatDateTable(start),
-              mood: e.value !== null ? Math.round(e.value) : 0,
-            };
-            tt.push(ee);
-          });
+              mood: e.value !== null ? Math.round(e.value) : 0
+            }
+            tt.push(ee)
+          })
 
-          start = dateEnd;
+          start = dateEnd
         }
       }
       return tt
@@ -553,38 +554,35 @@ export default {
   },
 
   watch: {
-    dateStart(val) {
-      this.dateStarFormatted = this.formatDate(this.dateStart);
-    },
-    dateEnd(val) {
-      this.dateEndFormatted = this.formatDate(this.dateEnd);
+    dateStart (val) {
+      this.dateStarFormatted = this.formatDate(this.dateStart)
     },
     dateEnd (val) {
       this.dateEndFormatted = this.formatDate(this.dateEnd)
     }
   },
 
-  created() {
-    const date = new Date();
-    this.dateEnd = date.toISOString().substr(0, 10);
-    this.dateEndFormatted = this.formatDate(date.toISOString().substr(0, 10));
+  created () {
+    const date = new Date()
+    this.dateEnd = date.toISOString().substr(0, 10)
+    this.dateEndFormatted = this.formatDate(date.toISOString().substr(0, 10))
 
-    date.setDate(date.getDate() - 7);
-    this.dateStart = date.toISOString().substr(0, 10);
-    this.dateStarFormatted = this.formatDate(date.toISOString().substr(0, 10));
+    date.setDate(date.getDate() - 7)
+    this.dateStart = date.toISOString().substr(0, 10)
+    this.dateStarFormatted = this.formatDate(date.toISOString().substr(0, 10))
   },
 
-  mounted() {
-    const { authUser } = this.$store.state;
+  mounted () {
+    const { authUser } = this.$store.state
     if (!authUser) {
-      this.$router.push("/");
+      this.$router.push('/')
     } else {
       this.$store.dispatch('getDataSet', { uid: this.uid })
     }
   },
 
   methods: {
-    /*findState(key) {
+    /* findState(key) {
       const state = [
         {
           key: "green",
@@ -610,56 +608,56 @@ export default {
       return state.find((e) => e.key === key);
     },
 
-    formatDate(date) {*/
+    formatDate(date) { */
     formatDate (date) {
       if (!date) {
-        return null;
+        return null
       }
 
-      const [year, month, day] = date.split("-");
-      return `${month}/${day}/${year}`;
+      const [year, month, day] = date.split('-')
+      return `${month}/${day}/${year}`
     },
 
-    formatDateTable(item) {
-      const ss = new Date(Number(item)).toISOString().substr(0, 10);
-      return ss;
+    formatDateTable (item) {
+      const ss = new Date(Number(item)).toISOString().substr(0, 10)
+      return ss
     },
 
-    parseDate(date) {
+    parseDate (date) {
       if (!date) {
-        return null;
+        return null
       }
 
-      const [month, day, year] = date.split("/");
-      return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+      const [month, day, year] = date.split('/')
+      return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
     },
 
-    round(num) {
-      return Math.round(num * 100) / 100;
+    round (num) {
+      return Math.round(num * 100) / 100
     },
 
-    nameData(scope) {
+    nameData (scope) {
       switch (scope) {
-        case "com.google.heart_rate.bpm":
-          return "Ritmo cardiaco";
-        case "com.google.step_count.cadence":
-          return "Cadencia de conteo de pasos";
-        case "com.google.step_count.delta":
-          return "Delta de recuento de pasos";
-        case "com.google.calories.expended":
-          return "Calorías quemadas";
-        case "com.google.sleep.segment":
-          return "Sueño";
-        case "app.web.hear-my-health.sleep.deep":
-          return "Sueño profundo";
-        case "app.web.hear-my-health.mood.segment":
-          return "Estado de animo";
+        case 'com.google.heart_rate.bpm':
+          return 'Ritmo cardiaco'
+        case 'com.google.step_count.cadence':
+          return 'Cadencia de conteo de pasos'
+        case 'com.google.step_count.delta':
+          return 'Delta de recuento de pasos'
+        case 'com.google.calories.expended':
+          return 'Calorías quemadas'
+        case 'com.google.sleep.segment':
+          return 'Sueño'
+        case 'app.web.hear-my-health.sleep.deep':
+          return 'Sueño profundo'
+        case 'app.web.hear-my-health.mood.segment':
+          return 'Estado de animo'
         default:
-          return "desconocido";
+          return 'desconocido'
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>
 <style lang="scss">
 .fixed-height-container {

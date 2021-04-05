@@ -16,8 +16,7 @@
           <v-card-text style="font-size: 1.2rem">
             Fecha: {{ formatDateTable(alert.date) }}
             <span v-if="alert.doctorSpecialty">
-              - Doctor: {{ alert.doctorSpecialty }}</span
-            >
+              - Doctor: {{ alert.doctorSpecialty }}</span>
           </v-card-text>
         </v-card>
         <v-spacer />
@@ -48,7 +47,7 @@
                     outlined
                     :items="types"
                     label="Tipo de alerta"
-                  ></v-select>
+                  />
                 </v-col>
               </v-row>
             </v-container>
@@ -58,7 +57,9 @@
             <v-btn elevation="0" raised @click="dialog = !dialog">
               Cancelar
             </v-btn>
-            <v-btn elevation="0" outlined raised type="submit"> Guardar </v-btn>
+            <v-btn elevation="0" outlined raised type="submit">
+              Guardar
+            </v-btn>
           </v-card-actions>
         </v-card>
       </form>
@@ -68,75 +69,75 @@
 
 <script>
 export default {
-  props: ["myUid"],
-  data() {
+  props: ['myUid'],
+  data () {
     return {
       dialog: false,
       doctorSpecialty: this.$props.specialty,
-      types: ["Alta", "Media", "Baja"],
+      types: ['Alta', 'Media', 'Baja'],
       form: {
-        alert: "",
-        type: "",
+        alert: '',
+        type: ''
       },
-      uid: this.$props.myUid,
-    };
+      uid: this.$props.myUid
+    }
   },
-  async fetch({ store }) {
+  async fetch ({ store }) {
     try {
-      await store.dispatch("getAlerts", { uid: this.uid });
-      await store.dispatch("getUser", { uid: this.uid });
+      await store.dispatch('getAlerts', { uid: this.uid })
+      await store.dispatch('getUser', { uid: this.uid })
     } catch (e) {
-      return "error";
+      return 'error'
     }
   },
   computed: {
-    auth() {
-      return this.$store.state.authUser || null;
+    auth () {
+      return this.$store.state.authUser || null
     },
-    alerts() {
-      return this.$store.state.alerts;
+    alerts () {
+      return this.$store.state.alerts
     },
-    user() {
-      return this.$store.state.user || null;
-    },
+    user () {
+      return this.$store.state.user || null
+    }
   },
-  mounted() {
-    const { authUser } = this.$store.state;
+  mounted () {
+    const { authUser } = this.$store.state
     if (!authUser) {
-      this.$router.push("/");
+      this.$router.push('/')
     } else {
-      this.$store.dispatch("getAlerts", { uid: this.uid });
-      this.$store.dispatch("getUser", { uid: this.uid });
+      this.$store.dispatch('getAlerts', { uid: this.uid })
+      this.$store.dispatch('getUser', { uid: this.uid })
     }
   },
   methods: {
-    close() {
-      this.dialog = !this.dialog;
+    close () {
+      this.dialog = !this.dialog
     },
-    formatDateTable(item) {
-      const ss = new Date(Number(item)).toISOString().substr(0, 10);
-      return ss;
+    formatDateTable (item) {
+      const ss = new Date(Number(item)).toISOString().substr(0, 10)
+      return ss
     },
-    async createAlert() {
+    async createAlert () {
       try {
-        const { alert, type } = this.form;
-        const date = new Date().getTime();
-        await this.$fire.firestore.collection("alerts").add({
-          date: date,
-          alert: alert,
-          type: type,
-          doctorSpecialty: localStorage.getItem("doctorSpecialty"),
+        const { alert, type } = this.form
+        const date = new Date().getTime()
+        await this.$fire.firestore.collection('alerts').add({
+          date,
+          alert,
+          type,
+          doctorSpecialty: localStorage.getItem('doctorSpecialty'),
           uid: this.uid,
-          createdBy: this.$store.state.authUser.uid,
-        });
+          createdBy: this.$store.state.authUser.uid
+        })
 
-        this.close();
-        this.form.alert = "";
-        this.form.type = "";
+        this.close()
+        this.form.alert = ''
+        this.form.type = ''
       } catch (error) {
-        console.log("error", error);
+        console.log('error', error)
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>

@@ -66,8 +66,8 @@
 </template>
 <script>
 export default {
-  props: ["myUid"],
-  data() {
+  props: ['myUid'],
+  data () {
     return {
       uid: this.$props.myUid,
       uniqueDevices: [],
@@ -79,105 +79,107 @@ export default {
         //   value: 'device'
         // },
         {
-          text: "Name",
-          align: "start",
+          text: 'Name',
+          align: 'start',
           sortable: false,
-          value: "uid",
+          value: 'uid'
         },
         {
           text: 'Dispositivo',
           align: 'start',
           sortable: false,
-          value: "type",
+          value: 'type'
         },
         {
           text: 'Modelo',
           align: 'start',
           sortable: false,
-          value: "model",
-        },
-      ],
-    };
+          value: 'model'
+        }
+      ]
+    }
   },
 
-  async fetch({ store }) {
+  async fetch ({ store }) {
     try {
-      await store.dispatch("getDevices", { uid: this.uid });
+      await store.dispatch('getDevices', { uid: this.uid })
     } catch (e) {
-      return "error";
+      return 'error'
     }
   },
 
   computed: {
-    auth() {
-      return this.$store.state.authUser || null;
+    auth () {
+      return this.$store.state.authUser || null
     },
 
-    dataSourceState() {
-      return this.$store.state.devices ? this.$store.state.devices.data : [];
-    },
-  },
-
-  mounted() {
-    const { authUser } = this.$store.state;
-    if (!authUser) {
-      this.$router.push("/");
-    } else {
-      this.$store.dispatch("getDevices", { uid: this.uid });
+    dataSourceState () {
+      return this.$store.state.devices ? this.$store.state.devices.data : []
     }
   },
 
   watch: {
-    dataSourceState() {
+    dataSourceState () {
       if (this.dataSourceState) {
-        this.setUniqueDevices();
+        this.setUniqueDevices()
         /*  console.log(this.uniqueDevices); */
       }
-    },
+    }
+  },
+
+  mounted () {
+    const { authUser } = this.$store.state
+    if (!authUser) {
+      this.$router.push('/')
+    } else {
+      this.$store.dispatch('getDevices', { uid: this.uid })
+    }
   },
 
   methods: {
-    async setUniqueDevices() {
-      let modelNames = this.dataSourceState.map((e) => {
-        return e.device.model;
-      });
-      let models = this.dataSourceState.map((e) => {
-        let c = [];
-        c.uid = e.device.uid;
+    // eslint-disable-next-line require-await
+    async setUniqueDevices () {
+      const modelNames = this.dataSourceState.map((e) => {
+        return e.device.model
+      })
+      const models = this.dataSourceState.map((e) => {
+        const c = []
+        c.uid = e.device.uid
         c.type =
-          e.device.type === "phone"
-            ? "Pulsera inteligente"
-            : uniqueDevices.type === "watch"
-            ? "Reloj inteligente"
-            : "Otro dispositivo";
-        c.model = e.device.model;
-        return c;
-      });
-      let v = [];
+          e.device.type === 'phone'
+            ? 'Pulsera inteligente'
+            : this.uniqueDevices.type === 'watch'
+              ? 'Reloj inteligente'
+              : 'Otro dispositivo'
+        c.model = e.device.model
+        return c
+      })
+      const v = []
       for (let i = 0; i < models.length; i++) {
-        if (v.some((e) => e.model === modelNames[i])) {
+        // eslint-disable-next-line no-empty
+        if (v.some(e => e.model === modelNames[i])) {
         } else {
-          v.push(models[i]);
+          v.push(models[i])
         }
       }
-      this.uniqueDevices = v;
+      this.uniqueDevices = v
     },
-    nameData(scope) {
+    nameData (scope) {
       switch (scope) {
-        case "com.google.heart_rate.bpm":
-          return "Ritmo cardiaco";
-        case "com.google.sleep.segment":
-          return "Dormir";
-        case "com.google.step_count.cadence":
-          return "Cadencia de conteo de pasos";
-        case "com.google.step_count.delta":
-          return "Delta de recuento de pasos";
-        case "com.google.calories.expended":
-          return "Calorías quemadas";
+        case 'com.google.heart_rate.bpm':
+          return 'Ritmo cardiaco'
+        case 'com.google.sleep.segment':
+          return 'Dormir'
+        case 'com.google.step_count.cadence':
+          return 'Cadencia de conteo de pasos'
+        case 'com.google.step_count.delta':
+          return 'Delta de recuento de pasos'
+        case 'com.google.calories.expended':
+          return 'Calorías quemadas'
         default:
-          return "desconocido";
+          return 'desconocido'
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>

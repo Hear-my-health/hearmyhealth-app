@@ -15,7 +15,7 @@
             src="~/assets/images/logo-white.svg"
             alt="logo-icon"
             height="24"
-          />
+          >
         </v-list-item>
         <v-list-item
           v-for="(item, i) in items"
@@ -51,7 +51,9 @@
       <v-list>
         <v-list-item @click.native="right = !right">
           <v-list-item-action>
-            <v-icon light> mdi-repeat </v-icon>
+            <v-icon light>
+              mdi-repeat
+            </v-icon>
           </v-list-item-action>
           <v-list-item-title>Switch drawer (click me)</v-list-item-title>
         </v-list-item>
@@ -62,27 +64,27 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       clipped: false,
       drawer: false,
       fixed: false,
       items: [
         {
-          icon: "mdi-chart-bar",
-          title: "Pacientes",
-          to: "/",
+          icon: 'mdi-chart-bar',
+          title: 'Pacientes',
+          to: '/'
         },
         {
-          icon: "mdi-numeric",
-          title: "Valores",
-          to: "/values",
+          icon: 'mdi-numeric',
+          title: 'Valores',
+          to: '/values'
         },
         {
-          icon: "mdi-account",
-          title: "Mi Perfil",
-          to: "/account",
-        },
+          icon: 'mdi-account',
+          title: 'Mi Perfil',
+          to: '/account'
+        }
         /*         {
           icon: 'mdi-alert-circle',
           title: 'Alertas',
@@ -102,13 +104,13 @@ export default {
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: "Vuetify.js",
-    };
+      title: 'Vuetify.js'
+    }
   },
   computed: {
-    auth() {
-      return this.$store.state.authUser || null;
-    },
-  },
-};
+    auth () {
+      return this.$store.state.authUser || null
+    }
+  }
+}
 </script>

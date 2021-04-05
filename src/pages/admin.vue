@@ -1,10 +1,12 @@
 <template>
   <v-container>
     <v-container v-if="!noAccount">
-      <h1>Inicio de sesión de Usuario</h1>
+      <h1>Inicio de sesión - Especialista</h1>
       <form @submit.prevent="signInWithEmailAndPassword">
         <div>
-          <p class="mb-1">Correo electrónico</p>
+          <p class="mb-1">
+            Correo electrónico
+          </p>
           <v-text-field
             v-model="acc.email"
             placeholder="Correo electrónico"
@@ -15,7 +17,9 @@
           />
         </div>
         <div>
-          <p class="mb-1">Contraseña</p>
+          <p class="mb-1">
+            Contraseña
+          </p>
           <v-text-field
             v-model="acc.password"
             placeholder="Contraseña"
@@ -41,7 +45,9 @@
       <h1>Registro de Usuario</h1>
       <form @submit.prevent="createWithEmailAndPassword">
         <div>
-          <p class="mb-1">Nombres</p>
+          <p class="mb-1">
+            Nombres
+          </p>
           <v-text-field
             v-model="newDoctor.name"
             placeholder="Nombres"
@@ -52,7 +58,9 @@
           />
         </div>
         <div>
-          <p class="mb-1">Correo electrónico</p>
+          <p class="mb-1">
+            Correo electrónico
+          </p>
           <v-text-field
             v-model="newDoctor.email"
             placeholder="Correo electrónico"
@@ -63,7 +71,9 @@
           />
         </div>
         <div>
-          <p class="mb-1">Contraseña</p>
+          <p class="mb-1">
+            Contraseña
+          </p>
           <v-text-field
             v-model="newDoctor.password"
             placeholder="Contraseña"
@@ -91,8 +101,7 @@
         class="blue--text"
         @click="noAccount = !noAccount"
       >
-        Registrarse</span
-      >
+        Registrarse</span>
     </p>
     <p v-if="noAccount">
       Inicia sesión aquí<span
@@ -100,32 +109,32 @@
         class="blue--text"
         @click="noAccount = !noAccount"
       >
-        Iniciar sesión</span
-      >
+        Iniciar sesión</span>
     </p>
   </v-container>
 </template>
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       submitted: false,
       newDoctor: {
-        email: "",
-        password: "",
+        email: '',
+        password: ''
       },
       acc: {
-        email: "",
-        password: "",
+        email: '',
+        password: ''
       },
-      noAccount: false,
-    };
+      noAccount: false
+    }
   },
   methods: {
-    async createWithEmailAndPassword() {
-      this.submitted = true;
-      const date = new Date().getTime();
+    // eslint-disable-next-line require-await
+    async createWithEmailAndPassword () {
+      this.submitted = true
+      const date = new Date().getTime()
       try {
         this.$fire.auth
           .createUserWithEmailAndPassword(
@@ -134,37 +143,38 @@ export default {
           )
           .then((res) => {
             this.$fire.firestore
-              .collection("users")
+              .collection('users')
               .doc(res.user.uid)
               .set({
                 email: this.newDoctor.email,
                 name: this.newDoctor.name,
                 createDate: date,
                 uid: res.user.uid,
-                role: "admin",
+                role: 'admin'
               })
               .then((res) => {
-                this.$router.push("/back");
-              });
-          });
+                this.$router.push('/back')
+              })
+          })
       } catch (error) {
-        this.submitted = false;
-        console.log("error", error);
+        this.submitted = false
+        console.log('error', error)
       }
     },
-    async signInWithEmailAndPassword() {
-      this.submitted = true;
+    // eslint-disable-next-line require-await
+    async signInWithEmailAndPassword () {
+      this.submitted = true
       try {
         this.$fire.auth
           .signInWithEmailAndPassword(this.acc.email, this.acc.password)
           .then((res) => {
-            this.$router.push("/back");
-          });
+            this.$router.push('/back')
+          })
       } catch (error) {
-        this.submitted = false;
-        console.log("error", error);
+        this.submitted = false
+        console.log('error', error)
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>
