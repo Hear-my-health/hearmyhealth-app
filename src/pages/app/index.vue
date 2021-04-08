@@ -1,11 +1,9 @@
 <template>
-  <div>
+  <div v-if="userType === 'user'">
     <v-row justify="center" align="center">
       <v-col cols="12" md="10">
         <v-toolbar flat class="grey lighten-5">
-          <v-toolbar-title class="headline">
-            Diario
-          </v-toolbar-title>
+          <v-toolbar-title class="headline"> Diario </v-toolbar-title>
           <v-spacer />
           <v-btn elevation="0" outlined raised @click="dialog = !dialog">
             Nueva entrada
@@ -23,7 +21,7 @@
                   alt="google-auth"
                   style="width: 32px; height: 32px"
                   class="mr-3"
-                >
+                />
                 {{ thought.thought }}
               </v-card-title>
               <v-card-text class="subtitle-1 font-weight-light">
@@ -57,15 +55,24 @@
                       }.svg`"
                       alt="google-auth"
                       style="width: 48px; height: 48px"
-                    >
+                    />
                   </v-card>
                 </v-col>
                 <v-col cols="12" md="12">
+                  <p v-if="noMood" class="red--text">
+                    Seleccione un estado de ánimo
+                  </p>
+                </v-col>
+                <v-col cols="12" md="12">
                   <v-textarea
-                    v-model="form.thought"
+                    v-model="thought"
                     outlined
                     name="input-7-4"
-                    label="Escribe cómo te sientes"
+                    label="Pensamiento"
+                    required
+                    :error-messages="thoughtErrors"
+                    @input="$v.thought.$touch()"
+                    @blur="$v.thought.$touch()"
                   />
                 </v-col>
               </v-row>
@@ -74,11 +81,15 @@
 
           <v-card-actions>
             <v-spacer />
-            <v-btn elevation="0" raised @click="dialog = !dialog">
-              Cancelar
-            </v-btn>
+            <v-btn elevation="0" raised @click="close"> Cancelar </v-btn>
 
-            <v-btn elevation="0" outlined raised type="submit">
+            <v-btn
+              elevation="0"
+              outlined
+              raised
+              type="submit"
+              @click="submitThought"
+            >
               Guardar
             </v-btn>
           </v-card-actions>
@@ -143,214 +154,253 @@
   </div>
 </template>
 <script>
-import { validationMixin } from 'vuelidate'
-import { required, maxLength, minLength } from 'vuelidate/lib/validators'
+import { validationMixin } from "vuelidate";
+import { required, maxLength, minLength } from "vuelidate/lib/validators";
 export default {
   mixins: [validationMixin],
-  layout: 'dashboard',
+  layout: "dashboard",
   validations: {
     dni: { required, minLength: minLength(8), maxLength: maxLength(8) },
-    dateOfBirth: { required }
+    dateOfBirth: { required },
+    thought: { required, minLength: minLength(3) },
   },
-  data () {
+  data() {
     return {
+      userType: "",
+      thought: "",
+      noMood: false,
       noData: false,
-      dni: '',
-      dateOfBirth: '',
+      dni: "",
+      dateOfBirth: "",
       info: {
-        dni: '',
-        dateOfBirth: ''
+        dni: "",
+        dateOfBirth: "",
       },
       dialog: false,
       form: {
-        thought: ''
+        thought: "",
       },
-      formTitle: '¿Cómo te va?',
+      formTitle: "¿Cómo te va?",
       moods: [
         {
           id: 1,
-          name: 'sad',
+          name: "sad",
           value: 0,
-          select: false
+          select: false,
         },
         {
           id: 2,
-          name: 'sceptic',
+          name: "sceptic",
           value: 0.5,
-          select: false
+          select: false,
         },
         {
           id: 3,
-          name: 'happy',
+          name: "happy",
           value: 1,
-          select: false
-        }
-      ]
-    }
+          select: false,
+        },
+      ],
+    };
   },
 
   computed: {
-    thoughts () {
-      return this.$store.state.thoughts.filter(e => !!e.thought)
+    thoughts() {
+      return this.$store.state.thoughts.filter((e) => !!e.thought);
     },
 
-    auth () {
-      return this.$store.state.authUser || null
+    auth() {
+      return this.$store.state.authUser || null;
     },
 
-    user () {
-      return this.$store.state.user
+    user() {
+      return this.$store.state.user;
     },
 
-    dniErrors () {
-      const errors = []
+    dniErrors() {
+      const errors = [];
       if (!this.$v.dni.$dirty) {
-        return errors
+        return errors;
       }
       (!this.$v.dni.maxLength || !this.$v.dni.minLength) &&
-        errors.push('El DNI debe tener 8 caracteres')
-      /* !this.$v.dni.minLength && errors.push("El DNI debe tener 8 caracteres");  */
-      !this.$v.dni.required && errors.push('El DNI es requerido')
-      return errors
+        errors.push("El DNI debe tener 8 caracteres");
+      !this.$v.dni.required && errors.push("El DNI es requerido");
+      return errors;
     },
-    dateOfBirthErrors () {
-      const errors = []
+    dateOfBirthErrors() {
+      const errors = [];
       if (!this.$v.dateOfBirth.$dirty) {
-        return errors
+        return errors;
       }
       !this.$v.dateOfBirth.required &&
-        errors.push('La fecha de nacimiento es requerida')
-      return errors
-    }
+        errors.push("La fecha de nacimiento es requerida");
+      return errors;
+    },
+    thoughtErrors() {
+      const errors = [];
+      if (!this.$v.thought.$dirty) {
+        return errors;
+      }
+      !this.$v.thought.minLength &&
+        errors.push(
+          "La mensaje del pensamiento debe tener 3 caracteres como mínimo"
+        );
+      !this.$v.thought.required &&
+        errors.push("El mensaje del pensamiento es requerido");
+      return errors;
+    },
   },
 
   watch: {
-    user () {
+    user() {
+      localStorage.setItem("role", this.user.role);
       if (!this.user.dni || !this.user.dateOfBirth) {
-        this.noData = true
+        this.noData = true;
       } else {
-        this.noData = false
+        this.noData = false;
       }
-    }
+    },
   },
 
-  mounted () {
-    const { authUser } = this.$store.state
-    if (!authUser) {
-      this.$router.push('/')
+  mounted() {
+    if (localStorage.getItem("role") === "admin") {
+      this.userType = localStorage.getItem("role");
+      this.$router.push("/back");
     } else {
-      this.$store.dispatch('getValues')
-      this.$store.dispatch('getThoughts', { uid: authUser.uid })
-      this.$store.dispatch('getUser', { uid: authUser.uid })
+      this.userType = localStorage.getItem("role");
+      const { authUser } = this.$store.state;
+      if (!authUser) {
+        this.$router.push("/");
+      } else {
+        this.$store.dispatch("getValues");
+        this.$store.dispatch("getThoughts", { uid: authUser.uid });
+        this.$store.dispatch("getUser", { uid: authUser.uid });
+      }
     }
   },
 
   methods: {
-    submit () {
-      this.$v.$touch()
+    submitThought() {
+      this.$v.$touch();
     },
-    async updateInfo () {
+    submit() {
+      this.$v.$touch();
+    },
+    close() {
+      this.dialog = false;
+      this.$v.$reset();
+      this.thought = "";
+      this.select("");
+      this.noMood = false;
+    },
+    open() {
+      this.dialog = true;
+    },
+    async updateInfo() {
       try {
-        const { uid } = this.$store.state.authUser
-        const { dni, dateOfBirth } = this
-        await this.$fire.firestore.collection('users').doc(uid).update({
+        const { uid } = this.$store.state.authUser;
+        const { dni, dateOfBirth } = this;
+        await this.$fire.firestore.collection("users").doc(uid).update({
           dni,
-          dateOfBirth
-        })
-        this.noData = false
+          dateOfBirth,
+        });
+        this.noData = false;
       } catch (error) {
-        this.$store.dispatch('SET_MESSAGE', { message: error })
+        this.$store.dispatch("SET_MESSAGE", { message: error });
       }
     },
-    formatDateT (item) {
-      const ss = new Date(Number(item)).toISOString().substr(0, 10)
-      return ss
+    formatDateT(item) {
+      const ss = new Date(Number(item)).toISOString().substr(0, 10);
+      return ss;
     },
-    formatHour (item) {
-      const ss = new Date(Number(item)).toISOString().substr(11, 5)
-      return ss
+    formatHour(item) {
+      const ss = new Date(Number(item)).toISOString().substr(11, 5);
+      return ss;
     },
-    select (item) {
+    select(item) {
       const ss = this.moods.map((e) => {
-        e.select = e.id === item.id
-        return e
-      })
-      this.moods = ss
+        e.select = e.id === item.id;
+        return e;
+      });
+      this.moods = ss;
+      this.noMood = false;
     },
 
-    getState (obj) {
-      const { value } = obj
+    getState(obj) {
+      const { value } = obj;
       if (value >= 0) {
         const dd = this.$store.state.values.find(
-          v => v.dataTypeName === obj.dataTypeName
-        )
+          (v) => v.dataTypeName === obj.dataTypeName
+        );
         if (value >= dd.minSalud && value <= dd.maxSalud) {
-          return 'green'
+          return "green";
         }
         if (value >= dd.minAcept && value <= dd.maxAcept) {
-          return 'yellow'
+          return "yellow";
         }
-        return 'red'
+        return "red";
       } else {
-        return 'not'
+        return "not";
       }
     },
 
-    close () {
-      this.dialog = !this.dialog
-    },
-
-    async createThought () {
-      const moodSelect = this.moods.filter(e => e.select)
+    async createThought() {
+      const moodSelect = this.moods.filter((e) => e.select);
+      console.log(moodSelect);
       if (moodSelect.length) {
         try {
-          const item = moodSelect[0]
-          const { uid } = this.$store.state.authUser
-          const { thought } = this.form
-          const date = new Date().getTime()
+          const item = moodSelect[0];
+          const { uid } = this.$store.state.authUser;
+          const { thought } = this;
+          const date = new Date().getTime();
 
-          await this.$fire.firestore
-            .collection('thoughts')
-            .doc()
-            .set({
-              date,
-              thought,
-              uid,
-              ...item
-            })
-          const obj = {
-            dataSourceId: '',
-            dataTypeName: 'app.web.hear-my-health.mood.segment',
-            endTimeMillis: date,
-            endTimeNanos: '',
-            originDataSourceId: '',
-            point: item,
-            startTimeMillis: date,
-            startTimeNanos: '',
+          if (!thought || thought.length < 3) {
+            this.dialog = true;
+          } else {
+            await this.$fire.firestore
+              .collection("thoughts")
+              .doc()
+              .set({
+                date,
+                thought,
+                uid,
+                ...item,
+              });
+            const obj = {
+              dataSourceId: "",
+              dataTypeName: "app.web.hear-my-health.mood.segment",
+              endTimeMillis: date,
+              endTimeNanos: "",
+              originDataSourceId: "",
+              point: item,
+              startTimeMillis: date,
+              startTimeNanos: "",
 
-            value: item.value,
+              value: item.value,
 
-            name: item.name,
-            modifiedTimeMillis: '',
-            activityType: ''
+              name: item.name,
+              modifiedTimeMillis: "",
+              activityType: "",
+            };
+            const stateSleep = this.getState(obj);
+            await this.$fire.firestore
+              .collection("dataSet")
+              .doc()
+              .set({
+                uid,
+                ...obj,
+                stateSleep,
+              });
           }
-          const stateSleep = this.getState(obj)
-          await this.$fire.firestore
-            .collection('dataSet')
-            .doc()
-            .set({
-              uid,
-              ...obj,
-              stateSleep
-            })
-          this.close()
-          this.form.thought = ''
-          this.select('')
+          this.close();
         } catch (error) {
-          return error
+          return error;
         }
+      } else {
+        this.noMood = true;
+        console.log("no mood");
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
