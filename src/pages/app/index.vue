@@ -270,6 +270,7 @@ export default {
       const ss = new Date(Number(item)).toISOString().substr(11, 5)
       return ss
     },
+
     select (item) {
       const ss = this.moods.map((e) => {
         e.select = e.id === item.id
@@ -318,6 +319,7 @@ export default {
               uid,
               ...item
             })
+
           const obj = {
             dataSourceId: '',
             dataTypeName: 'app.web.hear-my-health.mood.segment',
@@ -334,6 +336,7 @@ export default {
             modifiedTimeMillis: '',
             activityType: ''
           }
+
           const stateSleep = this.getState(obj)
           await this.$fire.firestore
             .collection('dataSet')
@@ -341,7 +344,7 @@ export default {
             .set({
               uid,
               ...obj,
-              stateSleep
+              state: stateSleep
             })
           this.close()
           this.form.thought = ''

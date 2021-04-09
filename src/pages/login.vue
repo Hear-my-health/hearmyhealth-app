@@ -11,43 +11,49 @@
     <v-main class="grey lighten-5">
       <v-container>
         <v-row justify="center" align="center" class="mt-3">
-          <v-col cols="10" sm="8" md="4">
+          <v-col cols="10" sm="8" md="3">
             <h2 class="text-h3 mb-9">
-              Sign In
+              Iniciar sesión
             </h2>
-            <p class="mb-6">
-              Iniciar sesión como paciente
-            </p>
-            <v-btn
-              x-large
-              elevation="0"
-              raised
-              outlined
-              class="pa-2"
-              @click="signInWithGoogle"
-            >
-              <img
-                src="~/assets/images/google-auth.svg"
-                alt="google-auth"
-                class="pa-1"
-                style="width: 48px; height: 48px"
+            <div class="mb-9">
+              <p class="mb-3">
+                Iniciar sesión como paciente
+              </p>
+              <v-btn
+                x-large
+                elevation="0"
+                raised
+                outlined
+                class="pa-2"
+                block
+                @click="signInWithGoogle"
               >
-              <span class="mx-2"> Sign in with Google </span>
-            </v-btn>
+                <img
+                  src="~/assets/images/google-auth.svg"
+                  alt="google-auth"
+                  class="pa-1"
+                  style="width: 48px; height: 48px"
+                >
+                <span class="mx-2"> Inicia sesión con Google </span>
+              </v-btn>
+            </div>
+            <div>
+              <p class="mb-3">
+                También puedes ingresar como especialista
+              </p>
+              <v-btn
+                class="lighten-1 red"
+                raised
+                outlined
+                large
+                dark
+                block
+                href="/admin"
+              >
+                Inicia sesión
+              </v-btn>
+            </div>
           </v-col>
-        </v-row>
-        <v-row>
-          <p class="mb-6">
-            También puedes ingresar como especialista
-          </p>
-          <v-btn
-            class="lighten-1 mt-6"
-            style="max-width: 180px; color: white; background: #0c314c"
-            large
-            href="/admin"
-          >
-            Aquí
-          </v-btn>
         </v-row>
       </v-container>
     </v-main>
@@ -116,7 +122,7 @@ export default {
       // You can add or remove more scopes here provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
       const authData = await this.$fire.auth.signInWithPopup(provider)
 
-      await this.$store.commit('SET_CREDENTIAL', authData.credential)
+      this.$store.commit('SET_CREDENTIAL', authData.credential)
       await this.getDataSavingTime(authData.user.uid)
 
       if (authData.additionalUserInfo.isNewUser) {
@@ -284,7 +290,6 @@ export default {
               try {
                 let value
                 if (
-                  name === 'com.google.step_count.delta' ||
                   name === 'com.google.step_count.delta'
                 ) {
                   value = obj.dataset[0].point[0]

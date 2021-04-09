@@ -200,7 +200,6 @@ export default {
       }
     },
     async updateInfo () {
-      console.log(this.auth.uid)
       if (this.user.role === 'user') {
         try {
           const { uid } = this.auth

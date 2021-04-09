@@ -180,7 +180,7 @@ export default {
     try {
       await store.dispatch('getUsers')
     } catch (e) {
-      return 'error'
+      return e
     }
   },
 
@@ -267,7 +267,7 @@ export default {
         })
         this.noData = false
       } catch (error) {
-        console.log('error', error)
+        this.$store.dispatch('SET_MESSAGE', { message: error })
       }
     },
     async createDoctor () {

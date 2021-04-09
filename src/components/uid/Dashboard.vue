@@ -76,75 +76,6 @@
             </v-menu>
           </v-col>
         </v-row>
-
-        <!-- <v-row justify="center" align="center">
-      <v-col
-        v-if="dataPhysicalHealth < 30 && dataPhysicalHealth > 0"
-        cols="12"
-        sm="12"
-        md="4"
-        justify="center"
-        align="center"
-      >
-        <v-progress-circular
-          :rotate="-90"
-          :size="100"
-          :width="15"
-          :value="dataPhysicalHealth"
-          color="red"
-        >
-          {{ Math.trunc(dataPhysicalHealth, 0) }}
-        </v-progress-circular>
-      </v-col>
-      <v-col
-        v-if="dataPhysicalHealth < 60 && dataPhysicalHealth >= 30"
-        cols="12"
-        sm="12"
-        md="4"
-        justify="center"
-        align="center"
-      >
-        <v-progress-circular
-          :rotate="-90"
-          :size="100"
-          :width="15"
-          :value="dataPhysicalHealth"
-          color="amber"
-        >
-          {{ Math.trunc(dataPhysicalHealth, 0) }}
-        </v-progress-circular>
-      </v-col>
-      <v-col
-        v-if="dataPhysicalHealth >= 60"
-        cols="12"
-        sm="12"
-        md="4"
-        justify="center"
-        align="center"
-      >
-        <v-progress-circular
-          :rotate="-90"
-          :size="100"
-          :width="15"
-          :value="dataPhysicalHealth"
-          color="green"
-        >
-          {{ Math.trunc(dataPhysicalHealth, 0) }}
-        </v-progress-circular>
-      </v-col>
-      <v-col
-        v-if="dataMood.length > 0"
-        cols="12"
-        sm="12"
-        md="8"
-        justify="center"
-        align="center"
-      >
-        <line-chart
-          :chart-data="dataMood"
-          :options="chartOptions"
-          label="Mood"
-        /> -->
         <v-row justify="center" align="center">
           <v-col
             v-if="dataPhysicalHealth < 30 && dataPhysicalHealth > 0"
@@ -214,50 +145,50 @@
               label="Mood"
             />
           </v-col>
-          <v-col cols="12" sm="12" md="3">
-            <div class="fixed-height-container">
-              <h4 class="mb-3">
-                Recomendaciones
-              </h4>
-              <v-select
-                v-model="selectNotification"
-                :item-text="'name'"
-                :item-value="'id'"
-                :items="notificationItems"
-                label="Seleccione tipo"
-                dense
-                outlined
-              />
-              <div class="fixed-container">
-                <div v-for="(item, index) in dataSetNotification" :key="index">
-                  <div v-if="item.data.length">
-                    <div v-for="(idata, idx) in item.data" :key="idx">
-                      <v-card class="mb-1 pa-2" elevation="0">
-                        <div class="mb-2">
-                          <span class="mr-2">
-                            <v-icon v-if="idata.state === 'red'" light>
-                              mdi-close-circle
-                            </v-icon>
-                            <v-icon v-if="idata.state === 'yellow'" light>
-                              mdi-alert-circle
-                            </v-icon>
-                          </span>
-                          {{ nameData(idata.dataTypeName) }}
-                        </div>
-                        <div>
-                          <div class="font-weight-light">
-                            {{ formatDateTable(item.dateStart) }} -
-                            {{ formatDateTable(item.dateEnd) }}
-                          </div>
-                        </div>
-                      </v-card>
+        </v-row>
+      </v-col>
+      <v-col cols="12" sm="12" md="3">
+        <div class="fixed-height-container">
+          <h4 class="mb-3">
+            Recomendaciones
+          </h4>
+          <v-select
+            v-model="selectNotification"
+            :item-text="'name'"
+            :item-value="'id'"
+            :items="notificationItems"
+            label="Seleccione tipo"
+            dense
+            outlined
+          />
+          <div class="fixed-container">
+            <div v-for="(item, index) in dataSetNotification" :key="index">
+              <div v-if="item.data.length">
+                <div v-for="(idata, idx) in item.data" :key="idx">
+                  <v-card class="mb-1 pa-2" elevation="0">
+                    <div class="mb-2">
+                      <span class="mr-2">
+                        <v-icon v-if="idata.state === 'red'" light>
+                          mdi-close-circle
+                        </v-icon>
+                        <v-icon v-if="idata.state === 'yellow'" light>
+                          mdi-alert-circle
+                        </v-icon>
+                      </span>
+                      {{ nameData(idata.dataTypeName) }}
                     </div>
-                  </div>
+                    <div>
+                      <div class="font-weight-light">
+                        {{ formatDateTable(item.dateStart) }} -
+                        {{ formatDateTable(item.dateEnd) }}
+                      </div>
+                    </div>
+                  </v-card>
                 </div>
               </div>
             </div>
-          </v-col>
-        </v-row>
+          </div>
+        </div>
       </v-col>
     </v-row>
   </v-container>
@@ -434,18 +365,11 @@ export default {
               : 0
           })
           let avg = 0
-          console.log('values', hr, st, c)
           for (let x = 0; x < heartRateTemp.length; x++) {
             avg +=
               Math.round(0.5 * hr[x]) +
               Math.round(0.17 * st[x]) +
               Math.round(0.33 * c[x])
-          /*    ? Math.round(e.value)
-              : 0
-          })
-          let avg = 0
-          for (let x = 0; x < heartRateTemp.length; x++) {
-            avg += this.round(0.5 * hr[x] + 0.17 * st[x] + 0.33 * c[x]) */
           }
           avgPhysical.push(avg)
           start = dateEndPyshical
@@ -460,11 +384,7 @@ export default {
         }
       }
       myAvg = myAvg / avgPhysical.length
-      console.log(myAvg)
       return myAvg * 100
-
-      /* myAvg = myAvg / avgPhysical.length
-      return Math.trunc(myAvg, 0) */
     },
 
     dataMood () {
@@ -582,33 +502,6 @@ export default {
   },
 
   methods: {
-    /* findState(key) {
-      const state = [
-        {
-          key: "green",
-          value: 1,
-          percentaje: 100,
-        },
-        {
-          key: "yellow",
-          value: 0.5,
-          percentaje: 100,
-        },
-        {
-          key: "red",
-          value: 0,
-          percentaje: 100,
-        },
-        {
-          key: "not",
-          value: -0.01,
-          percentaje: 100,
-        },
-      ];
-      return state.find((e) => e.key === key);
-    },
-
-    formatDate(date) { */
     formatDate (date) {
       if (!date) {
         return null

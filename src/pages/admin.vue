@@ -131,8 +131,7 @@ export default {
     }
   },
   methods: {
-    // eslint-disable-next-line require-await
-    async createWithEmailAndPassword () {
+    createWithEmailAndPassword () {
       this.submitted = true
       const date = new Date().getTime()
       try {
@@ -158,11 +157,10 @@ export default {
           })
       } catch (error) {
         this.submitted = false
-        console.log('error', error)
       }
     },
-    // eslint-disable-next-line require-await
-    async signInWithEmailAndPassword () {
+
+    signInWithEmailAndPassword () {
       this.submitted = true
       try {
         this.$fire.auth
@@ -172,7 +170,6 @@ export default {
           })
       } catch (error) {
         this.submitted = false
-        console.log('error', error)
       }
     }
   }
