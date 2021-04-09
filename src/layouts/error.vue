@@ -16,7 +16,6 @@
 
 <script>
 export default {
-  layout: 'free',
   props: {
     error: {
       type: Object,

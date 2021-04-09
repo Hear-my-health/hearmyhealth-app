@@ -333,9 +333,6 @@ export default {
     DoubleBarChart
   },
 
-  // props: ["myUid"],
-  /*   data: (vm) => ({ */
-  // data() {
   props: {
     myUid: {
       type: String,
@@ -750,13 +747,6 @@ export default {
           const dd = this.$store.state.dataSet.filter(
             s => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
           )
-          /* const dataTemp = dd.filter(
-            (s) => s.dataTypeName === "com.google.sleep.segment",
-            (s) => s.dataTypeName === "app.web.hear-my-health.sleep.deep"
-          );
-          const dataTemp = dd.filter(
-            (s) => s.dataTypeName === "app.web.hear-my-health.mood.segment"
-          ); */
           const dataTemp1 = dd.filter(
             s => s.dataTypeName === 'com.google.sleep.segment'
           )

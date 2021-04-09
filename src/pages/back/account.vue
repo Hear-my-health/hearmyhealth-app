@@ -278,7 +278,7 @@ export default {
           })
           this.isEditing = true
         } catch (error) {
-          console.log('error', error)
+          this.$store.dispatch('SET_MESSAGE', { message: error })
         }
       } else {
         try {
@@ -292,7 +292,7 @@ export default {
           })
           this.isEditing = true
         } catch (error) {
-          console.log('error', error)
+          this.$store.dispatch('SET_MESSAGE', { message: error })
         }
       }
     }

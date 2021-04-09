@@ -231,31 +231,37 @@ export default {
 
   watch: {
     user () {
-      localStorage.setItem('role', this.user.role)
-      if (this.user.specialty) {
-        localStorage.setItem('doctorSpecialty', this.user.specialty)
-        localStorage.setItem('doctorName', this.user.name)
-      }
-      if (!this.user.dni || !this.user.dateOfBirth || !this.user.specialty) {
-        this.noData = true
-      } else {
-        this.noData = false
+      if (localStorage) {
+        localStorage.setItem('role', this.user.role)
+        if (this.user.specialty) {
+          localStorage.setItem('doctorSpecialty', this.user.specialty)
+          localStorage.setItem('doctorName', this.user.name)
+        }
+        if (!this.user.dni || !this.user.dateOfBirth || !this.user.specialty) {
+          this.noData = true
+        } else {
+          this.noData = false
+        }
       }
     }
   },
 
-  mounted () {
-    if (localStorage.getItem('role') === 'user') {
-      this.userType = localStorage.getItem('role')
-      this.$router.push('/app')
+  async mounted () {
+    const { authUser } = this.$store.state
+    if (!authUser) {
+      this.$router.push('/')
     } else {
-      this.userType = localStorage.getItem('role')
-      const { authUser } = this.$store.state
-      if (!authUser) {
-        this.$router.push('/')
+      await this.$store.dispatch('getUser', { uid: authUser.uid })
+      const { user } = this.$store.state
+      if (user) {
+        this.userType = user.role
+        if (this.userType === 'admin') {
+          this.$store.dispatch('getUsers')
+        } else {
+          this.$router.push('/app')
+        }
       } else {
-        this.$store.dispatch('getUsers')
-        this.$store.dispatch('getUser', { uid: authUser.uid })
+        this.$router.push('/')
       }
     }
   },
