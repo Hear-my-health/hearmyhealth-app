@@ -20,15 +20,7 @@ export default {
   watch: {
     chartData(to, from) {
       const dates = this.chartData.map((d) => d.date);
-      const totals = this.chartData.map((d) => d.data || 0);
-
-      const {
-        borderColor,
-        pointBorderColor,
-        pointBackgroundColor,
-        backgroundColor,
-      } = this.chartColors;
-
+      const totals = this.chartData.map((d) => d.mood || 0);
       this.renderChart(
         {
           labels: dates,
@@ -36,11 +28,10 @@ export default {
             {
               label: this.label,
               data: totals,
-              borderColor: borderColor,
-              pointBorderColor: pointBorderColor,
-              pointBackgroundColor: pointBackgroundColor,
-              backgroundColor: backgroundColor,
-              borderWidth: 1,
+              /*  borderColor: borderColor,
+            pointBorderColor: pointBorderColor,
+            pointBackgroundColor: pointBackgroundColor,
+            backgroundColor: backgroundColor, */
             },
           ],
         },
@@ -50,14 +41,14 @@ export default {
   },
   mounted() {
     const dates = this.chartData.map((d) => d.date);
-    const totals = this.chartData.map((d) => d.data || 0);
+    const totals = this.chartData.map((d) => d.mood || 0);
 
-    const {
+    /*    const {
       borderColor,
       pointBorderColor,
       pointBackgroundColor,
       backgroundColor,
-    } = this.chartColors;
+    } = this.chartColors; */
 
     this.renderChart(
       {
@@ -66,11 +57,10 @@ export default {
           {
             label: this.label,
             data: totals,
-            borderColor: borderColor,
+            /*  borderColor: borderColor,
             pointBorderColor: pointBorderColor,
             pointBackgroundColor: pointBackgroundColor,
-            backgroundColor: backgroundColor,
-            borderWidth: 1,
+            backgroundColor: backgroundColor, */
           },
         ],
       },

@@ -231,6 +231,7 @@ export default {
     async signOut () {
       try {
         await this.$fireModule.auth().signOut()
+        localStorage.removeItem('role')
         this.$router.push('/')
       } catch (error) {
         console.log('error', error)

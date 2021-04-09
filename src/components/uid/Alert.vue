@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row>
-      <v-btn elevation="0" outlined raised @click="dialog = !dialog">
+      <v-btn elevation="0" outlined raised @click="open">
         Agregar alerta
       </v-btn>
     </v-row>
@@ -10,19 +10,21 @@
         <v-card classdark>
           <v-card-title class="headline">
             <v-row>
-              <v-col>Tipo: {{ alert.type }} - Alerta: {{ alert.alert }}</v-col>
+              <v-col>Nivel: {{ alert.type }} | Descripción: {{ alert.alert }}</v-col>
             </v-row>
           </v-card-title>
           <v-card-text style="font-size: 1.2rem">
             Fecha: {{ formatDateTable(alert.date) }}
+            <span v-if="alert.doctorName">
+              - Doctor: {{ alert.doctorName }}</span>
             <span v-if="alert.doctorSpecialty">
-              - Doctor: {{ alert.doctorSpecialty }}</span>
+              - Especialidad: {{ alert.doctorSpecialty }}</span>
           </v-card-text>
         </v-card>
         <v-spacer />
       </v-col>
     </v-row>
-    <v-dialog v-model="dialog" max-width="500px" elevation="0">
+    <v-dialog v-if="dialog" v-model="dialog" max-width="500px" elevation="0">
       <form @submit.prevent="createAlert">
         <v-card>
           <v-card-title>
@@ -33,20 +35,28 @@
               <v-row>
                 <v-col cols="12" md="12">
                   <v-textarea
-                    v-model="form.alert"
+                    v-model="alert"
                     outlined
                     name="input-7-4"
                     label="Alerta"
+                    required
+                    :error-messages="alertErrors"
+                    @input="$v.alert.$touch()"
+                    @blur="$v.alert.$touch()"
                   />
                 </v-col>
               </v-row>
               <v-row>
                 <v-col cols="12" md="12">
                   <v-select
-                    v-model="form.type"
+                    v-model="type"
                     outlined
                     :items="types"
+                    required
                     label="Tipo de alerta"
+                    :error-messages="typeErrors"
+                    @input="$v.type.$touch()"
+                    @blur="$v.type.$touch()"
                   />
                 </v-col>
               </v-row>
@@ -54,10 +64,10 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer />
-            <v-btn elevation="0" raised @click="dialog = !dialog">
+            <v-btn elevation="0" raised @click="close">
               Cancelar
             </v-btn>
-            <v-btn elevation="0" outlined raised type="submit">
+            <v-btn elevation="0" outlined raised type="submit" @click="submit">
               Guardar
             </v-btn>
           </v-card-actions>
@@ -68,17 +78,22 @@
 </template>
 
 <script>
+import { validationMixin } from 'vuelidate'
+import { required, minLength } from 'vuelidate/lib/validators'
 export default {
+  mixins: [validationMixin],
   props: ['myUid'],
+  validations: {
+    alert: { required, minLength: minLength(3) },
+    type: { required }
+  },
   data () {
     return {
       dialog: false,
       doctorSpecialty: this.$props.specialty,
       types: ['Alta', 'Media', 'Baja'],
-      form: {
-        alert: '',
-        type: ''
-      },
+      alert: '',
+      type: null,
       uid: this.$props.myUid
     }
   },
@@ -99,6 +114,28 @@ export default {
     },
     user () {
       return this.$store.state.user || null
+    },
+    alertErrors () {
+      const errors = []
+      if (!this.$v.alert.$dirty) {
+        return errors
+      }
+      !this.$v.alert.minLength &&
+        errors.push(
+          'La mensaje de la alerta debe tener 3 caracteres como mínimo'
+        )
+      !this.$v.alert.required &&
+        errors.push('El mensaje de la alerta es requerido')
+      return errors
+    },
+    typeErrors () {
+      const errors = []
+      if (!this.$v.type.$dirty) {
+        return errors
+      }
+      !this.$v.type.required &&
+        errors.push('El tipo de alerta es requerida, seleccione una')
+      return errors
     }
   },
   mounted () {
@@ -111,8 +148,17 @@ export default {
     }
   },
   methods: {
+    submit () {
+      this.$v.$touch()
+    },
     close () {
-      this.dialog = !this.dialog
+      this.dialog = false
+      this.$v.$reset()
+      this.alert = ''
+      this.type = null
+    },
+    open () {
+      this.dialog = true
     },
     formatDateTable (item) {
       const ss = new Date(Number(item)).toISOString().substr(0, 10)
@@ -120,20 +166,22 @@ export default {
     },
     async createAlert () {
       try {
-        const { alert, type } = this.form
-        const date = new Date().getTime()
-        await this.$fire.firestore.collection('alerts').add({
-          date,
-          alert,
-          type,
-          doctorSpecialty: localStorage.getItem('doctorSpecialty'),
-          uid: this.uid,
-          createdBy: this.$store.state.authUser.uid
-        })
-
-        this.close()
-        this.form.alert = ''
-        this.form.type = ''
+        const { alert, type } = this
+        if (!alert || !type || alert.length < 3) {
+          this.dialog = true
+        } else {
+          const date = new Date().getTime()
+          await this.$fire.firestore.collection('alerts').add({
+            date,
+            alert,
+            type,
+            doctorName: localStorage.getItem('doctorName'),
+            doctorSpecialty: localStorage.getItem('doctorSpecialty'),
+            uid: this.uid,
+            createdBy: this.$store.state.authUser.uid
+          })
+          this.close()
+        }
       } catch (error) {
         console.log('error', error)
       }

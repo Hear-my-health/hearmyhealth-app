@@ -1,14 +1,9 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="12" sm="12" md="9">
-        <v-row justify="center" align="center">
-          <v-col
-            class="d-flex"
-            cols="12"
-            sm="12"
-            md="3"
-          >
+      <v-col cols="12" sm="8" md="9">
+        <v-row justify="center" align="top">
+          <v-col class="d-flex" cols="12" sm="12" md="4">
             <v-select
               v-model="selectName"
               :items="selectNames"
@@ -18,7 +13,7 @@
               outlined
             />
           </v-col>
-          <v-col cols="12" sm="8" md="3">
+          <v-col cols="12" sm="12" md="4">
             <v-menu
               ref="menu1"
               v-model="menu1"
@@ -46,8 +41,7 @@
               />
             </v-menu>
           </v-col>
-
-          <v-col cols="12" sm="8" md="3">
+          <v-col cols="12" sm="12" md="4">
             <v-menu
               ref="menu2"
               v-model="menu2"
@@ -76,78 +70,211 @@
             </v-menu>
           </v-col>
         </v-row>
-        <v-row justify="center" align="center">
-          <v-col
-            v-if="dataPhysicalHealth < 30 && dataPhysicalHealth > 0"
-            cols="12"
-            sm="12"
-            md="4"
-            justify="center"
-            align="center"
-          >
-            <v-progress-circular
-              :rotate="-90"
-              :size="100"
-              :width="15"
-              :value="dataPhysicalHealth"
-              color="red"
-            >
-              {{ Math.trunc(dataPhysicalHealth, 0) }}
-            </v-progress-circular>
-          </v-col>
-          <v-col
-            v-if="dataPhysicalHealth < 60 && dataPhysicalHealth >= 30"
-            cols="12"
-            sm="12"
-            md="4"
-            justify="center"
-            align="center"
-          >
-            <v-progress-circular
-              :rotate="-90"
-              :size="100"
-              :width="15"
-              :value="dataPhysicalHealth"
-              color="amber"
-            >
-              {{ Math.trunc(dataPhysicalHealth, 0) }}
-            </v-progress-circular>
-          </v-col>
-          <v-col
-            v-if="dataPhysicalHealth >= 60"
-            cols="12"
-            sm="12"
-            md="4"
-            justify="center"
-            align="center"
-          >
-            <v-progress-circular
-              :rotate="-90"
-              :size="100"
-              :width="15"
-              :value="dataPhysicalHealth"
-              color="green"
-            >
-              {{ Math.trunc(dataPhysicalHealth, 0) }}
-            </v-progress-circular>
-          </v-col>
-          <v-col
-            v-if="dataMood.length > 0"
-            cols="12"
-            sm="12"
-            md="8"
-            justify="center"
-            align="center"
-          >
-            <line-chart
-              :chart-data="dataMood"
-              :options="chartOptions"
-              label="Mood"
+        <v-row>
+          <v-col cols="12" sm="8" md="3">
+            <v-select
+              v-model="selectedType"
+              :items="selectTypes"
+              label="Tipo de Salud"
+              dense
+              outlined
             />
           </v-col>
         </v-row>
+        <v-row justify="center" align="center">
+          <!-- SALUD FÍSICA -->
+          <v-container v-if="selectedType === 'Salud Física'">
+            <v-col
+              v-if="dataPhysicalHealth < 30 && dataPhysicalHealth > 0"
+              cols="12"
+              sm="12"
+              md="4"
+              justify="center"
+              align="center"
+            >
+              <v-progress-circular
+                :rotate="-90"
+                :size="100"
+                :width="15"
+                :value="dataPhysicalHealth"
+                color="red"
+              >
+                {{ Math.trunc(dataPhysicalHealth, 0) }}
+              </v-progress-circular>
+            </v-col>
+            <v-col
+              v-if="dataPhysicalHealth < 60 && dataPhysicalHealth >= 30"
+              cols="12"
+              sm="12"
+              md="4"
+              justify="center"
+              align="center"
+            >
+              <v-progress-circular
+                :rotate="-90"
+                :size="100"
+                :width="15"
+                :value="dataPhysicalHealth"
+                color="amber"
+              >
+                {{ Math.trunc(dataPhysicalHealth, 0) }}
+              </v-progress-circular>
+            </v-col>
+            <v-col
+              v-if="dataPhysicalHealth >= 60"
+              cols="12"
+              sm="12"
+              md="4"
+              justify="center"
+              align="center"
+            >
+              <v-progress-circular
+                :rotate="-90"
+                :size="100"
+                :width="15"
+                :value="dataPhysicalHealth"
+                color="green"
+              >
+                {{ Math.trunc(dataPhysicalHealth, 0) }}
+              </v-progress-circular>
+            </v-col>
+            <v-col
+              v-if="dataStep.length > 0"
+              cols="12"
+              sm="12"
+              md="8"
+              justify="center"
+              align="center"
+            >
+              <bar-chart
+                :chart-data="dataStep"
+                :options="chartOptions"
+                :chart-colors="stepColors"
+                label="Pasos"
+              />
+            </v-col>
+            <v-col
+              v-if="dataHeartRate.length > 0"
+              cols="12"
+              sm="12"
+              md="8"
+              justify="center"
+              align="center"
+            >
+              <line-chart
+                :chart-data="dataHeartRate"
+                :options="chartOptions"
+                :chart-colors="heartRateColors"
+                label="Ritmo Cardiaco"
+              />
+            </v-col>
+            <v-col
+              v-if="dataCalories.length > 0"
+              cols="12"
+              sm="12"
+              md="8"
+              justify="center"
+              align="center"
+            >
+              <line-chart
+                :chart-data="dataCalories"
+                :options="chartOptions"
+                :chart-colors="caloriesColors"
+                label="Calorías"
+              />
+            </v-col>
+          </v-container>
+          <!-- FIN SALUD FÍSICA -->
+          <!-- SALUD MENTAL -->
+          <v-container v-if="selectedType === 'Salud Mental'">
+            <v-col
+              v-if="dataMentalHealth < 30 && dataMentalHealth > 0"
+              cols="12"
+              sm="12"
+              md="4"
+              justify="center"
+              align="center"
+            >
+              <v-progress-circular
+                :rotate="-90"
+                :size="100"
+                :width="15"
+                :value="dataMentalHealth"
+                color="red"
+              >
+                {{ Math.trunc(dataMentalHealth, 0) }}
+              </v-progress-circular>
+            </v-col>
+            <v-col
+              v-if="dataMentalHealth < 60 && dataMentalHealth >= 30"
+              cols="12"
+              sm="12"
+              md="4"
+              justify="center"
+              align="center"
+            >
+              <v-progress-circular
+                :rotate="-90"
+                :size="100"
+                :width="15"
+                :value="dataMentalHealth"
+                color="amber"
+              >
+                {{ Math.trunc(dataMentalHealth, 0) }}
+              </v-progress-circular>
+            </v-col>
+            <v-col
+              v-if="dataMentalHealth >= 60"
+              cols="12"
+              sm="12"
+              md="4"
+              justify="center"
+              align="center"
+            >
+              <v-progress-circular
+                :rotate="-90"
+                :size="100"
+                :width="15"
+                :value="dataMentalHealth"
+                color="green"
+              >
+                {{ Math.trunc(dataMentalHealth, 0) }}
+              </v-progress-circular>
+            </v-col>
+            <v-col
+              v-if="dataHeartRate.length > 0"
+              cols="12"
+              sm="12"
+              md="8"
+              justify="center"
+              align="center"
+            >
+              <bar-chart
+                :chart-data="dataMood"
+                :options="chartOptions"
+                :chart-colors="moodColors"
+                label="Estado de ánimo"
+              />
+            </v-col>
+            <v-col
+              v-if="dataStep.length > 0"
+              cols="12"
+              sm="12"
+              md="8"
+              justify="center"
+              align="center"
+            >
+              <double-bar-chart
+                :chart-data="dataSleepDeepSleep"
+                :options="chartOptions"
+                label="Sueño y Sueño Profundo"
+              />
+            </v-col>
+          </v-container>
+          <!-- FIN SALUD MENTAL -->
+        </v-row>
       </v-col>
-      <v-col cols="12" sm="12" md="3">
+      <v-col cols="12" sm="4" md="3">
         <div class="fixed-height-container">
           <h4 class="mb-3">
             Recomendaciones
@@ -196,10 +323,14 @@
 
 <script>
 import LineChart from '~/components/uid/charts/LineChart'
+import BarChart from '~/components/uid/charts/BarChart'
+import DoubleBarChart from '~/components/uid/charts/DoubleBarChart'
 
 export default {
   components: {
-    LineChart
+    LineChart,
+    BarChart,
+    DoubleBarChart
   },
 
   // props: ["myUid"],
@@ -214,6 +345,30 @@ export default {
 
   data () {
     return {
+      heartRateColors: {
+        borderColor: '#E55381',
+        pointBorderColor: '#E55381',
+        pointBackgroundColor: '#E55381',
+        backgroundColor: 'transparent'
+      },
+      stepColors: {
+        borderColor: '#077187',
+        pointBorderColor: '#0E1428',
+        pointBackgroundColor: '#AFD6AC',
+        backgroundColor: '#74A57F'
+      },
+      caloriesColors: {
+        borderColor: '#0345fc',
+        pointBorderColor: '#0345fc',
+        pointBackgroundColor: '#0345fc',
+        backgroundColor: '#5f7ed4'
+      },
+      moodColors: {
+        borderColor: '#0345fc',
+        pointBorderColor: 'transparent',
+        pointBackgroundColor: 'transparent',
+        backgroundColor: '#5f7ed4'
+      },
       uid: this.$props.myUid,
       dateStart: '',
       dateStarFormatted: '',
@@ -227,6 +382,8 @@ export default {
         responsive: true,
         maintainAspectRatio: false
       },
+      selectedType: '',
+      selectTypes: ['Salud Física', 'Salud Mental'],
       selectItems: [
         'Ritmo cardiaco',
         'Cadencia de conteo de pasos',
@@ -289,7 +446,6 @@ export default {
   },
 
   computed: {
-
     selectNotification: {
       get () {
         return this.notificationSelectData
@@ -387,6 +543,169 @@ export default {
       return myAvg * 100
     },
 
+    dataMentalHealth () {
+      const avgMental = []
+      const dateStartTimeMental = new Date(this.dateStart).getTime()
+      const dateEndTimeMental = new Date(this.dateEnd).getTime()
+      const ddMental = (dateEndTimeMental - dateStartTimeMental) / 86400000
+      let start = dateStartTimeMental
+
+      if (this.$store.state.dataSet.length > 0) {
+        for (let index = 1; index <= Math.floor(ddMental); index++) {
+          const dateEndMental = start + 86400000
+          const ddMental = this.$store.state.dataSet.filter(
+            s =>
+              s.startTimeMillis >= start && s.endTimeMillis <= dateEndMental
+          )
+          const moodTemp = ddMental.filter(
+            s => s.dataTypeName === 'app.web.hear-my-health.mood.segment'
+          )
+          const sleepTemp = ddMental.filter(
+            s => s.dataTypeName === 'com.google.sleep.segment'
+          )
+          const deppSleepTemp = ddMental.filter(
+            s => s.dataTypeName === 'app.web.hear-my-health.sleep.deep'
+          )
+
+          const m = moodTemp.map((e) => {
+            return e.value !== null || e.value !== undefined
+              ? e.state === 'green'
+                ? 1
+                : e.state === 'yellow'
+                  ? 0.5
+                  : 0
+              : 0
+          })
+          const sl = sleepTemp.map((e) => {
+            return e.value !== null || e.value !== undefined
+              ? e.state === 'green'
+                ? 1
+                : e.state === 'yellow'
+                  ? 0.5
+                  : 0
+              : 0
+          })
+          const dsl = deppSleepTemp.map((e) => {
+            return e.value !== null || e.value !== undefined
+              ? e.state === 'green'
+                ? 1
+                : e.state === 'yellow'
+                  ? 0.5
+                  : 0
+              : 0
+          })
+          let avg = 0
+          for (let x = 0; x < moodTemp.length; x++) {
+            avg +=
+              Math.round(0.5 * m[x]) +
+              Math.round(0.17 * sl[x]) +
+              Math.round(0.33 * dsl[x])
+          }
+          avgMental.push(avg)
+          start = dateEndMental
+        }
+      }
+      let myAvg = 0
+      for (let y = 0; y < avgMental.length; y++) {
+        if (isNaN(avgMental[y])) {
+          myAvg += 0
+        } else {
+          myAvg += avgMental[y]
+        }
+      }
+      myAvg = myAvg / avgMental.length
+      return myAvg * 100
+    },
+
+    dataCalories () {
+      const tt = []
+      const dateStartTime = new Date(this.dateStart).getTime()
+      const dateEndTime = new Date(this.dateEnd).getTime()
+      const dd = (dateEndTime - dateStartTime) / 86400000
+      let start = dateStartTime
+
+      if (this.$store.state.dataSet.length > 0) {
+        for (let index = 1; index <= Math.floor(dd); index++) {
+          const dateEnd = start + 86400000
+          const dd = this.$store.state.dataSet.filter(
+            s => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
+          )
+          const dataTemp = dd.filter(
+            s => s.dataTypeName === 'com.google.calories.expended'
+          )
+          dataTemp.forEach((e) => {
+            const ee = {
+              date: this.formatDateTable(start),
+              data: e.value !== null ? Math.round(e.value) : 0
+            }
+            tt.push(ee)
+          })
+
+          start = dateEnd
+        }
+      }
+      return tt
+    },
+    dataStep () {
+      const tt = []
+      const dateStartTime = new Date(this.dateStart).getTime()
+      const dateEndTime = new Date(this.dateEnd).getTime()
+      const dd = (dateEndTime - dateStartTime) / 86400000
+      let start = dateStartTime
+
+      if (this.$store.state.dataSet.length > 0) {
+        for (let index = 1; index <= Math.floor(dd); index++) {
+          const dateEnd = start + 86400000
+          const dd = this.$store.state.dataSet.filter(
+            s => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
+          )
+          const dataTemp = dd.filter(
+            s => s.dataTypeName === 'com.google.step_count.delta'
+          )
+          dataTemp.forEach((e) => {
+            const ee = {
+              date: this.formatDateTable(start),
+              data: e.value !== null ? Math.round(e.value) : 0
+            }
+            tt.push(ee)
+          })
+
+          start = dateEnd
+        }
+      }
+      return tt
+    },
+
+    dataHeartRate () {
+      const tt = []
+      const dateStartTime = new Date(this.dateStart).getTime()
+      const dateEndTime = new Date(this.dateEnd).getTime()
+      const dd = (dateEndTime - dateStartTime) / 86400000
+      let start = dateStartTime
+
+      if (this.$store.state.dataSet.length > 0) {
+        for (let index = 1; index <= Math.floor(dd); index++) {
+          const dateEnd = start + 86400000
+          const dd = this.$store.state.dataSet.filter(
+            s => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
+          )
+          const dataTemp = dd.filter(
+            s => s.dataTypeName === 'com.google.heart_rate.bpm'
+          )
+          dataTemp.forEach((e) => {
+            const ee = {
+              date: this.formatDateTable(start),
+              data: e.value !== null ? Math.round(e.value) : 0
+            }
+            tt.push(ee)
+          })
+
+          start = dateEnd
+        }
+      }
+      return tt
+    },
+
     dataMood () {
       const tt = []
       const dateStartTime = new Date(this.dateStart).getTime()
@@ -400,13 +719,13 @@ export default {
           const dd = this.$store.state.dataSet.filter(
             s => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
           )
-          const moodTemp = dd.filter(
-            s => s.dataTypeName === 'com.google.step_count.delta'
+          const dataTemp = dd.filter(
+            s => s.dataTypeName === 'app.web.hear-my-health.mood.segment'
           )
-          moodTemp.forEach((e) => {
+          dataTemp.forEach((e) => {
             const ee = {
               date: this.formatDateTable(start),
-              mood: e.value !== null ? Math.round(e.value) : 0
+              data: e.value !== null ? e.value : 0
             }
             tt.push(ee)
           })
@@ -417,11 +736,64 @@ export default {
       return tt
     },
 
+    dataSleepDeepSleep () {
+      const tt = []
+      const tt2 = []
+      const dateStartTime = new Date(this.dateStart).getTime()
+      const dateEndTime = new Date(this.dateEnd).getTime()
+      const dd = (dateEndTime - dateStartTime) / 86400000
+      let start = dateStartTime
+
+      if (this.$store.state.dataSet.length > 0) {
+        for (let index = 1; index <= Math.floor(dd); index++) {
+          const dateEnd = start + 86400000
+          const dd = this.$store.state.dataSet.filter(
+            s => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
+          )
+          /* const dataTemp = dd.filter(
+            (s) => s.dataTypeName === "com.google.sleep.segment",
+            (s) => s.dataTypeName === "app.web.hear-my-health.sleep.deep"
+          );
+          const dataTemp = dd.filter(
+            (s) => s.dataTypeName === "app.web.hear-my-health.mood.segment"
+          ); */
+          const dataTemp1 = dd.filter(
+            s => s.dataTypeName === 'com.google.sleep.segment'
+          )
+          const dataTemp2 = dd.filter(
+            s => s.dataTypeName === 'app.web.hear-my-health.sleep.deep'
+          )
+          dataTemp1.forEach((e) => {
+            const ee = {
+              date: this.formatDateTable(start),
+              data: e.value !== null ? e.value : 0
+            }
+            tt.push(ee)
+          })
+          dataTemp2.forEach((e) => {
+            const ee = {
+              date: this.formatDateTable(start),
+              data: e.value !== null ? e.value : 0
+            }
+            tt2.push(ee)
+          })
+          start = dateEnd
+        }
+      }
+      const toR = {
+        tt,
+        tt2
+      }
+      return toR
+    },
+
     dataSetFilterSelect () {
       if (this.selectNameData === 'all') {
         return this.$store.state.dataSet
       }
-      return this.$store.state.dataSet.filter(e => e.dataTypeName === this.selectNameData)
+      return this.$store.state.dataSet.filter(
+        e => e.dataTypeName === this.selectNameData
+      )
     },
 
     dataSetNotification () {

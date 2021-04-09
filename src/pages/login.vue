@@ -410,7 +410,7 @@ export default {
               startTimeMillis: obj.startTimeMillis,
               startTimeNanos: '',
 
-              value,
+              value: Number(value),
 
               name: obj.name,
               modifiedTimeMillis: obj.modifiedTimeMillis,

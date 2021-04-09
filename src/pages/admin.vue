@@ -29,6 +29,9 @@
             type="password"
           />
         </div>
+        <p v-if="errors" class="red--text">
+          Usuario o contraseña incorrecto
+        </p>
         <v-btn
           elevation="0"
           large
@@ -119,6 +122,7 @@ export default {
   data () {
     return {
       submitted: false,
+      errors: false,
       newDoctor: {
         email: '',
         password: ''
@@ -154,9 +158,13 @@ export default {
               .then((res) => {
                 this.$router.push('/back')
               })
+              // eslint-disable-next-line node/handle-callback-err
+              .catch((err) => {
+                this.submitted = false
+              })
           })
       } catch (error) {
-        this.submitted = false
+        console.log('error', error)
       }
     },
 
@@ -168,8 +176,14 @@ export default {
           .then((res) => {
             this.$router.push('/back')
           })
+          .catch((err) => {
+            this.submitted = false
+            this.errors = true
+            setTimeout(() => (this.errors = false), 5000)
+            console.log(err)
+          })
       } catch (error) {
-        this.submitted = false
+        console.log('error', error)
       }
     }
   }

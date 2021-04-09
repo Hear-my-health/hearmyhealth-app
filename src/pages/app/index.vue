@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="userType === 'user'">
     <v-row justify="center" align="center">
       <v-col cols="12" md="10">
         <v-toolbar flat class="grey lighten-5">
@@ -61,11 +61,20 @@
                   </v-card>
                 </v-col>
                 <v-col cols="12" md="12">
+                  <p v-if="noMood" class="red--text">
+                    Seleccione un estado de ánimo
+                  </p>
+                </v-col>
+                <v-col cols="12" md="12">
                   <v-textarea
-                    v-model="form.thought"
+                    v-model="thought"
                     outlined
                     name="input-7-4"
-                    label="Escribe cómo te sientes"
+                    label="Pensamiento"
+                    required
+                    :error-messages="thoughtErrors"
+                    @input="$v.thought.$touch()"
+                    @blur="$v.thought.$touch()"
                   />
                 </v-col>
               </v-row>
@@ -74,11 +83,17 @@
 
           <v-card-actions>
             <v-spacer />
-            <v-btn elevation="0" raised @click="dialog = !dialog">
+            <v-btn elevation="0" raised @click="close">
               Cancelar
             </v-btn>
 
-            <v-btn elevation="0" outlined raised type="submit">
+            <v-btn
+              elevation="0"
+              outlined
+              raised
+              type="submit"
+              @click="submitThought"
+            >
               Guardar
             </v-btn>
           </v-card-actions>
@@ -150,10 +165,14 @@ export default {
   layout: 'dashboard',
   validations: {
     dni: { required, minLength: minLength(8), maxLength: maxLength(8) },
-    dateOfBirth: { required }
+    dateOfBirth: { required },
+    thought: { required, minLength: minLength(3) }
   },
   data () {
     return {
+      userType: '',
+      thought: '',
+      noMood: false,
       noData: false,
       dni: '',
       dateOfBirth: '',
@@ -209,7 +228,6 @@ export default {
       }
       (!this.$v.dni.maxLength || !this.$v.dni.minLength) &&
         errors.push('El DNI debe tener 8 caracteres')
-      /* !this.$v.dni.minLength && errors.push("El DNI debe tener 8 caracteres");  */
       !this.$v.dni.required && errors.push('El DNI es requerido')
       return errors
     },
@@ -221,11 +239,25 @@ export default {
       !this.$v.dateOfBirth.required &&
         errors.push('La fecha de nacimiento es requerida')
       return errors
+    },
+    thoughtErrors () {
+      const errors = []
+      if (!this.$v.thought.$dirty) {
+        return errors
+      }
+      !this.$v.thought.minLength &&
+        errors.push(
+          'La mensaje del pensamiento debe tener 3 caracteres como mínimo'
+        )
+      !this.$v.thought.required &&
+        errors.push('El mensaje del pensamiento es requerido')
+      return errors
     }
   },
 
   watch: {
     user () {
+      localStorage.setItem('role', this.user.role)
       if (!this.user.dni || !this.user.dateOfBirth) {
         this.noData = true
       } else {
@@ -235,19 +267,38 @@ export default {
   },
 
   mounted () {
-    const { authUser } = this.$store.state
-    if (!authUser) {
-      this.$router.push('/')
+    if (localStorage.getItem('role') === 'admin') {
+      this.userType = localStorage.getItem('role')
+      this.$router.push('/back')
     } else {
-      this.$store.dispatch('getValues')
-      this.$store.dispatch('getThoughts', { uid: authUser.uid })
-      this.$store.dispatch('getUser', { uid: authUser.uid })
+      this.userType = localStorage.getItem('role')
+      const { authUser } = this.$store.state
+      if (!authUser) {
+        this.$router.push('/')
+      } else {
+        this.$store.dispatch('getValues')
+        this.$store.dispatch('getThoughts', { uid: authUser.uid })
+        this.$store.dispatch('getUser', { uid: authUser.uid })
+      }
     }
   },
 
   methods: {
+    submitThought () {
+      this.$v.$touch()
+    },
     submit () {
       this.$v.$touch()
+    },
+    close () {
+      this.dialog = false
+      this.$v.$reset()
+      this.thought = ''
+      this.select('')
+      this.noMood = false
+    },
+    open () {
+      this.dialog = true
     },
     async updateInfo () {
       try {
@@ -277,6 +328,7 @@ export default {
         return e
       })
       this.moods = ss
+      this.noMood = false
     },
 
     getState (obj) {
@@ -297,61 +349,61 @@ export default {
       }
     },
 
-    close () {
-      this.dialog = !this.dialog
-    },
-
     async createThought () {
       const moodSelect = this.moods.filter(e => e.select)
+      console.log(moodSelect)
       if (moodSelect.length) {
         try {
           const item = moodSelect[0]
           const { uid } = this.$store.state.authUser
-          const { thought } = this.form
+          const { thought } = this
           const date = new Date().getTime()
 
-          await this.$fire.firestore
-            .collection('thoughts')
-            .doc()
-            .set({
-              date,
-              thought,
-              uid,
-              ...item
-            })
+          if (!thought || thought.length < 3) {
+            this.dialog = true
+          } else {
+            await this.$fire.firestore
+              .collection('thoughts')
+              .doc()
+              .set({
+                date,
+                thought,
+                uid,
+                ...item
+              })
+            const obj = {
+              dataSourceId: '',
+              dataTypeName: 'app.web.hear-my-health.mood.segment',
+              endTimeMillis: date,
+              endTimeNanos: '',
+              originDataSourceId: '',
+              point: item,
+              startTimeMillis: date,
+              startTimeNanos: '',
 
-          const obj = {
-            dataSourceId: '',
-            dataTypeName: 'app.web.hear-my-health.mood.segment',
-            endTimeMillis: date,
-            endTimeNanos: '',
-            originDataSourceId: '',
-            point: item,
-            startTimeMillis: date,
-            startTimeNanos: '',
+              value: item.value,
 
-            value: item.value,
-
-            name: item.name,
-            modifiedTimeMillis: '',
-            activityType: ''
+              name: item.name,
+              modifiedTimeMillis: '',
+              activityType: ''
+            }
+            const stateSleep = this.getState(obj)
+            await this.$fire.firestore
+              .collection('dataSet')
+              .doc()
+              .set({
+                uid,
+                ...obj,
+                stateSleep
+              })
           }
-
-          const stateSleep = this.getState(obj)
-          await this.$fire.firestore
-            .collection('dataSet')
-            .doc()
-            .set({
-              uid,
-              ...obj,
-              state: stateSleep
-            })
           this.close()
-          this.form.thought = ''
-          this.select('')
         } catch (error) {
           return error
         }
+      } else {
+        this.noMood = true
+        console.log('no mood')
       }
     }
   }

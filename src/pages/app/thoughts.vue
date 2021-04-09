@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-btn elevation="0" outlined raised @click="dialog = !dialog">
+    <v-btn elevation="0" outlined raised @click="open">
       Agregar pensamiento
     </v-btn>
 
@@ -10,7 +10,7 @@
     <v-timeline dense>
       <v-timeline-item v-for="(thought, ith) in thoughts" :key="ith">
         <v-card class="elevation-1">
-          <div v-if="thought.name ">
+          <div v-if="thought.name">
             <img
               :src="`/images/${thought.name}.svg`"
               alt="google-auth"
@@ -28,7 +28,7 @@
     </v-timeline>
 
     <v-dialog v-model="dialog" max-width="500px" elevation="0">
-      <form @submit.prevent="createDoctor">
+      <form @submit.prevent="createThought">
         <v-card>
           <v-card-title>
             <span class="headline">{{ formTitle }}</span>
@@ -39,6 +39,7 @@
               <v-row>
                 <v-col v-for="(item, index) in moods" :key="index" cols="4">
                   <v-card
+                    v-model="mood"
                     elevation="1"
                     class="justify-center text-center pt-2"
                     @click="select(item)"
@@ -54,11 +55,14 @@
                 </v-col>
                 <v-col cols="12" md="12">
                   <v-textarea
-                    v-model="form.thought"
+                    v-model="thought"
                     outlined
                     name="input-7-4"
                     label="Pensamiento"
-                    value="The Woodman set to work at once, and so sharp was his axe that the tree was soon chopped nearly through."
+                    required
+                    :error-messages="thoughtErrors"
+                    @input="$v.thought.$touch()"
+                    @blur="$v.thought.$touch()"
                   />
                 </v-col>
               </v-row>
@@ -67,11 +71,11 @@
 
           <v-card-actions>
             <v-spacer />
-            <v-btn elevation="0" raised @click="dialog = !dialog">
+            <v-btn elevation="0" raised @click="close">
               Cancelar
             </v-btn>
 
-            <v-btn elevation="0" outlined raised type="submit">
+            <v-btn elevation="0" outlined raised type="submit" @click="submit">
               Guardar
             </v-btn>
           </v-card-actions>
@@ -81,12 +85,20 @@
   </div>
 </template>
 <script>
+import { validationMixin } from 'vuelidate'
+import { required, minLength } from 'vuelidate/lib/validators'
 export default {
+  mixins: [validationMixin],
   layout: 'dashboard',
-
+  validations: {
+    thought: { required, minLength: minLength(3) },
+    mood: { required }
+  },
   data () {
     return {
       dialog: false,
+      thought: '',
+      mood: null,
       form: {
         thought: ''
       },
@@ -117,6 +129,30 @@ export default {
   computed: {
     thoughts () {
       return this.$store.state.thoughts
+    },
+    thoughtErrors () {
+      const errors = []
+      if (!this.$v.thought.$dirty) {
+        return errors
+      }
+      !this.$v.thought.minLength &&
+        errors.push(
+          'La mensaje del pensamiento debe tener 3 caracteres como mínimo'
+        )
+      !this.$v.thought.required &&
+        errors.push('El mensaje del pensamiento es requerido')
+      return errors
+    },
+    moodErrors () {
+      const errors = []
+      if (!this.$v.mood.$dirty) {
+        return errors
+      }
+      !this.$v.mood.required &&
+        errors.push(
+          'El estado de ánimo del pensamiento es requerido, seleccione uno'
+        )
+      return errors
     }
   },
 
@@ -131,6 +167,19 @@ export default {
   },
 
   methods: {
+    submit () {
+      this.$v.$touch()
+    },
+    close () {
+      this.dialog = false
+      this.$v.$reset()
+      this.thought = ''
+      this.mood = null
+    },
+    open () {
+      this.dialog = true
+    },
+
     select (item) {
       const ss = this.moods.map((e) => {
         e.select = e.id === item.id
@@ -188,53 +237,55 @@ export default {
       }
     },
 
-    close () {
-      this.dialog = !this.dialog
-    },
-
-    async createDoctor () {
+    async createThought () {
       const ss = this.moods.filter(e => e.select)
 
       if (ss.length) {
         try {
           const item = ss[0]
           const { uid } = this.$store.state.authUser
-          const { thought } = this.form
+          const { thought } = this
           const date = new Date().getTime()
+          if (!thought || thought.length < 3) {
+            this.dialog = true
+          } else {
+            await this.$fire.firestore
+              .collection('thoughts')
+              .doc()
+              .set({
+                date,
+                thought,
+                uid,
+                ...item
+              })
+            const obj = {
+              dataSourceId: '',
+              dataTypeName: 'app.web.hear-my-health.mood.segment',
+              endTimeMillis: date,
+              endTimeNanos: '',
+              originDataSourceId: '',
+              point: item,
+              startTimeMillis: date,
+              startTimeNanos: '',
 
-          await this.$fire.firestore.collection('thoughts').doc().set({
-            date,
-            thought,
-            uid,
-            ...item
-          })
-          const obj = {
-            dataSourceId: '',
-            dataTypeName: 'app.web.hear-my-health.mood.segment',
-            endTimeMillis: date,
-            endTimeNanos: '',
-            originDataSourceId: '',
-            point: item,
-            startTimeMillis: date,
-            startTimeNanos: '',
+              value: item.value,
 
-            value: item.value,
+              name: item.name,
+              modifiedTimeMillis: '',
+              activityType: ''
+            }
 
-            name: item.name,
-            modifiedTimeMillis: '',
-            activityType: ''
+            const stateSleep = this.getState(obj)
+            await this.$fire.firestore
+              .collection('dataSet')
+              .doc()
+              .set({
+                uid,
+                ...obj,
+                stateSleep
+              })
+            this.close()
           }
-
-          const stateSleep = this.getState(obj)
-          await this.$fire.firestore
-            .collection('dataSet')
-            .doc()
-            .set({
-              uid,
-              ...obj,
-              stateSleep
-            })
-          this.close()
         } catch (error) {
           return error
         }

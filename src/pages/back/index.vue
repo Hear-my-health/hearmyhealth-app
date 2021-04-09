@@ -1,5 +1,5 @@
 <template>
-  <v-row justify="center" align="center">
+  <v-row v-if="userType === 'admin'" justify="center" align="center">
     <v-col cols="12" sm="10" md="10">
       <v-data-table
         :headers="headers"
@@ -124,6 +124,7 @@ export default {
   },
   data () {
     return {
+      userType: '',
       noData: false,
       specialties: ['Psicólogo', 'Nutricionista', 'Médico general', 'Otro'],
       dni: '',
@@ -230,8 +231,10 @@ export default {
 
   watch: {
     user () {
+      localStorage.setItem('role', this.user.role)
       if (this.user.specialty) {
         localStorage.setItem('doctorSpecialty', this.user.specialty)
+        localStorage.setItem('doctorName', this.user.name)
       }
       if (!this.user.dni || !this.user.dateOfBirth || !this.user.specialty) {
         this.noData = true
@@ -242,12 +245,18 @@ export default {
   },
 
   mounted () {
-    const { authUser } = this.$store.state
-    if (!authUser) {
-      this.$router.push('/')
+    if (localStorage.getItem('role') === 'user') {
+      this.userType = localStorage.getItem('role')
+      this.$router.push('/app')
     } else {
-      this.$store.dispatch('getUsers')
-      this.$store.dispatch('getUser', { uid: authUser.uid })
+      this.userType = localStorage.getItem('role')
+      const { authUser } = this.$store.state
+      if (!authUser) {
+        this.$router.push('/')
+      } else {
+        this.$store.dispatch('getUsers')
+        this.$store.dispatch('getUser', { uid: authUser.uid })
+      }
     }
   },
 
