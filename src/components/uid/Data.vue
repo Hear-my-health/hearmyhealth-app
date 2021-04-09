@@ -394,7 +394,6 @@ export default {
           tt.push(ee)
         }
       }
-      console.log(tt)
       return tt
     }
   },
@@ -515,19 +514,18 @@ export default {
           const initialValue = 0
           const average =
             dataSetByKey.reduce(function (total, item) {
-              const heartRateValue =
-                0.5 *
-                states.find(e => e.key === item.heartRate.state || 'not')
-                  .value
-              const stepsValue =
-                0.17 *
-                states.find(e => e.key === item.steps.state || 'not').value
-              const caloriesValue =
-                0.33 *
-                states.find(e => e.key === item.calories.state || 'not')
-                  .value
-
-              return total + (heartRateValue + stepsValue + caloriesValue) || 0
+              const heartRateValue = states.find(
+                e => e.key === item.heartRate ? item.heartRate.state : 'not'
+              ).value
+              const stepsValue = states.find(
+                e => e.key === (item.steps ? item.steps.state : 'not')
+              ).value
+              const caloriesValue = states.find(
+                e => e.key === (item.calories ? item.calories.state : 'not')
+              ).value
+              const value =
+                0.5 * heartRateValue + 0.17 * stepsValue + 0.33 * caloriesValue
+              return total + value
             }, initialValue) / dataSetByKey.length
 
           return this.round(average)
@@ -566,23 +564,18 @@ export default {
           const initialValue = 0
           const average =
             dataSetByKey.reduce(function (total, item) {
-              const sleepValue =
-                0.17 *
-                states.find(e =>
-                  e.key === item.sleep ? item.sleep.state : 'not'
-                ).value
-              const moodValue =
-                0.5 *
-                states.find(e =>
-                  e.key === item.mood ? item.mood.state : 'not'
-                ).value
-              const deepSleepValue =
-                0.33 *
-                states.find(e =>
-                  e.key === item.deepSleep ? item.deepSleep.state : 'not'
-                ).value
+              const sleepValue = states.find(e => e.key === item.sleep ? item.sleep.state : 'not')
+                .value
+              const moodValue = states.find(e => e.key === item.mood ? item.mood.state : 'not')
+                .value
+              const deepSleepValue = states.find(
+                e => e.key === item.deepSleep ? item.deepSleep.state : 'not'
+              ).value
 
-              return total + (sleepValue + moodValue + deepSleepValue) || 0
+              const value =
+                0.5 * moodValue + 0.17 * sleepValue + 0.33 * deepSleepValue
+
+              return total + value || 0
             }, initialValue) / dataSetByKey.length
 
           return this.round(average)

@@ -333,9 +333,6 @@ export default {
     DoubleBarChart
   },
 
-  // props: ["myUid"],
-  /*   data: (vm) => ({ */
-  // data() {
   props: {
     myUid: {
       type: String,
@@ -521,18 +518,11 @@ export default {
               : 0
           })
           let avg = 0
-          console.log('values', hr, st, c)
           for (let x = 0; x < heartRateTemp.length; x++) {
             avg +=
               Math.round(0.5 * hr[x]) +
               Math.round(0.17 * st[x]) +
               Math.round(0.33 * c[x])
-            /*    ? Math.round(e.value)
-              : 0
-          })
-          let avg = 0
-          for (let x = 0; x < heartRateTemp.length; x++) {
-            avg += this.round(0.5 * hr[x] + 0.17 * st[x] + 0.33 * c[x]) */
           }
           avgPhysical.push(avg)
           start = dateEndPyshical
@@ -547,11 +537,7 @@ export default {
         }
       }
       myAvg = myAvg / avgPhysical.length
-      console.log(myAvg)
       return myAvg * 100
-
-      /* myAvg = myAvg / avgPhysical.length
-      return Math.trunc(myAvg, 0) */
     },
 
     dataMentalHealth () {
@@ -606,18 +592,11 @@ export default {
               : 0
           })
           let avg = 0
-          console.log('values', m, sl, dsl)
           for (let x = 0; x < moodTemp.length; x++) {
             avg +=
               Math.round(0.5 * m[x]) +
               Math.round(0.17 * sl[x]) +
               Math.round(0.33 * dsl[x])
-            /*    ? Math.round(e.value)
-              : 0
-          })
-          let avg = 0
-          for (let x = 0; x < heartRateTemp.length; x++) {
-            avg += this.round(0.5 * hr[x] + 0.17 * st[x] + 0.33 * c[x]) */
           }
           avgMental.push(avg)
           start = dateEndMental
@@ -632,11 +611,7 @@ export default {
         }
       }
       myAvg = myAvg / avgMental.length
-      console.log(myAvg)
       return myAvg * 100
-
-      /* myAvg = myAvg / avgPhysical.length
-      return Math.trunc(myAvg, 0) */
     },
 
     dataCalories () {
@@ -772,13 +747,6 @@ export default {
           const dd = this.$store.state.dataSet.filter(
             s => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
           )
-          /* const dataTemp = dd.filter(
-            (s) => s.dataTypeName === "com.google.sleep.segment",
-            (s) => s.dataTypeName === "app.web.hear-my-health.sleep.deep"
-          );
-          const dataTemp = dd.filter(
-            (s) => s.dataTypeName === "app.web.hear-my-health.mood.segment"
-          ); */
           const dataTemp1 = dd.filter(
             s => s.dataTypeName === 'com.google.sleep.segment'
           )
@@ -799,15 +767,6 @@ export default {
             }
             tt2.push(ee)
           })
-          /* dataTemp.forEach((e) => {
-            const ee = {
-              date: this.formatDateTable(start),
-              data1: e.data1.value !== null ? Math.round(e.data1.value) : 0,
-              data2: e.data2.value !== null ? Math.round(e.data2.value) : 0,
-            };
-            tt.push(ee);
-          }); */
-          console.log(tt)
           start = dateEnd
         }
       }
@@ -815,7 +774,6 @@ export default {
         tt,
         tt2
       }
-      console.log(toR)
       return toR
     },
 
@@ -880,7 +838,6 @@ export default {
   watch: {
     dateStart (val) {
       this.dateStarFormatted = this.formatDate(this.dateStart)
-      console.log(this.dataSleepDeepSleep)
     },
     dateEnd (val) {
       this.dateEndFormatted = this.formatDate(this.dateEnd)
@@ -907,33 +864,6 @@ export default {
   },
 
   methods: {
-    /* findState(key) {
-      const state = [
-        {
-          key: "green",
-          value: 1,
-          percentaje: 100,
-        },
-        {
-          key: "yellow",
-          value: 0.5,
-          percentaje: 100,
-        },
-        {
-          key: "red",
-          value: 0,
-          percentaje: 100,
-        },
-        {
-          key: "not",
-          value: -0.01,
-          percentaje: 100,
-        },
-      ];
-      return state.find((e) => e.key === key);
-    },
-
-    formatDate(date) { */
     formatDate (date) {
       if (!date) {
         return null

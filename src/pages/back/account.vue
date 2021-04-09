@@ -198,7 +198,6 @@ export default {
 
   watch: {
     user () {
-      console.log(this.user)
       this.form.name = this.user.name
       this.form.specialty = this.user.specialty
       this.form.dni = this.user.dni
@@ -239,7 +238,6 @@ export default {
       }
     },
     async updateInfo () {
-      console.log(this.auth.uid)
       if (this.user.role === 'user') {
         try {
           const { uid } = this.auth
@@ -280,7 +278,7 @@ export default {
           })
           this.isEditing = true
         } catch (error) {
-          console.log('error', error)
+          this.$store.dispatch('SET_MESSAGE', { message: error })
         }
       } else {
         try {
@@ -294,7 +292,7 @@ export default {
           })
           this.isEditing = true
         } catch (error) {
-          console.log('error', error)
+          this.$store.dispatch('SET_MESSAGE', { message: error })
         }
       }
     }

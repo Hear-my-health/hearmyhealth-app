@@ -321,6 +321,7 @@ export default {
       const ss = new Date(Number(item)).toISOString().substr(11, 5)
       return ss
     },
+
     select (item) {
       const ss = this.moods.map((e) => {
         e.select = e.id === item.id

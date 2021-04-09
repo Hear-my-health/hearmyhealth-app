@@ -5,7 +5,7 @@
         :headers="headers"
         :items="uniqueDevices"
         multi-sort
-        class="elevation-1"
+        class="elevation-0"
       >
         <template #top>
           <v-toolbar flat>
@@ -30,7 +30,12 @@
 </template>
 <script>
 export default {
-  props: ['myUid'],
+  props: {
+    myUid: {
+      type: String,
+      default: ''
+    }
+  },
   data () {
     return {
       uid: this.$props.myUid,
@@ -88,8 +93,7 @@ export default {
   },
 
   methods: {
-    // eslint-disable-next-line require-await
-    async setUniqueDevices () {
+    setUniqueDevices () {
       const modelNames = this.dataSourceState.map((e) => {
         return e.device.model
       })
