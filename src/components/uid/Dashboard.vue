@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="12" sm="8" md="9">
+      <v-col cols="12" sm="9" md="9">
         <v-row justify="center" align="top">
           <v-col class="d-flex" cols="12" sm="12" md="4">
             <v-select
@@ -274,7 +274,7 @@
           <!-- FIN SALUD MENTAL -->
         </v-row>
       </v-col>
-      <v-col cols="12" sm="4" md="3">
+      <v-col cols="12" sm="3" md="3">
         <div class="fixed-height-container">
           <h4 class="mb-3">
             Recomendaciones

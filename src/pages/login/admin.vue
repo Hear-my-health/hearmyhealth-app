@@ -32,7 +32,7 @@
               />
             </div>
             <p v-if="errors" class="red--text">
-              Usuario o contraseña incorrecto
+              Usuario o contraseña no válido
             </p>
             <v-btn
               elevation="0"

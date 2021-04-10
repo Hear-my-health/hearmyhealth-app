@@ -74,7 +74,7 @@
                 color="black"
                 outlined
                 dense
-                type="numeric"
+                type="number"
                 :disabled="isEditing"
               />
             </v-col>

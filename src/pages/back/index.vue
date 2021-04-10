@@ -16,21 +16,11 @@
             <v-toolbar-title>Pacientes</v-toolbar-title>
             <v-divider class="mx-4" inset vertical />
             <v-spacer />
-            <v-spacer></v-spacer>
+            <v-spacer />
             <v-text-field
               v-model="search"
               append-icon="mdi-magnify"
               label="Buscar"
-              single-line
-              hide-details
-            ></v-text-field>
-          </v-toolbar>
-          <v-toolbar flat class="mb-0">
-            <v-text-field
-              v-model="search"
-              append-icon="mdi-magnify"
-              label="Search"
-              class="mb-0"
               single-line
               hide-details
             />
@@ -182,14 +172,14 @@ export default {
           value: 'email'
         },
         {
-          text: "DNI",
-          align: "start",
+          text: 'DNI',
+          align: 'start',
           sortable: false,
-          value: "dni",
+          value: 'dni'
         },
         {
-          text: "Id",
-          align: "start",
+          text: 'Id',
+          align: 'start',
           sortable: false,
           value: 'uid'
         },
@@ -203,14 +193,6 @@ export default {
       ]
     }
   },
-
-  /*   async fetch ({ store }) {
-    try {
-      await store.dispatch('getUsers')
-    } catch (e) {
-      return e
-    }
-  }, */
 
   computed: {
     authUser () {
@@ -255,23 +237,6 @@ export default {
       return errors
     }
   },
-
-  /*   watch: {
-    user () {
-      if (localStorage) {
-        localStorage.setItem('role', this.user.role)
-        if (this.user.specialty) {
-          localStorage.setItem('doctorSpecialty', this.user.specialty)
-          localStorage.setItem('doctorName', this.user.name)
-        }
-        if (!this.user.dni || !this.user.dateOfBirth || !this.user.specialty) {
-          this.noData = true
-        } else {
-          this.noData = false
-        }
-      }
-    }
-  }, */
 
   async mounted () {
     const { authUser } = this.$store.state
