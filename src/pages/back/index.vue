@@ -6,6 +6,7 @@
         :items="users"
         :sort-by="['email', 'name']"
         :sort-desc="[false, true]"
+        :search="search"
         multi-sort
         class="elevation-0"
       >
@@ -14,6 +15,14 @@
             <v-toolbar-title>Pacientes</v-toolbar-title>
             <v-divider class="mx-4" inset vertical />
             <v-spacer />
+            <v-spacer></v-spacer>
+            <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              label="Buscar"
+              single-line
+              hide-details
+            ></v-text-field>
           </v-toolbar>
         </template>
         <template #[`item.picture`]="{ item }">
@@ -122,6 +131,7 @@ export default {
   },
   data() {
     return {
+      search: "",
       userType: "",
       noData: false,
       specialties: ["Psicólogo", "Nutricionista", "Médico general", "Otro"],
@@ -157,6 +167,12 @@ export default {
           align: "start",
           sortable: false,
           value: "email",
+        },
+        {
+          text: "DNI",
+          align: "start",
+          sortable: false,
+          value: "dni",
         },
         {
           text: "Id",

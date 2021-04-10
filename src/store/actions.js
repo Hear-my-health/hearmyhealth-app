@@ -2,7 +2,7 @@
 import { firestoreAction } from 'vuexfire'
 
 export default {
-  async nuxtServerInit ({ dispatch, commit }, ctx) {
+  async nuxtServerInit({ dispatch, commit }, ctx) {
     if (this.$fire.auth === null) {
       throw 'nuxtServerInit Example not working - this.$fire.auth cannot be accessed.'
     }
@@ -42,7 +42,7 @@ export default {
     }
   },
 
-  onAuthStateChanged ({ commit }, { authUser, claims }) {
+  onAuthStateChanged({ commit }, { authUser, claims }) {
     if (!authUser) {
       commit('RESET_STORE')
       return
@@ -70,6 +70,19 @@ export default {
     const res = this.$fire.firestore
       .collection('thoughts')
       .where('uid', '==', uid)
+      .orderBy('date', 'desc').limit(100)
+
+    await bindFirestoreRef('thoughts', res, { wait: true })
+  }),
+
+  getThoughtsByDate: firestoreAction(async function ({ state, bindFirestoreRef }, params) {
+    console.log(params);
+    const { start, end, uid } = params;
+    const res = this.$fire.firestore
+      .collection('thoughts')
+      .where('uid', '==', uid)
+      .where('date', '<', end)
+      .where('date', '>', start)
       .orderBy('date', 'desc').limit(100)
 
     await bindFirestoreRef('thoughts', res, { wait: true })
