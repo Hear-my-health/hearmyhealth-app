@@ -7,7 +7,9 @@
         </v-avatar>
         <form @submit.prevent="updateInfo">
           <div>
-            <p class="mb-1">Nombres</p>
+            <p class="mb-1">
+              Nombres
+            </p>
             <v-text-field
               v-model="form.name"
               placeholder="Nombres"
@@ -21,7 +23,9 @@
           </div>
           <div v-if="user.role === 'admin'">
             <div>
-              <p class="mb-1">Especialidad</p>
+              <p class="mb-1">
+                Especialidad
+              </p>
               <v-text-field
                 v-model="form.specialty"
                 placeholder="Especialidad"
@@ -34,7 +38,9 @@
             </div>
           </div>
           <div>
-            <p class="mb-1">DNI</p>
+            <p class="mb-1">
+              DNI
+            </p>
             <v-text-field
               v-model="form.dni"
               placeholder="DNI"
@@ -49,7 +55,9 @@
             <div>
               <v-row>
                 <v-col>
-                  <p class="mb-1">N° historia clínica</p>
+                  <p class="mb-1">
+                    N° historia clínica
+                  </p>
                   <v-text-field
                     v-model="form.clinicHistory"
                     placeholder="N° historia clínica"
@@ -61,7 +69,9 @@
                   />
                 </v-col>
                 <v-col>
-                  <p class="mb-1">Peso</p>
+                  <p class="mb-1">
+                    Peso
+                  </p>
                   <v-text-field
                     v-model="form.weight"
                     placeholder="Peso"
@@ -73,7 +83,9 @@
                   />
                 </v-col>
                 <v-col>
-                  <p class="mb-1">Altura</p>
+                  <p class="mb-1">
+                    Altura
+                  </p>
                   <v-text-field
                     v-model="form.height"
                     placeholder="Altura"
@@ -90,7 +102,9 @@
           <div>
             <v-row>
               <v-col>
-                <p class="mb-1">Fecha de nacimiento</p>
+                <p class="mb-1">
+                  Fecha de nacimiento
+                </p>
                 <v-text-field
                   v-model="form.dateOfBirth"
                   placeholder="Fecha de nacimiento"
@@ -117,116 +131,115 @@
 </template>
 <script>
 export default {
-  layout: "dashboard",
-  middleware: "authenticated",
+  layout: 'dashboard',
+  middleware: 'authenticated',
 
-  data() {
+  data () {
     return {
       isClient: false,
       isEditing: true,
       form: {
-        name: "",
-        specialty: "",
-        dni: "",
-        clinicHistory: "",
-        dateOfBirth: "",
-        weight: "",
-        height: "",
-      },
-    };
+        name: '',
+        specialty: '',
+        dni: '',
+        clinicHistory: '',
+        dateOfBirth: '',
+        weight: '',
+        height: ''
+      }
+    }
   },
 
   computed: {
-    auth() {
-      return this.$store.state.authUser || null;
+    auth () {
+      return this.$store.state.authUser || null
     },
-    user() {
-      return this.$store.state.user || null;
-    },
+    user () {
+      return this.$store.state.user || null
+    }
   },
 
   watch: {
-    user() {
-      this.form.name = this.user.name;
-      this.form.specialty = this.user.specialty;
-      this.form.dni = this.user.dni;
-      this.form.clinicHistory = this.user.clinicHistory;
-      this.form.dateOfBirth = this.user.dateOfBirth;
-      this.form.weight = this.user.weight;
-      this.form.height = this.user.height;
-    },
+    user () {
+      this.form.name = this.user.name
+      this.form.specialty = this.user.specialty
+      this.form.dni = this.user.dni
+      this.form.clinicHistory = this.user.clinicHistory
+      this.form.dateOfBirth = this.user.dateOfBirth
+      this.form.weight = this.user.weight
+      this.form.height = this.user.height
+    }
   },
 
-  mounted() {
-    this.isClient = true;
-    const { authUser } = this.$store.state;
+  mounted () {
+    this.isClient = true
+    const { authUser } = this.$store.state
     if (!authUser) {
-      this.$router.push("/");
+      this.$router.push('/')
     } else {
-      this.$store.dispatch("getUser", { uid: authUser.uid });
+      this.$store.dispatch('getUser', { uid: authUser.uid })
     }
     if (this.user) {
-      this.form.name = this.user.name;
-      this.form.specialty = this.user.specialty;
-      this.form.dni = this.user.dni;
-      this.form.clinicHistory = this.user.clinicHistory;
-      this.form.dateOfBirth = this.user.dateOfBirth;
-      this.form.weight = this.user.weight;
-      this.form.height = this.user.height;
+      this.form.name = this.user.name
+      this.form.specialty = this.user.specialty
+      this.form.dni = this.user.dni
+      this.form.clinicHistory = this.user.clinicHistory
+      this.form.dateOfBirth = this.user.dateOfBirth
+      this.form.weight = this.user.weight
+      this.form.height = this.user.height
     }
   },
 
   methods: {
-    async signOut() {
+    async signOut () {
       try {
-        await this.$fireModule.auth().signOut();
-        localStorage.removeItem("role");
-        this.$router.push("/");
+        await this.$fireModule.auth().signOut()
+        localStorage.removeItem('role')
+        this.$router.push('/')
       } catch (error) {
-        console.log("error", error);
+        console.log('error', error)
       }
     },
-    async updateInfo() {
-      console.log(this.auth.uid);
-      if (this.user.role === "user") {
+    async updateInfo () {
+      if (this.user.role === 'user') {
         try {
-          const { uid } = this.auth;
+          const { uid } = this.auth
           const {
             name,
             dni,
             clinicHistory,
             dateOfBirth,
             weight,
-            height,
-          } = this.form;
-          await this.$fire.firestore.collection("users").doc(uid).update({
+            height
+          } = this.form
+          await this.$fire.firestore.collection('users').doc(uid).update({
             name,
             dni,
             clinicHistory,
             dateOfBirth,
             weight,
-            height,
-          });
-          this.isEditing = true;
+            height
+          })
+          this.isEditing = true
         } catch (error) {
-          console.log("error", error);
+          console.log('error', error)
         }
       } else {
         try {
-          const { uid } = this.auth;
-          const { name, dni, specialty, dateOfBirth } = this.form;
-          await this.$fire.firestore.collection("users").doc(uid).update({
+          const { uid } = this.auth
+          const { name, dni, specialty, dateOfBirth } = this.form
+          await this.$fire.firestore.collection('users').doc(uid).update({
             name,
             dni,
             specialty,
-            dateOfBirth,
-          });
-          this.isEditing = true;
+            dateOfBirth
+          })
+          this.isEditing = true
         } catch (error) {
-          console.log("error", error);
+          console.log('error', error)
         }
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>

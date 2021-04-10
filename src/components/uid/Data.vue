@@ -81,7 +81,7 @@
             :class="`${item.heartRate.state}`"
             class="py-1 text-center"
           >
-            {{ round(item.heartRate.value || 0) }}
+            {{ round(item.heartRate.value) }}
           </div>
         </template>
 
@@ -91,7 +91,7 @@
             :class="`${item.calories.state}`"
             class="py-1 text-center"
           >
-            {{ round(item.calories.value || 0) }}
+            {{ round(item.calories.value) }}
           </div>
         </template>
 
@@ -101,7 +101,7 @@
             :class="`${item.steps.state}`"
             class="py-1 text-center"
           >
-            {{ round(item.steps.value || 0) }}
+            {{ round(item.steps.value) }}
           </div>
         </template>
 
@@ -111,7 +111,7 @@
             :class="`${item.sleep.state}`"
             class="py-1 text-center"
           >
-            {{ round(item.sleep.value || 0) }}
+            {{ round(item.sleep.value) }}
           </div>
         </template>
 
@@ -121,7 +121,7 @@
             :class="`${item.deepSleep.state}`"
             class="py-1 text-center"
           >
-            {{ round(item.deepSleep.value || 0) }}
+            {{ round(item.deepSleep.value) }}
           </div>
         </template>
 
@@ -131,7 +131,7 @@
             :class="`${item.mood.state}`"
             class="py-1 text-center"
           >
-            {{ round(item.mood.value || 0) }}
+            {{ round(item.mood.value) }}
           </div>
         </template>
 
@@ -196,10 +196,10 @@
               {{ sumField("sleep") }}
             </th>
             <th class="text-center">
-              {{ sumField("mood") }}
+              {{ sumField("deepSleep") }}
             </th>
             <th class="text-center">
-              {{ sumField("deepSleep") }}
+              {{ sumField("mood") }}
             </th>
             <th class="text-center">
               {{ sumFisica() }}
@@ -352,12 +352,15 @@ export default {
       );
     },
 
-    dataSet() {
-      const tt = [];
-      const dateStartTime = new Date(this.dateStart).getTime();
-      const dateEndTime = new Date(this.dateEnd).getTime();
-      const dd = (dateEndTime - dateStartTime) / 86400000;
-      let start = dateStartTime;
+    dataSet () {
+      const tt = []
+      const dateStartTime = new Date(this.dateStart).getTime()
+      const end = new Date(this.dateEnd)
+      end.setDate(end.getDate() + 1)
+      const dateEndTime = end.getTime()
+      const dd = (dateEndTime - dateStartTime) / 86400000
+
+      let start = dateStartTime
 
       if (this.$store.state.dataSet.length > 0) {
         for (let index = 1; index <= Math.floor(dd); index++) {
@@ -390,9 +393,8 @@ export default {
           tt.push(ee);
         }
       }
-      console.log(tt);
-      return tt;
-    },
+      return tt
+    }
   },
 
   watch: {
@@ -506,25 +508,26 @@ export default {
         },
       ];
       if (this.dataSet.length) {
-        const dataSetByKey = this.dataSet.filter((e) => e.heartRate);
+        const dataSetByKey = this.dataSet.filter(
+          e => e.heartRate && e.steps && e.calories
+        )
         if (dataSetByKey.length) {
           const initialValue = 0;
           const average =
             dataSetByKey.reduce(function (total, item) {
-              const heartRateValue =
-                0.5 *
-                states.find((e) => e.key === item.heartRate.state || "not")
-                  .value;
-              const stepsValue =
-                0.17 *
-                states.find((e) => e.key === item.steps.state || "not").value;
-              const caloriesValue =
-                0.33 *
-                states.find((e) => e.key === item.calories.state || "not")
-                  .value;
-
-              return total + (heartRateValue + stepsValue + caloriesValue) || 0;
-            }, initialValue) / dataSetByKey.length;
+              const heartRateValue = states.find(
+                e => e.key === (item.heartRate ? item.heartRate.state : 'not')
+              ).value
+              const stepsValue = states.find(
+                e => e.key === (item.steps ? item.steps.state : 'not')
+              ).value
+              const caloriesValue = states.find(
+                e => e.key === (item.calories ? item.calories.state : 'not')
+              ).value
+              const value =
+                0.5 * heartRateValue + 0.17 * stepsValue + 0.33 * caloriesValue
+              return total + value
+            }, initialValue) / dataSetByKey.length
 
           return this.round(average);
         }
@@ -557,29 +560,45 @@ export default {
         },
       ];
       if (this.dataSet.length) {
-        const dataSetByKey = this.dataSet.filter((e) => e.sleep);
+        const dataSetByKey = this.dataSet.filter(
+          e => e.mood && e.sleep && e.deepSleep
+        )
         if (dataSetByKey.length) {
           const initialValue = 0;
           const average =
             dataSetByKey.reduce(function (total, item) {
-              const sleepValue =
-                0.17 *
-                states.find((e) =>
-                  e.key === item.sleep ? item.sleep.state : "not"
-                ).value;
-              const moodValue =
-                0.5 *
-                states.find((e) =>
-                  e.key === item.mood ? item.mood.state : "not"
-                ).value;
-              const deepSleepValue =
-                0.33 *
-                states.find((e) =>
-                  e.key === item.deepSleep ? item.deepSleep.state : "not"
-                ).value;
+              const sleepValue = states.find(
+                e =>
+                  e.key ===
+                  (item.sleep
+                    ? item.sleep.state
+                      ? item.sleep.state
+                      : item.sleep.stateSleep
+                    : 'not')
+              ).value
+              const moodValue = states.find(
+                e =>
+                  e.key ===
+                  (item.mood
+                    ? item.mood.state
+                      ? item.mood.state
+                      : item.mood.stateSleep
+                    : 'not')
+              ).value
+              const deepSleepValue = states.find(
+                e =>
+                  e.key ===
+                  (item.deepSleep
+                    ? item.deepSleep.state
+                      ? item.deepSleep.state
+                      : item.deepSleep.stateSleepDeep
+                    : 'not')
+              ).value
+              const value =
+                0.5 * moodValue + 0.17 * sleepValue + 0.33 * deepSleepValue
 
-              return total + (sleepValue + moodValue + deepSleepValue) || 0;
-            }, initialValue) / dataSetByKey.length;
+              return total + value
+            }, initialValue) / dataSetByKey.length
 
           return this.round(average);
         }
@@ -590,18 +609,22 @@ export default {
 
     overageValueDataSet(dd) {
       const valueFilter = dd.filter(
-        (t) => t.dataTypeName === "app.web.hear-my-health.mood.segment"
-      );
-      const initialValue = 0;
-      const average =
-        valueFilter.reduce(function (total, currentValue) {
-          return total + currentValue.value || 0;
-        }, initialValue) / valueFilter.length;
-      if (average) {
-        return { ...dd[0], value: average };
+        t => t.dataTypeName === 'app.web.hear-my-health.mood.segment'
+      )
+      if (valueFilter.length) {
+        const initialValue = 0
+        const average =
+          valueFilter.reduce(function (total, currentValue) {
+            return total + currentValue.value || 0
+          }, initialValue) / valueFilter.length
+        if (average) {
+          return { ...valueFilter[0], value: average }
+        } else {
+          return null
+        }
+      } else {
+        return null
       }
-      return valueFilter[0];
-      /* return dd[0]; */
     },
 
     submit() {

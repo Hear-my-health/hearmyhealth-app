@@ -1,9 +1,10 @@
 <template>
-  <v-row justify="center" align="center" v-if="userType === 'admin'">
+  <v-row v-if="userType === 'admin'" justify="center" align="center">
     <v-col cols="12" sm="10" md="10">
       <v-data-table
         :headers="headers"
         :items="users"
+        :item-key="`uid`"
         :sort-by="['email', 'name']"
         :sort-desc="[false, true]"
         :search="search"
@@ -24,10 +25,20 @@
               hide-details
             ></v-text-field>
           </v-toolbar>
+          <v-toolbar flat class="mb-0">
+            <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              label="Search"
+              class="mb-0"
+              single-line
+              hide-details
+            />
+          </v-toolbar>
         </template>
         <template #[`item.picture`]="{ item }">
           <v-avatar size="36">
-            <img :src="item.picture" alt="John" />
+            <img :src="item.picture" alt="John">
           </v-avatar>
         </template>
 
@@ -41,7 +52,9 @@
           >
             Ver
 
-            <v-icon small class="mr-2"> mdi-arrow-right </v-icon>
+            <v-icon small class="mr-2">
+              mdi-arrow-right
+            </v-icon>
           </v-btn>
         </template>
       </v-data-table>
@@ -119,54 +132,54 @@
 </template>
 
 <script>
-import { validationMixin } from "vuelidate";
-import { required, maxLength, minLength } from "vuelidate/lib/validators";
+import { validationMixin } from 'vuelidate'
+import { required, maxLength, minLength } from 'vuelidate/lib/validators'
 export default {
   mixins: [validationMixin],
-  layout: "back",
+  layout: 'back',
   validations: {
     dni: { required, minLength: minLength(8), maxLength: maxLength(8) },
     specialty: { required, minLength: minLength(3) },
-    dateOfBirth: { required },
+    dateOfBirth: { required }
   },
-  data() {
+  data () {
     return {
-      search: "",
-      userType: "",
+      search: '',
+      userType: '',
       noData: false,
-      specialties: ["Psicólogo", "Nutricionista", "Médico general", "Otro"],
-      dni: "",
-      specialty: "",
-      dateOfBirth: "",
+      specialties: ['Psicólogo', 'Nutricionista', 'Médico general', 'Otro'],
+      dni: '',
+      specialty: '',
+      dateOfBirth: '',
       info: {
-        dni: "",
-        specialty: "",
-        dateOfBirth: "",
+        dni: '',
+        specialty: '',
+        dateOfBirth: ''
       },
       form: {
-        email: "",
-        password: "",
+        email: '',
+        password: ''
       },
 
-      passwordRules: [(v) => !!v || "Password is required"],
+      passwordRules: [v => !!v || 'Password is required'],
 
       emailRules: [
-        (v) => !!v || "E-mail is required",
-        (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
+        v => !!v || 'E-mail is required',
+        v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
       ],
 
       headers: [
         {
-          text: "Imagen",
-          align: "start",
+          text: 'Imagen',
+          align: 'start',
           sortable: false,
-          value: "picture",
+          value: 'picture'
         },
         {
-          text: "Email",
-          align: "start",
-          sortable: false,
-          value: "email",
+          text: 'Email',
+          align: 'start',
+          sortable: true,
+          value: 'email'
         },
         {
           text: "DNI",
@@ -178,135 +191,148 @@ export default {
           text: "Id",
           align: "start",
           sortable: false,
-          value: "uid",
+          value: 'uid'
         },
         {
-          text: "Nombre",
-          align: "start",
-          sortable: false,
-          value: "name",
+          text: 'Nombre',
+          align: 'start',
+          sortable: true,
+          value: 'name'
         },
-        { text: "", value: "actions", sortable: false },
-      ],
-    };
-  },
-
-  async fetch({ store }) {
-    try {
-      await store.dispatch("getUsers");
-    } catch (e) {
-      return "error";
+        { text: '', value: 'actions', sortable: false }
+      ]
     }
   },
 
+  /*   async fetch ({ store }) {
+    try {
+      await store.dispatch('getUsers')
+    } catch (e) {
+      return e
+    }
+  }, */
+
   computed: {
-    authUser() {
-      return this.$store.state.authUser;
+    authUser () {
+      return this.$store.state.authUser
     },
-    user() {
-      return this.$store.state.user;
+    user () {
+      return this.$store.state.user
     },
-    users() {
-      return this.$store.state.users.filter((user) => user.role === "user");
+    users () {
+      return this.$store.state.users.filter(user => user.role === 'user')
     },
-    dniErrors() {
-      const errors = [];
+    dniErrors () {
+      const errors = []
       if (!this.$v.dni.$dirty) {
-        return errors;
+        return errors
       }
       (!this.$v.dni.maxLength || !this.$v.dni.minLength) &&
-        errors.push("El DNI debe tener 8 caracteres");
-      !this.$v.dni.required && errors.push("El DNI es requerido");
-      return errors;
+        errors.push('El DNI debe tener 8 caracteres')
+      !this.$v.dni.required && errors.push('El DNI es requerido')
+      return errors
     },
 
-    specialtyErrors() {
-      const errors = [];
+    specialtyErrors () {
+      const errors = []
       if (!this.$v.specialty.$dirty) {
-        return errors;
+        return errors
       }
       !this.$v.specialty.minLength &&
-        errors.push("La especialidad debe tener 5 caracteres como mínimo");
+        errors.push('La especialidad debe tener 5 caracteres como mínimo')
       !this.$v.specialty.required &&
-        errors.push("La especialidad es requerida");
-      return errors;
+        errors.push('La especialidad es requerida')
+      return errors
     },
 
-    dateOfBirthErrors() {
-      const errors = [];
+    dateOfBirthErrors () {
+      const errors = []
       if (!this.$v.dateOfBirth.$dirty) {
-        return errors;
+        return errors
       }
       !this.$v.dateOfBirth.required &&
-        errors.push("La fecha de nacimiento es requerida");
-      return errors;
-    },
+        errors.push('La fecha de nacimiento es requerida')
+      return errors
+    }
   },
 
-  watch: {
-    user() {
-      localStorage.setItem("role", this.user.role);
-      if (this.user.specialty) {
-        localStorage.setItem("doctorSpecialty", this.user.specialty);
-        localStorage.setItem("doctorName", this.user.name);
+  /*   watch: {
+    user () {
+      if (localStorage) {
+        localStorage.setItem('role', this.user.role)
+        if (this.user.specialty) {
+          localStorage.setItem('doctorSpecialty', this.user.specialty)
+          localStorage.setItem('doctorName', this.user.name)
+        }
+        if (!this.user.dni || !this.user.dateOfBirth || !this.user.specialty) {
+          this.noData = true
+        } else {
+          this.noData = false
+        }
       }
-      if (!this.user.dni || !this.user.dateOfBirth || !this.user.specialty) {
-        this.noData = true;
-      } else {
-        this.noData = false;
-      }
-    },
-  },
+    }
+  }, */
 
-  mounted() {
-    if (localStorage.getItem("role") === "user") {
-      this.userType = localStorage.getItem("role");
-      this.$router.push("/app");
+  async mounted () {
+    const { authUser } = this.$store.state
+    if (!authUser) {
+      this.$router.push('/')
     } else {
-      this.userType = localStorage.getItem("role");
-      const { authUser } = this.$store.state;
-      if (!authUser) {
-        this.$router.push("/");
+      await this.$store.dispatch('getUser', { uid: authUser.uid })
+      const { user } = this.$store.state
+      if (user) {
+        this.userType = user.role
+        if (this.userType === 'admin') {
+          this.$store.dispatch('getUsers')
+        } else {
+          this.$router.push('/app')
+        }
       } else {
-        this.$store.dispatch("getUsers");
-        this.$store.dispatch("getUser", { uid: authUser.uid });
+        this.$router.push('/')
       }
     }
   },
 
   methods: {
-    submit() {
-      this.$v.$touch();
+    filterOnlyCapsText (value, search, item) {
+      return value != null &&
+          search != null &&
+          typeof value === 'string' &&
+          value.toString().includes(search)
     },
 
-    async updateInfo() {
+    submit () {
+      this.$v.$touch()
+    },
+
+    async updateInfo () {
       try {
-        const { uid } = this.$store.state.authUser;
-        const { dni, specialty, dateOfBirth } = this;
-        await this.$fire.firestore.collection("users").doc(uid).update({
+        const { uid } = this.$store.state.authUser
+        const { dni, specialty, dateOfBirth } = this
+        await this.$fire.firestore.collection('users').doc(uid).update({
           dni,
           specialty,
-          dateOfBirth,
-        });
-        this.noData = false;
+          dateOfBirth
+        })
+        this.noData = false
       } catch (error) {
-        console.log("error", error);
+        this.$store.dispatch('SET_MESSAGE', { message: error })
       }
     },
-    async createDoctor() {
+    async createDoctor () {
       try {
-        const { email, password } = this.form;
+        const { email, password } = this.form
         await this.$fireModule
           .auth()
-          .createUserWithEmailAndPassword(email, password);
+          .createUserWithEmailAndPassword(email, password)
       } catch (error) {
-        this.$store.dispatch("SET_MESSAGE", { message: error });
+        this.$store.dispatch('SET_MESSAGE', { message: error })
       }
     },
 
-    resetValidation() {
-      this.$refs.form.resetValidation();
-    },
-  },
-};
+    resetValidation () {
+      this.$refs.form.resetValidation()
+    }
+  }
+}
 </script>

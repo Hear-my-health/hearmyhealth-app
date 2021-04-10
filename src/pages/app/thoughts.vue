@@ -4,7 +4,9 @@
       Agregar pensamiento
     </v-btn>
 
-    <h5 class="text-h6">Pensamientos</h5>
+    <h5 class="text-h6">
+      Pensamientos
+    </h5>
     <v-timeline dense>
       <v-timeline-item v-for="(thought, ith) in thoughts" :key="ith">
         <v-card class="elevation-1">
@@ -13,7 +15,7 @@
               :src="`/images/${thought.name}.svg`"
               alt="google-auth"
               style="width: 48px; height: 48px"
-            />
+            >
           </div>
           <v-card-title class="headline">
             {{ thought.date }}
@@ -37,9 +39,9 @@
               <v-row>
                 <v-col v-for="(item, index) in moods" :key="index" cols="4">
                   <v-card
+                    v-model="mood"
                     elevation="1"
                     class="justify-center text-center pt-2"
-                    v-model="mood"
                     @click="select(item)"
                   >
                     <img
@@ -48,7 +50,7 @@
                       }.svg`"
                       alt="google-auth"
                       style="width: 48px; height: 48px"
-                    />
+                    >
                   </v-card>
                 </v-col>
                 <v-col cols="12" md="12">
@@ -69,7 +71,9 @@
 
           <v-card-actions>
             <v-spacer />
-            <v-btn elevation="0" raised @click="close"> Cancelar </v-btn>
+            <v-btn elevation="0" raised @click="close">
+              Cancelar
+            </v-btn>
 
             <v-btn elevation="0" outlined raised type="submit" @click="submit">
               Guardar
@@ -81,212 +85,212 @@
   </div>
 </template>
 <script>
-import { validationMixin } from "vuelidate";
-import { required, minLength } from "vuelidate/lib/validators";
+import { validationMixin } from 'vuelidate'
+import { required, minLength } from 'vuelidate/lib/validators'
 export default {
-  layout: "dashboard",
   mixins: [validationMixin],
+  layout: 'dashboard',
   validations: {
     thought: { required, minLength: minLength(3) },
-    mood: { required },
+    mood: { required }
   },
-  data() {
+  data () {
     return {
       dialog: false,
-      thought: "",
+      thought: '',
       mood: null,
       form: {
-        thought: "",
+        thought: ''
       },
-      formTitle: "Agregar pensamiento",
+      formTitle: 'Agregar pensamiento',
       moods: [
         {
           id: 1,
-          name: "sad",
+          name: 'sad',
           value: 0,
-          select: false,
+          select: false
         },
         {
           id: 2,
-          name: "sceptic",
+          name: 'sceptic',
           value: 0.5,
-          select: false,
+          select: false
         },
         {
           id: 3,
-          name: "happy",
+          name: 'happy',
           value: 1,
-          select: false,
-        },
-      ],
-    };
+          select: false
+        }
+      ]
+    }
   },
 
   computed: {
-    thoughts() {
-      return this.$store.state.thoughts;
+    thoughts () {
+      return this.$store.state.thoughts
     },
-    thoughtErrors() {
-      const errors = [];
+    thoughtErrors () {
+      const errors = []
       if (!this.$v.thought.$dirty) {
-        return errors;
+        return errors
       }
       !this.$v.thought.minLength &&
         errors.push(
-          "La mensaje del pensamiento debe tener 3 caracteres como mínimo"
-        );
+          'La mensaje del pensamiento debe tener 3 caracteres como mínimo'
+        )
       !this.$v.thought.required &&
-        errors.push("El mensaje del pensamiento es requerido");
-      return errors;
+        errors.push('El mensaje del pensamiento es requerido')
+      return errors
     },
-    moodErrors() {
-      const errors = [];
+    moodErrors () {
+      const errors = []
       if (!this.$v.mood.$dirty) {
-        return errors;
+        return errors
       }
       !this.$v.mood.required &&
         errors.push(
-          "El estado de ánimo del pensamiento es requerido, seleccione uno"
-        );
-      return errors;
-    },
+          'El estado de ánimo del pensamiento es requerido, seleccione uno'
+        )
+      return errors
+    }
   },
 
-  mounted() {
-    const { authUser } = this.$store.state;
+  mounted () {
+    const { authUser } = this.$store.state
     if (!authUser) {
-      this.$router.push("/");
+      this.$router.push('/')
     } else {
-      this.$store.dispatch("getValues");
-      this.$store.dispatch("getThoughts", { uid: authUser.uid });
+      this.$store.dispatch('getValues')
+      this.$store.dispatch('getThoughts', { uid: authUser.uid })
     }
   },
 
   methods: {
-    submit() {
-      this.$v.$touch();
+    submit () {
+      this.$v.$touch()
     },
-    close() {
-      this.dialog = false;
-      this.$v.$reset();
-      this.thought = "";
-      this.mood = null;
+    close () {
+      this.dialog = false
+      this.$v.$reset()
+      this.thought = ''
+      this.mood = null
     },
-    open() {
-      this.dialog = true;
+    open () {
+      this.dialog = true
     },
 
-    select(item) {
+    select (item) {
       const ss = this.moods.map((e) => {
-        e.select = e.id === item.id;
-        return e;
-      });
-      this.moods = ss;
+        e.select = e.id === item.id
+        return e
+      })
+      this.moods = ss
     },
 
-    async selectMood(item) {
-      const { uid } = this.$store.state.authUser;
+    async selectMood (item) {
+      const { uid } = this.$store.state.authUser
 
       const obj = {
-        dataSourceId: "",
-        dataTypeName: "app.web.hear-my-health.mood.segment",
-        endTimeMillis: "",
-        endTimeNanos: "",
-        originDataSourceId: "",
+        dataSourceId: '',
+        dataTypeName: 'app.web.hear-my-health.mood.segment',
+        endTimeMillis: '',
+        endTimeNanos: '',
+        originDataSourceId: '',
         point: item,
-        startTimeMillis: "",
-        startTimeNanos: "",
+        startTimeMillis: '',
+        startTimeNanos: '',
 
         value: item.value,
 
         name: item.name,
-        modifiedTimeMillis: "",
-        activityType: "",
-      };
-      const stateSleep = this.getState(item);
+        modifiedTimeMillis: '',
+        activityType: ''
+      }
+      const stateSleep = this.getState(item)
 
       await this.$fire.firestore
-        .collection("dataSet")
+        .collection('dataSet')
         .doc()
         .set({
           uid,
           ...obj,
-          stateSleep,
-        });
+          state: stateSleep
+        })
     },
 
-    getState(obj) {
-      const { value } = obj;
+    getState (obj) {
+      const { value } = obj
       if (value >= 0) {
         const dd = this.$store.state.values.find(
-          (v) => v.dataTypeName === obj.dataTypeName
-        );
+          v => v.dataTypeName === obj.dataTypeName
+        )
         if (value >= dd.minSalud && value <= dd.maxSalud) {
-          return "green";
+          return 'green'
         }
         if (value >= dd.minAcept && value <= dd.maxAcept) {
-          return "yellow";
+          return 'yellow'
         }
-        return "red";
+        return 'red'
       } else {
-        return "not";
+        return 'not'
       }
     },
 
-    async createThought() {
-      const ss = this.moods.filter((e) => e.select);
+    async createThought () {
+      const ss = this.moods.filter(e => e.select)
 
       if (ss.length) {
         try {
-          const item = ss[0];
-          const { uid } = this.$store.state.authUser;
-          const { thought } = this;
-          const date = new Date().getTime();
+          const item = ss[0]
+          const { uid } = this.$store.state.authUser
+          const { thought } = this
+          const date = new Date().getTime()
           if (!thought || thought.length < 3) {
-            this.dialog = true;
+            this.dialog = true
           } else {
             await this.$fire.firestore
-              .collection("thoughts")
+              .collection('thoughts')
               .doc()
               .set({
                 date,
                 thought,
                 uid,
-                ...item,
-              });
+                ...item
+              })
             const obj = {
-              dataSourceId: "",
-              dataTypeName: "app.web.hear-my-health.mood.segment",
+              dataSourceId: '',
+              dataTypeName: 'app.web.hear-my-health.mood.segment',
               endTimeMillis: date,
-              endTimeNanos: "",
-              originDataSourceId: "",
+              endTimeNanos: '',
+              originDataSourceId: '',
               point: item,
               startTimeMillis: date,
-              startTimeNanos: "",
+              startTimeNanos: '',
 
               value: item.value,
 
               name: item.name,
-              modifiedTimeMillis: "",
-              activityType: "",
-            };
+              modifiedTimeMillis: '',
+              activityType: ''
+            }
 
-            const stateSleep = this.getState(obj);
+            const stateSleep = this.getState(obj)
             await this.$fire.firestore
-              .collection("dataSet")
+              .collection('dataSet')
               .doc()
               .set({
                 uid,
                 ...obj,
-                stateSleep,
-              });
-            this.close();
+                state: stateSleep
+              })
+            this.close()
           }
         } catch (error) {
-          return error;
+          return error
         }
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>

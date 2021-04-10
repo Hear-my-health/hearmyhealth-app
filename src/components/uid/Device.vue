@@ -1,42 +1,11 @@
 <template>
   <v-row justify="center" align="center">
     <v-col cols="12" sm="10" md="10">
-      <!-- <v-data-table
-        :headers="headers"
-        :items="dataSourceState"
-        :sort-by="['type', 'type']"
-        :sort-desc="[false, true]"
-        multi-sort
-        class="elevation-0"
-      >
-        <template #top>
-          <v-toolbar flat>
-            <v-toolbar-title>Dispositivos IoT </v-toolbar-title>
-            <v-divider class="mx-4" inset vertical />
-            <v-spacer />
-          </v-toolbar>
-        </template>
-        <template #[`item.device`]="{ item }">
-          <span v-if="item.device">
-            {{ item.device.uid }}
-          </span>
-        </template>
-        <template #[`item.type`]="{ item }">
-          <span v-if="item.device">
-            {{ item.device.type }}
-          </span>
-        </template>
-        <template #[`item.application`]="{ item }">
-          <span v-if="item.device">
-            {{ item.device.model }}
-          </span>
-        </template>
-      </v-data-table> -->
       <v-data-table
         :headers="headers"
         :items="uniqueDevices"
         multi-sort
-        class="elevation-1"
+        class="elevation-0"
       >
         <template #top>
           <v-toolbar flat>
@@ -61,7 +30,12 @@
 </template>
 <script>
 export default {
-  props: ['myUid'],
+  props: {
+    myUid: {
+      type: String,
+      default: ''
+    }
+  },
   data () {
     return {
       uid: this.$props.myUid,
@@ -119,8 +93,7 @@ export default {
   },
 
   methods: {
-    // eslint-disable-next-line require-await
-    async setUniqueDevices () {
+    setUniqueDevices () {
       const modelNames = this.dataSourceState.map((e) => {
         return e.device.model
       })
