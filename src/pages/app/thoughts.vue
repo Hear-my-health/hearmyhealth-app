@@ -215,7 +215,7 @@ export default {
         .set({
           uid,
           ...obj,
-          stateSleep
+          state: stateSleep
         })
     },
 
@@ -282,7 +282,7 @@ export default {
               .set({
                 uid,
                 ...obj,
-                stateSleep
+                state: stateSleep
               })
             this.close()
           }
