@@ -15,19 +15,19 @@
 
       <v-col cols="12" md="10">
         <v-timeline dense>
-          <v-timeline-item v-for="(thought, ith) in thoughts" :key="ith" small>
+          <v-timeline-item v-for="(thoug, ith) in thoughts" :key="ith" small>
             <v-card class="elevation-0 blue-grey lighten-5">
               <v-card-title class="title font-weight-regular">
                 <img
-                  :src="`/images/${thought.name}.svg`"
+                  :src="`/images/${thoug.name}.svg`"
                   alt="google-auth"
                   style="width: 32px; height: 32px"
                   class="mr-3"
                 >
-                {{ thought.thought }}
+                {{ thoug.thought }}
               </v-card-title>
               <v-card-text class="subtitle-1 font-weight-light">
-                {{ formatDateT(thought.date) }}
+                {{ formatDateT(thoug.date) }}
               </v-card-text>
             </v-card>
           </v-timeline-item>
@@ -266,19 +266,24 @@ export default {
     }
   },
 
-  mounted () {
-    if (localStorage.getItem('role') === 'admin') {
-      this.userType = localStorage.getItem('role')
-      this.$router.push('/back')
+  async mounted () {
+    const { authUser } = this.$store.state
+    if (!authUser) {
+      this.$router.push('/')
     } else {
-      this.userType = localStorage.getItem('role')
-      const { authUser } = this.$store.state
-      if (!authUser) {
-        this.$router.push('/')
+      await this.$store.dispatch('getUser', { uid: authUser.uid })
+      const { user } = this.$store.state
+      if (user) {
+        this.userType = user.role
+        if (this.userType === 'admin') {
+          this.$router.push('/back')
+        } else {
+          this.$store.dispatch('getValues')
+          this.$store.dispatch('getThoughts', { uid: authUser.uid })
+          this.$store.dispatch('getUser', { uid: authUser.uid })
+        }
       } else {
-        this.$store.dispatch('getValues')
-        this.$store.dispatch('getThoughts', { uid: authUser.uid })
-        this.$store.dispatch('getUser', { uid: authUser.uid })
+        this.$router.push('/')
       }
     }
   },
@@ -351,7 +356,6 @@ export default {
 
     async createThought () {
       const moodSelect = this.moods.filter(e => e.select)
-      console.log(moodSelect)
       if (moodSelect.length) {
         try {
           const item = moodSelect[0]
@@ -394,7 +398,7 @@ export default {
               .set({
                 uid,
                 ...obj,
-                stateSleep
+                state: stateSleep
               })
           }
           this.close()
@@ -403,7 +407,6 @@ export default {
         }
       } else {
         this.noMood = true
-        console.log('no mood')
       }
     }
   }

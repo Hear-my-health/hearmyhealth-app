@@ -32,7 +32,7 @@
             También puedes ingresar como especialista
           </p>
           <v-btn
-            class="lighten-1 red"
+            class="lighten-1 blue accent-4"
             raised
             outlined
             large

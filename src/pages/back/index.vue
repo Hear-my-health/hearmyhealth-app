@@ -4,8 +4,11 @@
       <v-data-table
         :headers="headers"
         :items="users"
+        :item-key="`uid`"
         :sort-by="['email', 'name']"
-        :sort-desc="[false, true]"
+        :sort-desc="[true, false]"
+        :search="search"
+        :custom-filter="filterOnlyCapsText"
         multi-sort
         class="elevation-0"
       >
@@ -14,6 +17,16 @@
             <v-toolbar-title>Pacientes</v-toolbar-title>
             <v-divider class="mx-4" inset vertical />
             <v-spacer />
+          </v-toolbar>
+          <v-toolbar flat class="mb-0">
+            <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              label="Search"
+              class="mb-0"
+              single-line
+              hide-details
+            />
           </v-toolbar>
         </template>
         <template #[`item.picture`]="{ item }">
@@ -124,6 +137,7 @@ export default {
   },
   data () {
     return {
+      search: '',
       userType: '',
       noData: false,
       specialties: ['Psicólogo', 'Nutricionista', 'Médico general', 'Otro'],
@@ -157,7 +171,7 @@ export default {
         {
           text: 'Email',
           align: 'start',
-          sortable: false,
+          sortable: true,
           value: 'email'
         },
         {
@@ -169,7 +183,7 @@ export default {
         {
           text: 'Nombre',
           align: 'start',
-          sortable: false,
+          sortable: true,
           value: 'name'
         },
         { text: '', value: 'actions', sortable: false }
@@ -177,13 +191,13 @@ export default {
     }
   },
 
-  async fetch ({ store }) {
+  /*   async fetch ({ store }) {
     try {
       await store.dispatch('getUsers')
     } catch (e) {
       return e
     }
-  },
+  }, */
 
   computed: {
     authUser () {
@@ -229,7 +243,7 @@ export default {
     }
   },
 
-  watch: {
+  /*   watch: {
     user () {
       if (localStorage) {
         localStorage.setItem('role', this.user.role)
@@ -244,7 +258,7 @@ export default {
         }
       }
     }
-  },
+  }, */
 
   async mounted () {
     const { authUser } = this.$store.state
@@ -267,6 +281,13 @@ export default {
   },
 
   methods: {
+    filterOnlyCapsText (value, search, item) {
+      return value != null &&
+          search != null &&
+          typeof value === 'string' &&
+          value.toString().includes(search)
+    },
+
     submit () {
       this.$v.$touch()
     },
