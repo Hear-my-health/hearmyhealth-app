@@ -6,9 +6,8 @@
         :items="users"
         :item-key="`uid`"
         :sort-by="['email', 'name']"
-        :sort-desc="[true, false]"
+        :sort-desc="[false, true]"
         :search="search"
-        :custom-filter="filterOnlyCapsText"
         multi-sort
         class="elevation-0"
       >
@@ -17,6 +16,14 @@
             <v-toolbar-title>Pacientes</v-toolbar-title>
             <v-divider class="mx-4" inset vertical />
             <v-spacer />
+            <v-spacer></v-spacer>
+            <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              label="Buscar"
+              single-line
+              hide-details
+            ></v-text-field>
           </v-toolbar>
           <v-toolbar flat class="mb-0">
             <v-text-field
@@ -175,8 +182,14 @@ export default {
           value: 'email'
         },
         {
-          text: 'Id',
-          align: 'start',
+          text: "DNI",
+          align: "start",
+          sortable: false,
+          value: "dni",
+        },
+        {
+          text: "Id",
+          align: "start",
           sortable: false,
           value: 'uid'
         },
