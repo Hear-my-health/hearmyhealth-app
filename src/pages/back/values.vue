@@ -340,7 +340,7 @@ export default {
         return errors
       }
       !this.$v.minAcept.minValue &&
-        errors.push('El valor mínimo aceptado debe ser positivo mayor a 0')
+        errors.push('El valor mínimo aceptado debe ser mayor a 0')
       !this.$v.minAcept.required &&
         errors.push('El valor mínimo aceptado es requerido')
       !this.$v.minAcept.decimal &&
@@ -353,7 +353,7 @@ export default {
         return errors
       }
       !this.$v.maxAcept.minValue &&
-        errors.push('El valor máximo aceptado debe ser positivo mayor a 0')
+        errors.push('El valor máximo aceptado debe ser mayor a 0')
       !this.$v.maxAcept.required &&
         errors.push('El valor máximo aceptado es requerido')
       !this.$v.maxAcept.decimal &&
@@ -366,7 +366,7 @@ export default {
         return errors
       }
       !this.$v.minSalud.minValue &&
-        errors.push('El valor mínimo saludable debe ser positivo mayor a 0')
+        errors.push('El valor mínimo saludable debe ser mayor a 0')
       !this.$v.minSalud.required &&
         errors.push('El valor mínimo saludable es requerido')
       !this.$v.minSalud.decimal &&
@@ -379,7 +379,7 @@ export default {
         return errors
       }
       !this.$v.maxSalud.minValue &&
-        errors.push('El valor máximo aceptado debe ser positivo mayor a 0')
+        errors.push('El valor máximo aceptado debe ser  mayor a 0')
       !this.$v.maxSalud.required &&
         errors.push('El valor máximo aceptado es requerido')
       !this.$v.maxSalud.decimal &&

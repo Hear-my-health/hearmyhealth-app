@@ -47,7 +47,10 @@
                 outlined
                 dense
                 type="number"
+                :error-messages="hcErrors"
                 :disabled="isEditing"
+                @input="$v.profile.clinicHistory.$touch()"
+                @blur="$v.profile.clinicHistory.$touch()"
               />
             </v-col>
             <v-col>
@@ -60,8 +63,11 @@
                 color="black"
                 outlined
                 dense
-                type="number"
+                type="decimal"
+                :error-messages="weightErrors"
                 :disabled="isEditing"
+                @input="$v.profile.weight.$touch()"
+                @blur="$v.profile.weight.$touch()"
               />
             </v-col>
             <v-col>
@@ -74,8 +80,11 @@
                 color="black"
                 outlined
                 dense
-                type="number"
+                type="decimal"
+                :error-messages="heightErrors"
                 :disabled="isEditing"
+                @input="$v.profile.height.$touch()"
+                @blur="$v.profile.height.$touch()"
               />
             </v-col>
           </v-row>
@@ -131,6 +140,7 @@
         large
         outlined
         raised
+        type="submit"
         @click="isEditing = !isEditing"
       >
         Editar
@@ -140,14 +150,23 @@
 </template>
 
 <script>
+import { validationMixin } from 'vuelidate'
+import { required, minLength, minValue, decimal } from 'vuelidate/lib/validators'
 export default {
+  mixins: [validationMixin],
   props: {
     myUid: {
       type: String,
       default: ''
     }
   },
-
+  validations: {
+    profile: {
+      clinicHistory: { required, minLength: minLength(6), decimal },
+      weight: { required, minLength: minLength(2), minValue: minValue(0), decimal },
+      height: { required, minLength: minLength(2), minValue: minValue(0), decimal }
+    }
+  },
   data () {
     return {
       isEditing: true,
@@ -159,7 +178,8 @@ export default {
         weight: '',
         height: ''
       },
-      uid: this.$props.myUid
+      uid: this.$props.myUid,
+      submitted: false
     }
   },
 
@@ -177,6 +197,45 @@ export default {
     },
     user () {
       return this.$store.state.user || null
+    },
+    hcErrors () {
+      const errors = []
+      if (!this.$v.profile.clinicHistory.$dirty) {
+        return errors
+      }
+      !this.$v.profile.clinicHistory.minLength &&
+        errors.push('La historia clínica debe tener al menos 6 números')
+      !this.$v.profile.clinicHistory.required &&
+        errors.push('La historia clínica es requerida')
+      !this.$v.profile.clinicHistory.decimal &&
+        errors.push('La historia clínica debe ser un número')
+      return errors
+    },
+    weightErrors () {
+      const errors = []
+      if (!this.$v.profile.weight.$dirty) {
+        return errors
+      }
+      !this.$v.profile.weight.minValue &&
+        errors.push('El peso debe ser mayor a 0')
+      !this.$v.profile.weight.required &&
+        errors.push('El peso es requerido')
+      !this.$v.profile.weight.decimal &&
+        errors.push('El peso debe ser un número')
+      return errors
+    },
+    heightErrors () {
+      const errors = []
+      if (!this.$v.profile.height.$dirty) {
+        return errors
+      }
+      !this.$v.profile.height.minValue &&
+        errors.push('La altura debe ser mayor a 0')
+      !this.$v.profile.height.required &&
+        errors.push('La altura es requerida')
+      !this.$v.profile.height.decimal &&
+        errors.push('La altura debe ser un número')
+      return errors
     }
   },
 
@@ -209,15 +268,27 @@ export default {
   },
 
   methods: {
+    submit () {
+      this.$v.$touch()
+    },
     async updatePatientInfo () {
       try {
-        const { clinicHistory, weight, height } = this.profile
-        await this.$fire.firestore.collection('users').doc(this.uid).update({
-          clinicHistory,
-          weight,
-          height
-        })
-        this.isEditing = true
+        if (!this.profile.clinicHistory ||
+          !this.profile.weight ||
+          !this.profile.height ||
+          isNaN(this.profile.clinicHistory) ||
+          isNaN(this.profile.weight) ||
+          isNaN(this.profile.height)) {
+          console.log('No válido')
+        } else {
+          const { clinicHistory, weight, height } = this.profile
+          await this.$fire.firestore.collection('users').doc(this.uid).update({
+            clinicHistory,
+            weight,
+            height
+          })
+          this.isEditing = true
+        }
       } catch (error) {
         this.$store.dispatch('SET_MESSAGE', { message: error })
       }
