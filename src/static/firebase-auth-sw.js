@@ -1,10 +1,10 @@
 const ignorePaths = ["\u002F__webpack_hmr","\u002F_loading","\u002F_nuxt\u002F"]
 
 importScripts(
-  'https://www.gstatic.com/firebasejs/8.2.5/firebase-app.js'
+  'https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js'
 )
 importScripts(
-  'https://www.gstatic.com/firebasejs/8.2.5/firebase-auth.js'
+  'https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js'
 )
 firebase.initializeApp({"apiKey":"AIzaSyAwCqlhcKen3cL3gcD8zj0ufBzkG_GJYRU","authDomain":"hear-my-health.firebaseapp.com","projectId":"hear-my-health","storageBucket":"hear-my-health.appspot.com","messagingSenderId":"1070628008462","appId":"1:1070628008462:web:06d2128e6803a14e6e025f","measurementId":"G-4VQ956MJ9R"})
 
