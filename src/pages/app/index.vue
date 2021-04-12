@@ -362,7 +362,6 @@ export default {
           const { uid } = this.$store.state.authUser
           const { thought } = this
           const date = new Date().getTime()
-
           if (!thought || thought.length < 3) {
             this.dialog = true
           } else {

@@ -805,6 +805,7 @@ export default {
             s => s.state === this.notificationSelectData
           )
         }
+        console.log(dataSetState)
 
         for (let index = 1; index <= Math.floor(dd); index++) {
           const dateEnd = start + 86400000

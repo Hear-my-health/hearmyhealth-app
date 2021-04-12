@@ -40,6 +40,7 @@
                     persistent-hint
                     prepend-icon="mdi-calendar"
                     v-bind="attrs"
+                    hint="MM/DD/YYYY"
                     @blur="dateStart = parseDate(dateStarFormatted)"
                     v-on="on"
                   />
@@ -69,6 +70,7 @@
                     persistent-hint
                     prepend-icon="mdi-calendar"
                     v-bind="attrs"
+                    hint="MM/DD/YYYY"
                     @blur="dateEnd = parseDate(dateEndFormatted)"
                     v-on="on"
                   />
@@ -117,6 +119,7 @@
   </div>
 </template>
 <script>
+import moment from 'moment'
 import Data from '~/components/uid/Data'
 import Device from '~/components/uid/Device'
 import Dashboard from '~/components/uid/Dashboard'
@@ -201,7 +204,8 @@ export default {
       /* await store.dispatch("getThoughts", { uid: this.uid }); */
       this.params.uid = this.uid
       this.params.start = new Date(this.dateStart).getTime()
-      this.params.end = new Date(this.dateEnd).getTime()
+      this.params.end = new Date(this.dateEnd).setUTCHours(23, 59)
+      console.log(this.params)
       this.$store.dispatch('getThoughtsByDate', this.params)
       /* await store.dispatch("getDataSet", { uid: this.uid }); */
       await store.dispatch('getDevices', { uid: this.uid })
@@ -225,14 +229,14 @@ export default {
       this.dateStarFormatted = this.formatDate(this.dateStart)
       this.params.uid = this.uid
       this.params.start = new Date(this.dateStart).getTime()
-      this.params.end = new Date(this.dateEnd).getTime()
+      this.params.end = new Date(this.dateEnd).setUTCHours(23, 59)
       this.$store.dispatch('getThoughtsByDate', this.params)
     },
     dateEnd (val) {
       this.dateEndFormatted = this.formatDate(this.dateEnd)
       this.params.uid = this.uid
       this.params.start = new Date(this.dateStart).getTime()
-      this.params.end = new Date(this.dateEnd).getTime()
+      this.params.end = new Date(this.dateEnd).setUTCHours(23, 59)
       this.$store.dispatch('getThoughtsByDate', this.params)
     },
     user () {
@@ -258,7 +262,7 @@ export default {
       /* this.$store.dispatch("getThoughts", { uid: this.uid }); */
       this.params.uid = this.uid
       this.params.start = new Date(this.dateStart).getTime()
-      this.params.end = new Date(this.dateEnd).getTime()
+      this.params.end = new Date(this.dateEnd).setUTCHours(23, 59)
       this.$store.dispatch('getThoughtsByDate', this.params)
       /* this.$store.dispatch("getDataSet", { uid: this.uid }); */
       this.$store.dispatch('getDevices', { uid: this.uid })
@@ -310,12 +314,15 @@ export default {
       return `${month}/${day}/${year}`
     },
     formatDateTable (item) {
-      const ss = new Date(Number(item)).toISOString().substr(0, 10)
-      return ss
+      const ss = new Date(Number(item)).toISOString()
+      const parseTime = moment(ss).format('DD/MM/YYYY')
+      return parseTime
     },
     formatDateHour (item) {
-      const ss = new Date(Number(item)).toISOString().substr(11, 5)
-      return ss
+      const ss = new Date(Number(item)).toISOString()
+      const parseTime = moment(ss).format('HH:mm')
+      console.log(parseTime)
+      return parseTime
     }
   }
 }
