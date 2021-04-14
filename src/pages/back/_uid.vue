@@ -8,7 +8,6 @@
     <v-tabs-items v-model="tab" class="grey lighten-5">
       <v-tab-item value="dashboard">
         <br>
-        <div>Paciente: "Nombre paciente"</div>
         <Dashboard :my-uid="uid" class="mt-3" />
       </v-tab-item>
       <v-tab-item value="data">

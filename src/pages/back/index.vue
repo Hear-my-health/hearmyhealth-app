@@ -237,25 +237,56 @@ export default {
       return errors
     }
   },
-
-  async mounted () {
-    const { authUser } = this.$store.state
-    if (!authUser) {
-      this.$router.push('/')
-    } else {
-      await this.$store.dispatch('getUser', { uid: authUser.uid })
-      const { user } = this.$store.state
-      if (user) {
-        this.userType = user.role
-        if (this.userType === 'admin') {
-          this.$store.dispatch('getUsers')
-        } else {
-          this.$router.push('/app')
-        }
+  watch: {
+    user () {
+      if (this.user.specialty) {
+        localStorage.setItem('doctorSpecialty', this.user.specialty)
+      }
+      if (this.user.name) {
+        localStorage.setItem('doctorName', this.user.name)
+      }
+      if (this.user.role) {
+        localStorage.setItem('role', this.user.role)
+      }
+      if (!this.user.dni || !this.user.dateOfBirth || !this.user.specialty) {
+        this.noData = true
       } else {
-        this.$router.push('/')
+        this.noData = false
       }
     }
+  },
+  mounted () {
+    if (localStorage.getItem('role') === 'user') {
+      this.userType = localStorage.getItem('role')
+      this.$router.push('/app')
+    } else {
+      this.userType = localStorage.getItem('role')
+      const { authUser } = this.$store.state
+      if (!authUser) {
+        this.$router.push('/')
+      } else {
+        this.$store.dispatch('getUsers')
+        this.$store.dispatch('getUser', { uid: authUser.uid })
+      }
+    }
+    // const { authUser } = this.$store.state
+    // if (!authUser) {
+    //   this.$router.push('/')
+    // } else {
+    //   await this.$store.dispatch('getUser', { uid: authUser.uid })
+    //   const { user } = this.$store.state
+    //   if (user) {
+    //     this.userType = localStorage.getItem('role')
+    //     // this.userType = user.role
+    //     if (this.userType === 'admin') {
+    //       this.$store.dispatch('getUsers')
+    //     } else {
+    //       this.$router.push('/app')
+    //     }
+    //   } else {
+    //     this.$router.push('/')
+    //   }
+    // }
   },
 
   methods: {

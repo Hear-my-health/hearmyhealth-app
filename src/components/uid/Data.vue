@@ -163,6 +163,18 @@
               )
             }}
           </div>
+          <div
+            v-if="item.sleep && item.deepSleep && !item.mood"
+            class="text-center"
+          >
+            {{
+              round(
+                0.17 * findState(item.sleep.state).value +
+                  0 +
+                  0.33 * findState(item.deepSleep.state).value
+              )
+            }}
+          </div>
         </template>
 
         <template #[`item.actions`]="{ item }">
@@ -457,7 +469,7 @@ export default {
             percentaje: 100
           },
           {
-            key: 'not',
+            key: 'blue',
             value: 0,
             percentaje: 100
           }
@@ -466,7 +478,7 @@ export default {
       }
 
       return {
-        key: 'not',
+        key: 'blue',
         value: 0,
         percentaje: 100
       }

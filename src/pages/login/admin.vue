@@ -6,7 +6,9 @@
           <h1>Inicio de sesión - Especialista</h1>
           <form @submit.prevent="signInWithEmailAndPassword">
             <div>
-              <p class="mb-1">Correo electrónico</p>
+              <p class="mb-1">
+                Correo electrónico
+              </p>
               <v-text-field
                 v-model="acc.email"
                 placeholder="Correo electrónico"
@@ -17,7 +19,9 @@
               />
             </div>
             <div>
-              <p class="mb-1">Contraseña</p>
+              <p class="mb-1">
+                Contraseña
+              </p>
               <v-text-field
                 v-model="acc.password"
                 placeholder="Contraseña"
@@ -46,7 +50,9 @@
           <h1>Registro de Usuario</h1>
           <form @submit.prevent="createWithEmailAndPassword">
             <div>
-              <p class="mb-1">Nombres</p>
+              <p class="mb-1">
+                Nombres
+              </p>
               <v-text-field
                 v-model="name"
                 placeholder="Nombres"
@@ -61,7 +67,9 @@
               />
             </div>
             <div>
-              <p class="mb-1">Correo electrónico</p>
+              <p class="mb-1">
+                Correo electrónico
+              </p>
               <v-text-field
                 v-model="email"
                 placeholder="Correo electrónico"
@@ -76,7 +84,9 @@
               />
             </div>
             <div>
-              <p class="mb-1">Contraseña</p>
+              <p class="mb-1">
+                Contraseña
+              </p>
               <v-text-field
                 v-model="password"
                 placeholder="Contraseña"
@@ -99,8 +109,8 @@
               outlined
               raised
               type="submit"
-              @click="submit"
               :disabled="submitted"
+              @click="submit"
             >
               Registrarse
             </v-btn>
@@ -112,8 +122,7 @@
             class="blue--text"
             @click="noAccount = !noAccount"
           >
-            Registrarse</span
-          >
+            Registrarse</span>
         </p>
         <p v-if="noAccount">
           Inicia sesión aquí<span
@@ -121,8 +130,7 @@
             class="blue--text"
             @click="noAccount = !noAccount"
           >
-            Iniciar sesión</span
-          >
+            Iniciar sesión</span>
         </p>
       </v-col>
     </v-row>
@@ -130,74 +138,74 @@
 </template>
 
 <script>
-import { validationMixin } from "vuelidate";
-import { required, minLength, email } from "vuelidate/lib/validators";
+import { validationMixin } from 'vuelidate'
+import { required, minLength, email } from 'vuelidate/lib/validators'
 export default {
-  layout: "free",
   mixins: [validationMixin],
+  layout: 'free',
   validations: {
     email: { required, email },
     password: { required, minLength: minLength(6) },
-    name: { required, minLength: minLength(2) },
+    name: { required, minLength: minLength(2) }
   },
-  data() {
+  data () {
     return {
       submitted: false,
       errors: false,
-      error: "",
-      email: "",
-      password: "",
-      name: "",
+      error: '',
+      email: '',
+      password: '',
+      name: '',
       acc: {
-        email: "",
-        password: "",
+        email: '',
+        password: ''
       },
-      noAccount: false,
-    };
+      noAccount: false
+    }
   },
   computed: {
-    nameErrors() {
-      const errors = [];
+    nameErrors () {
+      const errors = []
       if (!this.$v.name.$dirty) {
-        return errors;
+        return errors
       }
       !this.$v.name.minLength &&
-        errors.push("El nombre debe tener 2 caracteres como mínimo");
-      !this.$v.name.required && errors.push("El nombre es requerido");
-      return errors;
+        errors.push('El nombre debe tener 2 caracteres como mínimo')
+      !this.$v.name.required && errors.push('El nombre es requerido')
+      return errors
     },
-    emailErrors() {
-      const errors = [];
+    emailErrors () {
+      const errors = []
       if (!this.$v.email.$dirty) {
-        return errors;
+        return errors
       }
-      !this.$v.email.email && errors.push("Ingrese un correo válido");
-      !this.$v.email.required && errors.push("El correo es requerido");
-      return errors;
+      !this.$v.email.email && errors.push('Ingrese un correo válido')
+      !this.$v.email.required && errors.push('El correo es requerido')
+      return errors
     },
-    passwordErrors() {
-      const errors = [];
+    passwordErrors () {
+      const errors = []
       if (!this.$v.password.$dirty) {
-        return errors;
+        return errors
       }
       !this.$v.password.minLength &&
-        errors.push("La contraseña debe tener 6 caracteres como mínimo");
-      !this.$v.password.required && errors.push("La contraseña es requerida");
-      return errors;
-    },
+        errors.push('La contraseña debe tener 6 caracteres como mínimo')
+      !this.$v.password.required && errors.push('La contraseña es requerida')
+      return errors
+    }
   },
 
   methods: {
-    submit() {
-      this.$v.$touch();
+    submit () {
+      this.$v.$touch()
     },
-    reset() {
-      this.$v.$reset();
-      this.password = "";
+    reset () {
+      this.$v.$reset()
+      this.password = ''
     },
-    createWithEmailAndPassword() {
-      this.submitted = true;
-      const date = new Date().getTime();
+    createWithEmailAndPassword () {
+      this.submitted = true
+      const date = new Date().getTime()
       if (
         !this.name ||
         !this.email ||
@@ -205,72 +213,75 @@ export default {
         this.name.length < 2 ||
         this.password.length < 6
       ) {
-        this.errors = true;
-        this.error = "Completa los campos de manera correcta";
+        this.errors = true
+        this.error = 'Completa los campos de manera correcta'
         setTimeout(
+          // eslint-disable-next-line no-sequences
           () => ((this.errors = false), (this.submitted = false)),
           4000
-        );
+        )
       } else {
         try {
           this.$fire.auth
             .createUserWithEmailAndPassword(this.email, this.password)
             .then((res) => {
               this.$fire.firestore
-                .collection("users")
+                .collection('users')
                 .doc(res.user.uid)
                 .set({
                   email: this.email,
                   name: this.name,
                   createDate: date,
                   uid: res.user.uid,
-                  role: "admin",
+                  role: 'admin'
                 })
                 .then((res) => {
-                  this.$router.push("/back");
+                  this.$router.push('/back')
                 })
                 .catch((err) => {
-                  this.submitted = false;
+                  this.submitted = false
 
-                  this.$store.dispatch("SET_MESSAGE", { message: err });
-                });
+                  this.$store.dispatch('SET_MESSAGE', { message: err })
+                })
             })
             .catch((err) => {
-              console.log(err);
-              if (err.code === "auth/email-already-in-use") {
+              console.log(err)
+              if (err.code === 'auth/email-already-in-use') {
                 this.error =
-                  "Este correo electrónico ya se encuentra registrado";
+                  'Este correo electrónico ya se encuentra registrado'
               }
-              this.errors = true;
+              this.errors = true
               setTimeout(
+                // eslint-disable-next-line no-sequences
                 () => ((this.errors = false), (this.submitted = false)),
                 4000
-              );
-            });
+              )
+            })
         } catch (error) {
-          this.$store.dispatch("SET_MESSAGE", { message: error });
+          this.$store.dispatch('SET_MESSAGE', { message: error })
         }
       }
     },
 
-    signInWithEmailAndPassword() {
-      this.submitted = true;
+    signInWithEmailAndPassword () {
+      this.submitted = true
       try {
         this.$fire.auth
           .signInWithEmailAndPassword(this.acc.email, this.acc.password)
           .then((res) => {
-            this.$router.push("/back");
+            localStorage.setItem('role', 'admin')
+            this.$router.push('/back')
           })
           .catch((err) => {
-            this.submitted = false;
-            this.errors = true;
-            setTimeout(() => (this.errors = false), 5000);
-            this.$store.dispatch("SET_MESSAGE", { message: err });
-          });
+            this.submitted = false
+            this.errors = true
+            setTimeout(() => (this.errors = false), 5000)
+            this.$store.dispatch('SET_MESSAGE', { message: err })
+          })
       } catch (error) {
-        this.$store.dispatch("SET_MESSAGE", { message: error });
+        this.$store.dispatch('SET_MESSAGE', { message: error })
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>

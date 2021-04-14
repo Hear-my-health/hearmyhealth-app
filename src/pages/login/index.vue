@@ -207,7 +207,7 @@ export default {
           data: dataSourceFilter
         })
 
-        const startDateOrigin = '2021-02-01T00:00:00.000Z'
+        const startDateOrigin = '2021-03-01T00:00:00.000Z'
         const startTimeOrigin = new Date(startDateOrigin).getTime()
 
         const dataSaving =
