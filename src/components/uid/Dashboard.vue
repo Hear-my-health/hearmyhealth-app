@@ -962,7 +962,7 @@ export default {
 </script>
 <style lang="scss">
 .fixed-height-container {
-  height: calc(100vh - 228px);
+  height: calc(100vh - 328px);
 }
 
 .fixed-container {
