@@ -217,7 +217,7 @@ export default {
 
         const startTime = dataSaving ? dataSaving.date : startTimeOrigin
 
-        const endDate = new Date()
+        const endDate = new Date().setHours(0, 0, 0, 0)
 
         const endTime = endDate.getTime()
 
