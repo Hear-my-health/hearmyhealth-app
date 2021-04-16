@@ -1,132 +1,32 @@
 [
   {
-    "starDate": 1617148800000,
-    "endDate": 1617235200000,
-    "heartRate": 55,
-    "calories": 202,
-    "steps": 193,
-    "sleep": 6.15,
-    "deepSleep": 1.24,
-    "moodbyDay": 0.5
-  },
-  {
-    "starDate": 1617235200000,
-    "endDate": 1617321600000,
-    "heartRate": 54,
-    "calories": 150,
-    "steps": 228,
-    "sleep": 7.82,
-    "deepSleep": 1.21,
-    "moodbyDay": 0.5
-  },
-  {
-    "starDate": 1617321600000,
-    "endDate": 1617408000000,
-    "heartRate": 69,
-    "calories": 156,
-    "steps": 237,
-    "sleep": 4.84,
-    "deepSleep": 1.25,
-    "moodbyDay": 0.001
-  },
-  {
-    "starDate": 1617408000000,
-    "endDate": 1617494400000,
-    "heartRate": 69,
-    "calories": 194,
-    "steps": 150,
-    "sleep": 3.78,
-    "deepSleep": 1.62,
-    "moodbyDay": 0.5
-  },
-  {
-    "starDate": 1617494400000,
-    "endDate": 1617580800000,
-    "heartRate": 64,
-    "calories": 162,
-    "steps": 285,
-    "sleep": 5.87,
-    "deepSleep": 1.83,
-    "moodbyDay": 1
-  },
-  {
-    "starDate": 1617580800000,
-    "endDate": 1617667200000,
-    "heartRate": 65,
-    "calories": 204,
-    "steps": 307,
-    "sleep": 3.3,
+    "starDate": 1618272000000,
+    "endDate": 1618358400000,
+    "heartRate": 210,
+    "calories": 160,
+    "steps": 773,
+    "sleep": 9.07,
     "deepSleep": 1.89,
-    "moodbyDay": 0.001
-  },
-  {
-    "starDate": 1617667200000,
-    "endDate": 1617753600000,
-    "heartRate": 60,
-    "calories": 191,
-    "steps": 316,
-    "sleep": 4.31,
-    "deepSleep": 1.82,
-    "moodbyDay": 0.5
-  },
-  {
-    "starDate": 1617753600000,
-    "endDate": 1617840000000,
-    "heartRate": 70,
-    "calories": 153,
-    "steps": 251,
-    "sleep": 7.03,
-    "deepSleep": 1.99,
     "moodbyDay": 1
   },
   {
-    "starDate": 1617840000000,
-    "endDate": 1617926400000,
-    "heartRate": 61,
-    "calories": 181,
-    "steps": 515,
-    "sleep": 10.91,
-    "deepSleep": 1.64,
-    "moodbyDay": 0.5
-  },
-  {
-    "starDate": 1617926400000,
-    "endDate": 1618012800000,
-    "heartRate": 115,
-    "calories": 308,
-    "steps": 728,
-    "sleep": 6.55,
-    "deepSleep": 2.09,
-    "moodbyDay": 1
-  },
-  {
-    "starDate": 1618012800000,
-    "endDate": 1618099200000,
-    "heartRate": 65,
-    "calories": 336,
-    "steps": 380,
-    "sleep": 8.58,
-    "deepSleep": 1.79,
-    "moodbyDay": 0.001
-  },
-  {
-    "starDate": 1618099200000,
-    "endDate": 1618185600000,
-    "heartRate": 78,
-    "calories": 311,
-    "steps": 426,
-    "sleep": 3.74,
-    "deepSleep": 0.66,
-    "moodbyDay": 0.5
-  },
-  {
-    "starDate": 1618185600000,
-    "endDate": 1618272000000,
+    "starDate": 1618358400000,
+    "endDate": 1618444800000,
     "heartRate": 89,
-    "calories": 351,
-    "steps": 483,
-    "sleep": 5.01,
-    "deepSleep": 0.48,
-    "moodbyDay": 1
+    "calories": 70,
+    "steps": 100,
+    "sleep": 8.58,
+    "deepSleep": 1.75,
+    "moodbyDay": 0.001
+  },
+  {
+    "starDate": 1618444800000,
+    "endDate": 1618531200000,
+    "heartRate": 100,
+    "calories": 1300,
+    "steps": 767,
+    "sleep": 4.94,
+    "deepSleep": 1.02,
+    "moodbyDay": 0.5
   }
 ]
