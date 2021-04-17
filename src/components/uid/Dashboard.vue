@@ -144,60 +144,75 @@
           <!-- FIN SALUD FÍSICA -->
           <!-- SALUD MENTAL -->
           <v-container v-if="selectedType === 'Salud Mental'">
-            <v-col
-              v-if="dataMentalHealth < 30 && dataMentalHealth > 0"
-              cols="12"
-              sm="4"
-              md="4"
-              justify="center"
-              align="center"
-            >
-              <v-progress-circular
-                :rotate="-90"
-                :size="100"
-                :width="15"
-                :value="100"
-                color="red"
+            <v-row>
+              <v-col
+                v-if="dataMentalHealth < 30 && dataMentalHealth > 0"
+                cols="12"
+                sm="4"
+                md="4"
+                justify="center"
+                align="center"
               >
-                {{ "S. Mental" }}
-              </v-progress-circular>
-            </v-col>
-            <v-col
-              v-if="dataMentalHealth < 60 && dataMentalHealth >= 30"
-              cols="12"
-              sm="4"
-              md="4"
-              justify="center"
-              align="center"
-            >
-              <v-progress-circular
-                :rotate="-90"
-                :size="100"
-                :width="15"
-                :value="100"
-                color="amber"
+                <v-progress-circular
+                  :rotate="-90"
+                  :size="100"
+                  :width="15"
+                  :value="100"
+                  color="red"
+                >
+                  {{ "S. Mental" }}
+                </v-progress-circular>
+              </v-col>
+              <v-col
+                v-if="dataMentalHealth < 60 && dataMentalHealth >= 30"
+                cols="12"
+                sm="4"
+                md="4"
+                justify="center"
+                align="center"
               >
-                {{ "S. Mental" }}
-              </v-progress-circular>
-            </v-col>
-            <v-col
-              v-if="dataMentalHealth >= 60"
-              cols="12"
-              sm="4"
-              md="4"
-              justify="center"
-              align="center"
-            >
-              <v-progress-circular
-                :rotate="-90"
-                :size="100"
-                :width="15"
-                :value="100"
-                color="green"
+                <v-progress-circular
+                  :rotate="-90"
+                  :size="100"
+                  :width="15"
+                  :value="100"
+                  color="amber"
+                >
+                  {{ "S. Mental" }}
+                </v-progress-circular>
+              </v-col>
+              <v-col
+                v-if="dataMentalHealth >= 60"
+                cols="12"
+                sm="4"
+                md="4"
+                justify="center"
+                align="center"
               >
-                {{ "S. Mental" }}
-              </v-progress-circular>
-            </v-col>
+                <v-progress-circular
+                  :rotate="-90"
+                  :size="100"
+                  :width="15"
+                  :value="100"
+                  color="green"
+                >
+                  {{ "S. Mental" }}
+                </v-progress-circular>
+              </v-col>
+              <v-col
+                cols="12"
+                sm="7"
+                md="7"
+                justify="center"
+                align="center"
+              >
+                <div> Valores estado de animo:</div>
+                <v-img
+                  src="https://firebasestorage.googleapis.com/v0/b/hear-my-health.appspot.com/o/caritasExplicacion.png?alt=media&token=caa42dc7-638a-4428-8ae1-5668fe6c4647"
+                  max-width="230"
+                />
+              </v-col>
+            </v-row>
             <v-col
               v-if="dataHeartRate.length > 0"
               cols="12"

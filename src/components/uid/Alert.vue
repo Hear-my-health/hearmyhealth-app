@@ -10,15 +10,15 @@
         <v-card classdark>
           <v-card-title class="headline">
             <v-row>
-              <v-col>Nivel: {{ alert.type }} | Descripción: {{ alert.alert }}</v-col>
+              <v-col>Nivel: {{ alert.type }} | {{ alert.alert }}</v-col>
             </v-row>
           </v-card-title>
           <v-card-text style="font-size: 1.2rem">
             Fecha: {{ formatDateTable(alert.date) }}
             <span v-if="alert.doctorName">
-              - Doctor: {{ alert.doctorName }}</span>
+              | Doctor: {{ alert.doctorName }}</span>
             <span v-if="alert.doctorSpecialty">
-              - Especialidad: {{ alert.doctorSpecialty }}</span>
+              - {{ alert.doctorSpecialty }}</span>
           </v-card-text>
         </v-card>
         <v-spacer />

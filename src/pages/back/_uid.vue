@@ -248,7 +248,7 @@ export default {
     this.dateEnd = date.toISOString().substr(0, 10)
     this.dateEndFormatted = this.formatDate(date.toISOString().substr(0, 10))
 
-    date.setDate(date.getDate() - 7)
+    date.setDate(date.getDate() - 15)
     this.dateStart = date.toISOString().substr(0, 10)
     this.dateStarFormatted = this.formatDate(date.toISOString().substr(0, 10))
   },

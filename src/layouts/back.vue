@@ -33,11 +33,16 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar style="height: 52px" :clipped-left="clipped" fixed app class="elevation-0 lighten">
+    <v-app-bar :clipped-left="clipped" fixed app class="elevation-0 white">
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-spacer />
+      <v-btn icon to="/back/account">
+        <v-list-item-avatar v-if="auth">
+          <v-img :src="auth.photoURL" />
+        </v-list-item-avatar>
+      </v-btn>
     </v-app-bar>
-    <v-main class="grey lighten-5" style="padding: 40px 0px 0px; height: 34px">
+    <v-main class="grey lighten-5">
       <v-container>
         <nuxt />
       </v-container>

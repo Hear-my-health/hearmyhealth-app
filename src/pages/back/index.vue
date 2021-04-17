@@ -4,6 +4,7 @@
       <v-data-table
         :headers="headers"
         :items="users"
+        :items-per-page="15"
         :item-key="`uid`"
         :sort-by="['email', 'name']"
         :sort-desc="[false, true]"
