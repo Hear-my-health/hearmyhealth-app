@@ -1,292 +1,313 @@
 <template>
-  <v-row justify="center" align="center">
-    <v-col cols="12" sm="8" md="3">
-      <v-menu
-        ref="menu1"
-        v-model="menu1"
-        :close-on-content-click="false"
-        transition="scale-transition"
-        offset-y
-        max-width="290px"
-        min-width="auto"
-      >
-        <template #activator="{ on, attrs }">
-          <v-text-field
-            v-model="dateStarFormatted"
-            label="Inicio"
-            persistent-hint
-            prepend-icon="mdi-calendar"
-            v-bind="attrs"
-            @blur="dateStart = parseDate(dateStarFormatted)"
-            v-on="on"
-          />
-        </template>
-        <v-date-picker v-model="dateStart" no-title @input="menu1 = false" />
-      </v-menu>
-    </v-col>
+  <v-container>
+    <v-row justify="start" align="center"> Paciente: {{ user.name }} </v-row>
+    <v-row justify="center" align="center">
+      <v-col cols="12" sm="8" md="3">
+        <v-menu
+          ref="menu1"
+          v-model="menu1"
+          :close-on-content-click="false"
+          transition="scale-transition"
+          offset-y
+          max-width="290px"
+          min-width="auto"
+        >
+          <template #activator="{ on, attrs }">
+            <v-text-field
+              v-model="dateStarFormatted"
+              label="Inicio"
+              persistent-hint
+              prepend-icon="mdi-calendar"
+              v-bind="attrs"
+              @blur="dateStart = parseDate(dateStarFormatted)"
+              v-on="on"
+            />
+          </template>
+          <v-date-picker v-model="dateStart" no-title @input="menu1 = false" />
+        </v-menu>
+      </v-col>
 
-    <v-col cols="12" sm="8" md="3">
-      <v-menu
-        ref="menu2"
-        v-model="menu2"
-        :close-on-content-click="false"
-        transition="scale-transition"
-        offset-y
-        max-width="290px"
-        min-width="auto"
-      >
-        <template #activator="{ on, attrs }">
-          <v-text-field
-            v-model="dateEndFormatted"
-            label="Fin"
-            persistent-hint
-            prepend-icon="mdi-calendar"
-            v-bind="attrs"
-            @blur="dateEnd = parseDate(dateEndFormatted)"
-            v-on="on"
-          />
-        </template>
-        <v-date-picker v-model="dateEnd" no-title @input="menu2 = false" />
-      </v-menu>
-    </v-col>
+      <v-col cols="12" sm="8" md="3">
+        <v-menu
+          ref="menu2"
+          v-model="menu2"
+          :close-on-content-click="false"
+          transition="scale-transition"
+          offset-y
+          max-width="290px"
+          min-width="auto"
+        >
+          <template #activator="{ on, attrs }">
+            <v-text-field
+              v-model="dateEndFormatted"
+              label="Fin"
+              persistent-hint
+              prepend-icon="mdi-calendar"
+              v-bind="attrs"
+              @blur="dateEnd = parseDate(dateEndFormatted)"
+              v-on="on"
+            />
+          </template>
+          <v-date-picker v-model="dateEnd" no-title @input="menu2 = false" />
+        </v-menu>
+      </v-col>
 
-    <v-col v-if="dataSet.length" cols="12" sm="10" md="10">
-      <v-data-table
-        :headers="headers"
-        :items="dataSet"
-        :sort-by="['dataTypeName', 'type']"
-        :sort-desc="[true, true]"
-        multi-sort
-        class="elevation-0"
-      >
-        <template #top>
-          <v-toolbar flat>
-            <v-toolbar-title>Fuente de datos </v-toolbar-title>
-            <v-divider class="mx-4" inset vertical />
-            <v-spacer />
-          </v-toolbar>
-        </template>
+      <v-col v-if="dataSet.length" cols="12" sm="10" md="10">
+        <v-data-table
+          :headers="headers"
+          :items="dataSet"
+          :sort-by="['dataTypeName', 'type']"
+          :sort-desc="[true, true]"
+          multi-sort
+          class="elevation-0"
+        >
+          <template #top>
+            <v-toolbar flat>
+              <v-toolbar-title>Fuente de datos </v-toolbar-title>
+              <v-divider class="mx-4" inset vertical />
+              <v-spacer />
+            </v-toolbar>
+          </template>
 
-        <template #[`item.dateStart`]="{ item }">
-          {{ formatDateTable(item.dateStart) }}
-        </template>
+          <template #[`item.dateStart`]="{ item }">
+            {{ formatDateTable(item.dateStart) }}
+          </template>
 
-        <template #[`item.dateEnd`]="{ item }">
-          {{ formatDateTable(item.dateEnd) }}
-        </template>
+          <template #[`item.dateEnd`]="{ item }">
+            {{ formatDateTable(item.dateEnd) }}
+          </template>
 
-        <template #[`item.heartRate`]="{ item }">
-          <div
-            v-if="item.heartRate"
-            :class="`${item.heartRate.state}`"
-            class="py-1 text-center"
-          >
-            {{ round(item.heartRate.value) }}
-          </div>
-        </template>
+          <template #[`item.heartRate`]="{ item }">
+            <div
+              v-if="item.heartRate"
+              :class="`${item.heartRate.state}`"
+              class="py-1 text-center"
+            >
+              {{ round(item.heartRate.value) }}
+            </div>
+            <div
+              v-if="!item.heartRate"
+              class="py-1 text-center no-values"
+            ></div>
+          </template>
 
-        <template #[`item.calories`]="{ item }">
-          <div
-            v-if="item.calories"
-            :class="`${item.calories.state}`"
-            class="py-1 text-center"
-          >
-            {{ round(item.calories.value) }}
-          </div>
-        </template>
+          <template #[`item.calories`]="{ item }">
+            <div
+              v-if="item.calories"
+              :class="`${item.calories.state}`"
+              class="py-1 text-center"
+            >
+              {{ round(item.calories.value) }}
+            </div>
+            <div v-if="!item.calories" class="py-1 text-center no-values"></div>
+          </template>
 
-        <template #[`item.steps`]="{ item }">
-          <div
-            v-if="item.steps"
-            :class="`${item.steps.state}`"
-            class="py-1 text-center"
-          >
-            {{ round(item.steps.value) }}
-          </div>
-        </template>
+          <template #[`item.steps`]="{ item }">
+            <div
+              v-if="item.steps"
+              :class="`${item.steps.state}`"
+              class="py-1 text-center"
+            >
+              {{ round(item.steps.value) }}
+            </div>
+            <div v-if="!item.steps" class="py-1 text-center no-values"></div>
+          </template>
 
-        <template #[`item.sleep`]="{ item }">
-          <div
-            v-if="item.sleep"
-            :class="`${item.sleep.state}`"
-            class="py-1 text-center"
-          >
-            {{ round(item.sleep.value) }}
-          </div>
-        </template>
+          <template #[`item.sleep`]="{ item }">
+            <div
+              v-if="item.sleep"
+              :class="`${item.sleep.state}`"
+              class="py-1 text-center"
+            >
+              {{ round(item.sleep.value) }}
+            </div>
+            <div v-if="!item.sleep" class="py-1 text-center no-values"></div>
+          </template>
 
-        <template #[`item.deepSleep`]="{ item }">
-          <div
-            v-if="item.deepSleep"
-            :class="`${item.deepSleep.state}`"
-            class="py-1 text-center"
-          >
-            {{ round(item.deepSleep.value) }}
-          </div>
-        </template>
+          <template #[`item.deepSleep`]="{ item }">
+            <div
+              v-if="item.deepSleep"
+              :class="`${item.deepSleep.state}`"
+              class="py-1 text-center"
+            >
+              {{ round(item.deepSleep.value) }}
+            </div>
+            <div
+              v-if="!item.deepSleep"
+              class="py-1 text-center no-values"
+            ></div>
+          </template>
 
-        <template #[`item.mood`]="{ item }">
-          <div
-            v-if="item.mood"
-            :class="`${item.mood.state}`"
-            class="py-1 text-center"
-          >
-            {{ round(item.mood.value) }}
-          </div>
-        </template>
+          <template #[`item.mood`]="{ item }">
+            <div
+              v-if="item.mood"
+              :class="`${
+                item.mood.value < 0.4
+                  ? `red`
+                  : item.mood.value > 0.4 && item.mood.value <= 0.7
+                  ? `yellow`
+                  : `green`
+              }`"
+              class="py-1 text-center"
+            >
+              {{ round(item.mood.value) }}
+            </div>
+            <div v-if="!item.mood" class="py-1 text-center no-values"></div>
+          </template>
 
-        <template #[`item.fisica`]="{ item }">
-          <div
-            v-if="item.heartRate && item.calories && item.steps"
-            :class="`${
+          <template #[`item.fisica`]="{ item }">
+            <div
+              v-if="item.heartRate && item.calories && item.steps"
+              :class="`${
+                round(
+                  0.5 * findState(item.heartRate.state).value +
+                    0.17 * findState(item.steps.state).value +
+                    0.33 * findState(item.calories.state).value
+                ) < 0.4
+                  ? `red`
+                  : round(
+                      0.5 * findState(item.heartRate.state).value +
+                        0.17 * findState(item.steps.state).value +
+                        0.33 * findState(item.calories.state).value
+                    ) > 0.4 &&
+                    round(
+                      0.5 * findState(item.heartRate.state).value +
+                        0.17 * findState(item.steps.state).value +
+                        0.33 * findState(item.calories.state).value
+                    ) <= 0.7
+                  ? `yellow`
+                  : `green`
+              }`"
+              class="text-center"
+              style="height: 50%; width: 80%"
+            >
+              <!-- {{
               round(
                 0.5 * findState(item.heartRate.state).value +
                   0.17 * findState(item.steps.state).value +
                   0.33 * findState(item.calories.state).value
-              ) < 0.4
-                ? `red`
-                : round(
-                    0.5 * findState(item.heartRate.state).value +
-                      0.17 * findState(item.steps.state).value +
-                      0.33 * findState(item.calories.state).value
-                  ) > 0.4 &&
-                  round(
-                    0.5 * findState(item.heartRate.state).value +
-                      0.17 * findState(item.steps.state).value +
-                      0.33 * findState(item.calories.state).value
-                  ) <= 0.7
-                ? `yellow`
-                : `green`
-            }`"
-            class="text-center"
-            style="height: 50%; width: 80%"
-          >
-            <!-- {{
-              round(
-                0.5 * findState(item.heartRate.state).value +
-                  0.17 * findState(item.steps.state).value +
-                  0.33 * findState(item.calories.state).value
               )
             }} -->
-          </div>
-        </template>
+            </div>
+          </template>
 
-        <template #[`item.mental`]="{ item }">
-          <div
-            v-if="item.sleep && item.deepSleep && item.mood"
-            class="text-center"
-            :class="`${
-              round(
-                0.17 * findState(item.sleep.state).value +
-                  0.5 * findState(item.mood.state).value +
-                  0.33 * findState(item.deepSleep.state).value
-              ) <= 0.4
-                ? `red`
-                : round(
-                    0.17 * findState(item.sleep.state).value +
-                      0.5 * findState(item.mood.state).value +
-                      0.33 * findState(item.deepSleep.state).value
-                  ) > 0.4 &&
-                  round(
-                    0.17 * findState(item.sleep.state).value +
-                      0.5 * findState(item.mood.state).value +
-                      0.33 * findState(item.deepSleep.state).value
-                  ) <= 0.7
-                ? `yellow`
-                : `green`
-            }`"
-            style="height: 50%; width: 80%"
-          >
-            <!-- {{
+          <template #[`item.mental`]="{ item }">
+            <div
+              v-if="item.sleep && item.deepSleep && item.mood"
+              class="text-center"
+              :class="`${
+                round(
+                  0.17 * findState(item.sleep.state).value +
+                    0.5 * findState(item.mood.state).value +
+                    0.33 * findState(item.deepSleep.state).value
+                ) <= 0.4
+                  ? `red`
+                  : round(
+                      0.17 * findState(item.sleep.state).value +
+                        0.5 * findState(item.mood.state).value +
+                        0.33 * findState(item.deepSleep.state).value
+                    ) > 0.4 &&
+                    round(
+                      0.17 * findState(item.sleep.state).value +
+                        0.5 * findState(item.mood.state).value +
+                        0.33 * findState(item.deepSleep.state).value
+                    ) <= 0.7
+                  ? `yellow`
+                  : `green`
+              }`"
+              style="height: 50%; width: 80%"
+            >
+              <!-- {{
               round(
                 0.17 * findState(item.sleep.state).value +
                   0.5 * findState(item.mood.state).value +
                   0.33 * findState(item.deepSleep.state).value
               )
             }} -->
-          </div>
-          <div
-            v-if="item.sleep && item.deepSleep && !item.mood"
-            class="text-center"
-            :class="`${
-              round(
-                0.17 * findState(item.sleep.state).value +
-                  0 +
-                  0.33 * findState(item.deepSleep.state).value
-              ) <= 0.4
-                ? `red`
-                : round(
-                    0.17 * findState(item.sleep.state).value +
-                      0 +
-                      0.33 * findState(item.deepSleep.state).value
-                  ) > 0.4 &&
-                  round(
-                    0.17 * findState(item.sleep.state).value +
-                      0 +
-                      0.33 * findState(item.deepSleep.state).value
-                  ) <= 0.7
-                ? `yellow`
-                : `green`
-            }`"
-            style="height: 50%; width: 80%"
-          >
-            <!-- {{
+            </div>
+            <div
+              v-if="item.sleep && item.deepSleep && !item.mood"
+              class="text-center"
+              :class="`${
+                round(
+                  0.17 * findState(item.sleep.state).value +
+                    0 +
+                    0.33 * findState(item.deepSleep.state).value
+                ) <= 0.4
+                  ? `red`
+                  : round(
+                      0.17 * findState(item.sleep.state).value +
+                        0 +
+                        0.33 * findState(item.deepSleep.state).value
+                    ) > 0.4 &&
+                    round(
+                      0.17 * findState(item.sleep.state).value +
+                        0 +
+                        0.33 * findState(item.deepSleep.state).value
+                    ) <= 0.7
+                  ? `yellow`
+                  : `green`
+              }`"
+              style="height: 50%; width: 80%"
+            >
+              <!-- {{
               round(
                 0.17 * findState(item.sleep.state).value +
                   0 +
                   0.33 * findState(item.deepSleep.state).value
               )
             }} -->
-          </div>
-        </template>
+            </div>
+          </template>
 
-        <template #[`item.actions`]="{ item }">
-          <v-btn
-            color="black"
-            elevation="0"
-            outlined
-            raised
-            :to="`/back/${item.uid}`"
-          >
-            Ver
+          <template #[`item.actions`]="{ item }">
+            <v-btn
+              color="black"
+              elevation="0"
+              outlined
+              raised
+              :to="`/back/${item.uid}`"
+            >
+              Ver
 
-            <v-icon small class="mr-2"> mdi-arrow-right </v-icon>
-          </v-btn>
-        </template>
+              <v-icon small class="mr-2"> mdi-arrow-right </v-icon>
+            </v-btn>
+          </template>
 
-        <template slot="body.append">
-          <tr>
-            <th />
-            <th rowspan="2">PROMEDIO</th>
-            <th class="text-center">
-              {{ sumField("heartRate") }}
-            </th>
-            <th class="text-center">
-              {{ sumField("calories") }}
-            </th>
-            <th class="text-center">
-              {{ sumField("steps") }}
-            </th>
-            <th class="text-center">
-              {{ sumField("sleep") }}
-            </th>
-            <th class="text-center">
-              {{ sumField("deepSleep") }}
-            </th>
-            <th class="text-center">
-              {{ sumField("mood") }}
-            </th>
-            <th class="text-center">
-              {{ sumFisica() }}
-            </th>
-            <th class="text-center">
-              {{ sumMental() }}
-            </th>
-          </tr>
-        </template>
-      </v-data-table>
-    </v-col>
-  </v-row>
+          <template slot="body.append">
+            <tr>
+              <th />
+              <th rowspan="2">PROMEDIO</th>
+              <th class="text-center">
+                {{ sumField("heartRate") }}
+              </th>
+              <th class="text-center">
+                {{ sumField("calories") }}
+              </th>
+              <th class="text-center">
+                {{ sumField("steps") }}
+              </th>
+              <th class="text-center">
+                {{ sumField("sleep") }}
+              </th>
+              <th class="text-center">
+                {{ sumField("deepSleep") }}
+              </th>
+              <th class="text-center">
+                {{ sumField("mood") }}
+              </th>
+              <th class="text-center">
+                {{ sumFisica() }}
+              </th>
+              <th class="text-center">
+                {{ sumMental() }}
+              </th>
+            </tr>
+          </template>
+        </v-data-table>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -443,17 +464,26 @@ export default {
           const dd = this.$store.state.dataSet.filter(
             (s) => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
           );
+          const tempHR = {
+            /*dataSourceId : app.web.hear-my-health.csv.claudia */
+          };
           const ee = {
             dateStart: start,
             dateEnd,
             heartRate: dd.find(
-              (t) => t.dataTypeName === "com.google.heart_rate.bpm"
+              (t) =>
+                t.dataTypeName === "com.google.heart_rate.bpm" &&
+                t.value !== null
             ),
             calories: dd.find(
-              (t) => t.dataTypeName === "com.google.calories.expended"
+              (t) =>
+                t.dataTypeName === "com.google.calories.expended" &&
+                t.value !== null
             ),
             steps: dd.find(
-              (t) => t.dataTypeName === "com.google.step_count.delta"
+              (t) =>
+                t.dataTypeName === "com.google.step_count.delta" &&
+                t.value !== null
             ),
             sleep: dd.find(
               (t) => t.dataTypeName === "com.google.sleep.segment"
@@ -468,6 +498,7 @@ export default {
           tt.push(ee);
         }
       }
+      console.log(tt);
       return tt;
     },
   },
@@ -504,7 +535,8 @@ export default {
     } else {
       /* this.$store.dispatch("getDataSet", { uid: authUser.uid }); */
       this.$store.dispatch("getDataSet", { uid: this.uid });
-      this.$store.dispatch("getUser", { uid: authUser.uid });
+      /* this.$store.dispatch("getUser", { uid: authUser.uid }); */
+      this.$store.dispatch("getUser", { uid: this.uid });
     }
   },
 
@@ -768,3 +800,13 @@ export default {
   },
 };
 </script>
+
+<style>
+.no-values {
+  height: 80%;
+  width: 100%;
+  align-self: center;
+  justify-content: center;
+  background: grey;
+}
+</style>

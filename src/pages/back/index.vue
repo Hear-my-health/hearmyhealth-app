@@ -266,6 +266,12 @@ export default {
         this.$store.dispatch("getUsers");
         this.$store.dispatch("getUser", { uid: authUser.uid });
       }
+      /* if (localStorage.getItem("role") !== "admin") {
+        this.$router.push("/");
+      } else {
+        this.$store.dispatch("getUsers");
+        this.$store.dispatch("getUser", { uid: authUser.uid });
+      } */
     }
     /*      const { authUser } = this.$store.state
      if (!authUser) {
