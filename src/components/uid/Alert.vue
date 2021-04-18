@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <v-row justify="start" align="center"> Paciente: {{ user.name }} </v-row>
     <v-row>
       <v-btn elevation="0" outlined raised @click="open">
         Agregar alerta
@@ -64,9 +65,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer />
-            <v-btn elevation="0" raised @click="close">
-              Cancelar
-            </v-btn>
+            <v-btn elevation="0" raised @click="close"> Cancelar </v-btn>
             <v-btn elevation="0" outlined raised type="submit" @click="submit">
               Guardar
             </v-btn>
@@ -78,114 +77,114 @@
 </template>
 
 <script>
-import { validationMixin } from 'vuelidate'
-import { required, minLength } from 'vuelidate/lib/validators'
+import { validationMixin } from "vuelidate";
+import { required, minLength } from "vuelidate/lib/validators";
 export default {
   mixins: [validationMixin],
-  props: ['myUid'],
+  props: ["myUid"],
   validations: {
     alert: { required, minLength: minLength(3) },
-    type: { required }
+    type: { required },
   },
-  data () {
+  data() {
     return {
       dialog: false,
       doctorSpecialty: this.$props.specialty,
-      types: ['Alta', 'Media', 'Baja'],
-      alert: '',
+      types: ["Alta", "Media", "Baja"],
+      alert: "",
       type: null,
-      uid: this.$props.myUid
-    }
+      uid: this.$props.myUid,
+    };
   },
-  async fetch ({ store }) {
+  async fetch({ store }) {
     try {
-      await store.dispatch('getAlerts', { uid: this.uid })
-      await store.dispatch('getUser', { uid: this.uid })
+      await store.dispatch("getAlerts", { uid: this.uid });
+      await store.dispatch("getUser", { uid: this.uid });
     } catch (e) {
-      return 'error'
+      return "error";
     }
   },
   computed: {
-    auth () {
-      return this.$store.state.authUser || null
+    auth() {
+      return this.$store.state.authUser || null;
     },
-    alerts () {
-      return this.$store.state.alerts
+    alerts() {
+      return this.$store.state.alerts;
     },
-    user () {
-      return this.$store.state.user || null
+    user() {
+      return this.$store.state.user || null;
     },
-    alertErrors () {
-      const errors = []
+    alertErrors() {
+      const errors = [];
       if (!this.$v.alert.$dirty) {
-        return errors
+        return errors;
       }
       !this.$v.alert.minLength &&
         errors.push(
-          'La mensaje de la alerta debe tener 3 caracteres como mínimo'
-        )
+          "La mensaje de la alerta debe tener 3 caracteres como mínimo"
+        );
       !this.$v.alert.required &&
-        errors.push('El mensaje de la alerta es requerido')
-      return errors
+        errors.push("El mensaje de la alerta es requerido");
+      return errors;
     },
-    typeErrors () {
-      const errors = []
+    typeErrors() {
+      const errors = [];
       if (!this.$v.type.$dirty) {
-        return errors
+        return errors;
       }
       !this.$v.type.required &&
-        errors.push('El tipo de alerta es requerida, seleccione una')
-      return errors
-    }
+        errors.push("El tipo de alerta es requerida, seleccione una");
+      return errors;
+    },
   },
-  mounted () {
-    const { authUser } = this.$store.state
+  mounted() {
+    const { authUser } = this.$store.state;
     if (!authUser) {
-      this.$router.push('/')
+      this.$router.push("/");
     } else {
-      this.$store.dispatch('getAlerts', { uid: this.uid })
-      this.$store.dispatch('getUser', { uid: this.uid })
+      this.$store.dispatch("getAlerts", { uid: this.uid });
+      this.$store.dispatch("getUser", { uid: this.uid });
     }
   },
   methods: {
-    submit () {
-      this.$v.$touch()
+    submit() {
+      this.$v.$touch();
     },
-    close () {
-      this.dialog = false
-      this.$v.$reset()
-      this.alert = ''
-      this.type = null
+    close() {
+      this.dialog = false;
+      this.$v.$reset();
+      this.alert = "";
+      this.type = null;
     },
-    open () {
-      this.dialog = true
+    open() {
+      this.dialog = true;
     },
-    formatDateTable (item) {
-      const ss = new Date(Number(item)).toISOString().substr(0, 10)
-      return ss
+    formatDateTable(item) {
+      const ss = new Date(Number(item)).toISOString().substr(0, 10);
+      return ss;
     },
-    async createAlert () {
+    async createAlert() {
       try {
-        const { alert, type } = this
+        const { alert, type } = this;
         if (!alert || !type || alert.length < 3) {
-          this.dialog = true
+          this.dialog = true;
         } else {
-          const date = new Date().getTime()
-          await this.$fire.firestore.collection('alerts').add({
+          const date = new Date().getTime();
+          await this.$fire.firestore.collection("alerts").add({
             date,
             alert,
             type,
-            doctorName: localStorage.getItem('doctorName'),
-            doctorSpecialty: localStorage.getItem('doctorSpecialty'),
+            doctorName: localStorage.getItem("doctorName"),
+            doctorSpecialty: localStorage.getItem("doctorSpecialty"),
             uid: this.uid,
-            createdBy: this.$store.state.authUser.uid
-          })
-          this.close()
+            createdBy: this.$store.state.authUser.uid,
+          });
+          this.close();
         }
       } catch (error) {
-        console.log('error', error)
+        console.log("error", error);
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
