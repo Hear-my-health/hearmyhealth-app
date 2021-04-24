@@ -25,7 +25,13 @@
         <v-spacer />
       </v-col>
     </v-row>
-    <v-dialog v-if="dialog" v-model="dialog" max-width="500px" elevation="0">
+    <v-dialog
+      v-if="dialog"
+      v-model="dialog"
+      max-width="500px"
+      elevation="0"
+      persistent
+    >
       <form @submit.prevent="createAlert">
         <v-card>
           <v-card-title>
@@ -65,7 +71,9 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer />
-            <v-btn elevation="0" raised @click="close"> Cancelar </v-btn>
+            <v-btn elevation="0" raised @click="closeAndClean">
+              Cancelar
+            </v-btn>
             <v-btn elevation="0" outlined raised type="submit" @click="submit">
               Guardar
             </v-btn>
@@ -152,6 +160,14 @@ export default {
     },
     close() {
       this.dialog = false;
+    },
+    cleanFields() {
+      this.$v.$reset();
+      this.alert = "";
+      this.type = null;
+    },
+    closeAndClean() {
+      this.dialog = false;
       this.$v.$reset();
       this.alert = "";
       this.type = null;
@@ -169,6 +185,7 @@ export default {
         if (!alert || !type || alert.length < 3) {
           this.dialog = true;
         } else {
+          this.close();
           const date = new Date().getTime();
           await this.$fire.firestore.collection("alerts").add({
             date,
@@ -179,7 +196,7 @@ export default {
             uid: this.uid,
             createdBy: this.$store.state.authUser.uid,
           });
-          this.close();
+          this.cleanFields();
         }
       } catch (error) {
         console.log("error", error);

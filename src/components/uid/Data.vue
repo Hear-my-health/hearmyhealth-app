@@ -78,13 +78,63 @@
           </template>
 
           <template #[`item.heartRate`]="{ item }">
-            <div
-              v-if="item.heartRate"
-              :class="`${item.heartRate.state}`"
-              class="py-1 text-center"
-            >
-              {{ round(item.heartRate.value) }}
+            <div v-if="item.heartRate">
+              <v-row>
+                <v-col
+                  class="py-1 text-center"
+                  :class="`${item.heartRate.state}`"
+                  style="height: 80%; margin-right: 5px"
+                >
+                  {{ round(item.heartRate.value) }}
+                </v-col>
+                <v-col
+                  v-if="!dataTest"
+                  class="py-1 text-center"
+                  style="height: 80%; margin-right: 5px"
+                >
+                  Max: {{ round(item.heartRate.point.value[1].fpVal) }}
+                </v-col>
+                <v-col
+                  v-if="!dataTest"
+                  class="py-1 text-center"
+                  style="height: 80%"
+                >
+                  Min: {{ round(item.heartRate.point.value[2].fpVal) }}
+                </v-col>
+              </v-row>
             </div>
+            <!--             <div v-if="item.heartRate" class="py-1 text-center">
+              <span :class="`${item.heartRate.state}`">{{
+                round(item.heartRate.value)
+              }}</span>
+
+              <span
+                v-if="!dataTest"
+                :class="`${
+                  round(item.heartRate.point.value[1].fpVal) < 0.4
+                    ? `red`
+                    : round(item.heartRate.point.value[1].fpVal) > 0.4 &&
+                      round(item.heartRate.point.value[1].fpVal) <= 0.7
+                    ? `yellow`
+                    : `green`
+                }`"
+              >
+                - {{ round(item.heartRate.point.value[1].fpVal) }}
+              </span>
+              <span
+                v-if="!dataTest"
+                :class="`${
+                  round(item.heartRate.point.value[2].fpVal) < 0.4
+                    ? `red`
+                    : round(item.heartRate.point.value[2].fpVal) > 0.4 &&
+                      round(item.heartRate.point.value[2].fpVal) <= 0.7
+                    ? `yellow`
+                    : `green`
+                }`"
+              >
+                - {{ round(item.heartRate.point.value[2].fpVal) }}
+              </span>
+            </div> -->
             <div
               v-if="!item.heartRate"
               class="py-1 text-center no-values"
@@ -311,162 +361,185 @@
 </template>
 
 <script>
-import { validationMixin } from 'vuelidate'
-import { required, maxLength, minLength } from 'vuelidate/lib/validators'
+import { validationMixin } from "vuelidate";
+import { required, maxLength, minLength } from "vuelidate/lib/validators";
 export default {
   mixins: [validationMixin],
 
   props: {
     myUid: {
       type: String,
-      default: ''
-    }
+      default: "",
+    },
   },
 
   validations: {
     dni: { required, minLength: minLength(8), maxLength: maxLength(8) },
-    dateOfBirth: { required }
+    dateOfBirth: { required },
   },
 
-  data () {
+  data() {
     return {
       uid: this.$props.myUid,
-      dateStart: '',
-      dateStarFormatted: '',
-      dateEnd: '',
-      dateEndFormatted: '',
+      dateStart: "",
+      dateStarFormatted: "",
+      dateEnd: "",
+      dateEndFormatted: "",
       menu1: false,
       menu2: false,
       noData: false,
-      dni: '',
-      dateOfBirth: '',
+      dni: "",
+      dateOfBirth: "",
       info: {
-        dni: '',
-        dateOfBirth: ''
+        dni: "",
+        dateOfBirth: "",
       },
+      dataTest: true,
       headers: [
         {
-          text: 'Fecha Inicio',
-          align: 'start',
+          text: "Fecha Inicio",
+          align: "start",
           sortable: false,
-          value: 'dateStart'
+          value: "dateStart",
         },
         {
-          text: 'Fecha Fin',
-          align: 'start',
+          text: "Fecha Fin",
+          align: "start",
           sortable: false,
-          value: 'dateEnd'
+          value: "dateEnd",
         },
         {
-          text: 'Frecuencia cardiaca',
-          align: 'start',
+          text: "Frecuencia cardiaca (promedio, max, min)",
+          align: "start",
           sortable: true,
-          value: 'heartRate'
+          value: "heartRate",
         },
         {
-          text: 'Calorias',
-          align: 'start',
+          text: "Calorias",
+          align: "start",
           sortable: true,
-          value: 'calories'
+          value: "calories",
         },
         {
-          text: 'Pasos',
-          align: 'start',
+          text: "Pasos",
+          align: "start",
           sortable: true,
-          value: 'steps'
+          value: "steps",
         },
         {
-          text: 'Sueño',
-          align: 'start',
+          text: "Sueño",
+          align: "start",
           sortable: true,
-          value: 'sleep'
+          value: "sleep",
         },
         {
-          text: 'Sueño profundo',
-          align: 'start',
+          text: "Sueño profundo",
+          align: "start",
           sortable: true,
-          value: 'deepSleep'
+          value: "deepSleep",
         },
         {
-          text: 'Estado de animo',
-          align: 'start',
+          text: "Estado de animo",
+          align: "start",
           sortable: true,
-          value: 'mood'
+          value: "mood",
         },
         {
-          text: 'Salud física',
-          align: 'start',
+          text: "Salud física",
+          align: "start",
           sortable: true,
-          value: 'fisica'
+          value: "fisica",
         },
         {
-          text: 'Salud mental',
-          align: 'start',
+          text: "Salud mental",
+          align: "start",
           sortable: true,
-          value: 'mental'
-        }
+          value: "mental",
+        },
       ],
       start: 0,
-      end: 0
+      end: 0,
+    };
+  },
+
+  async fetch({ store }) {
+    try {
+      await store.dispatch("getValues");
+    } catch (e) {
+      return "error";
     }
   },
 
   computed: {
-    auth () {
-      return this.$store.state.authUser || null
+    auth() {
+      return this.$store.state.authUser || null;
     },
 
-    user () {
-      return this.$store.state.user
+    user() {
+      return this.$store.state.user;
     },
 
-    dniErrors () {
-      const errors = []
+    values() {
+      return this.$store.state.values.filter(
+        (e) => e.indicator === "heartRate"
+      );
+    },
+
+    dniErrors() {
+      const errors = [];
       if (!this.$v.dni.$dirty) {
-        return errors
+        return errors;
       }
       (!this.$v.dni.maxLength || !this.$v.dni.minLength) &&
-        errors.push('El DNI debe tener 8 caracteres')
+        errors.push("El DNI debe tener 8 caracteres");
       /* !this.$v.dni.minLength && errors.push("El DNI debe tener 8 caracteres");  */
-      !this.$v.dni.required && errors.push('El DNI es requerido')
-      return errors
+      !this.$v.dni.required && errors.push("El DNI es requerido");
+      return errors;
     },
 
-    dateOfBirthErrors () {
-      const errors = []
+    dateOfBirthErrors() {
+      const errors = [];
       if (!this.$v.dateOfBirth.$dirty) {
-        return errors
+        return errors;
       }
       !this.$v.dateOfBirth.required &&
-        errors.push('La fecha de nacimiento es requerida')
-      return errors
+        errors.push("La fecha de nacimiento es requerida");
+      return errors;
     },
 
-    dataSetSleep () {
+    dataSetSleep() {
       return this.$store.state.dataSet.filter(
-        s => s.dataTypeName === 'com.google.sleep.segment'
-      )
+        (s) => s.dataTypeName === "com.google.sleep.segment"
+      );
     },
 
-    dataSet () {
-      const tt = []
-      const dateStartTime = new Date(this.dateStart).getTime()
-      const end = new Date(this.dateEnd)
-      end.setDate(end.getDate() + 1)
-      const dateEndTime = end.getTime()
-      const dd = (dateEndTime - dateStartTime) / 86400000
+    dataSet() {
+      const tt = [];
+      const dateStartTime = new Date(this.dateStart).getTime();
+      const end = new Date(this.dateEnd);
+      end.setDate(end.getDate() + 1);
+      const dateEndTime = end.getTime();
+      const dd = (dateEndTime - dateStartTime) / 86400000;
 
-      let start = dateStartTime
+      let start = dateStartTime;
 
       if (this.$store.state.dataSet.length > 0) {
         for (let index = 1; index <= Math.floor(dd); index++) {
-          const dateEnd = start + 86400000
+          const dateEnd = start + 86400000;
           const dd = this.$store.state.dataSet.filter(
             (s) => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
           );
-          const tempHR = {
-            /*dataSourceId : app.web.hear-my-health.csv.claudia */
-          };
+
+          if (dd[index] !== undefined) {
+            const source = dd[index].dataSourceId ? dd[index].dataSourceId : "";
+            console.log("source", source, dd);
+            if (source === "app.web.hear-my-health.csv.claudia") {
+              this.dataTest = true;
+            } else {
+              this.dataTest = false;
+            }
+          }
+
           const ee = {
             dateStart: start,
             dateEnd,
@@ -486,16 +559,16 @@ export default {
                 t.value !== null
             ),
             sleep: dd.find(
-              t => t.dataTypeName === 'com.google.sleep.segment'
+              (t) => t.dataTypeName === "com.google.sleep.segment"
             ),
             deepSleep: dd.find(
-              t => t.dataTypeName === 'app.web.hear-my-health.sleep.deep'
+              (t) => t.dataTypeName === "app.web.hear-my-health.sleep.deep"
             ),
-            mood: this.overageValueDataSet(dd)
-          }
+            mood: this.overageValueDataSet(dd),
+          };
 
-          start = dateEnd
-          tt.push(ee)
+          start = dateEnd;
+          tt.push(ee);
         }
       }
       console.log(tt);
@@ -504,301 +577,322 @@ export default {
   },
 
   watch: {
-    dateStart (val) {
-      this.dateStarFormatted = this.formatDate(this.dateStart)
+    dateStart(val) {
+      this.dateStarFormatted = this.formatDate(this.dateStart);
     },
-    dateEnd (val) {
-      this.dateEndFormatted = this.formatDate(this.dateEnd)
+    dateEnd(val) {
+      this.dateEndFormatted = this.formatDate(this.dateEnd);
     },
-    user () {
+    user() {
       if (!this.user.dni || !this.user.dateOfBirth) {
-        this.noData = true
+        this.noData = true;
       } else {
-        this.noData = false
+        this.noData = false;
       }
-    }
+    },
   },
-  created () {
-    const date = new Date()
-    this.dateEnd = date.toISOString().substr(0, 10)
-    this.dateEndFormatted = this.formatDate(date.toISOString().substr(0, 10))
+  created() {
+    const date = new Date();
+    this.dateEnd = date.toISOString().substr(0, 10);
+    this.dateEndFormatted = this.formatDate(date.toISOString().substr(0, 10));
 
-    date.setDate(date.getDate() - 7)
-    this.dateStart = date.toISOString().substr(0, 10)
-    this.dateStarFormatted = this.formatDate(date.toISOString().substr(0, 10))
+    date.setDate(date.getDate() - 7);
+    this.dateStart = date.toISOString().substr(0, 10);
+    this.dateStarFormatted = this.formatDate(date.toISOString().substr(0, 10));
   },
 
-  mounted () {
-    const { authUser } = this.$store.state
+  mounted() {
+    const { authUser } = this.$store.state;
     if (!authUser) {
-      this.$router.push('/')
+      this.$router.push("/");
     } else {
       /* this.$store.dispatch("getDataSet", { uid: authUser.uid }); */
       this.$store.dispatch("getDataSet", { uid: this.uid });
       /* this.$store.dispatch("getUser", { uid: authUser.uid }); */
       this.$store.dispatch("getUser", { uid: this.uid });
+      this.$store.dispatch("getValues");
     }
   },
 
   methods: {
-    findState (key) {
+    findState(key) {
       if (key) {
         const state = [
           {
-            key: 'green',
+            key: "green",
             value: 1,
-            percentaje: 100
+            percentaje: 100,
           },
           {
-            key: 'yellow',
+            key: "yellow",
             value: 0.5,
-            percentaje: 100
+            percentaje: 100,
           },
           {
-            key: 'red',
+            key: "red",
             value: 0,
-            percentaje: 100
+            percentaje: 100,
           },
           {
-            key: 'not',
+            key: "not",
             value: 0,
-            percentaje: 100
-          }
-        ]
-        return state.find(e => e.key === key)
+            percentaje: 100,
+          },
+        ];
+        return state.find((e) => e.key === key);
       }
 
       return {
-        key: 'not',
+        key: "not",
         value: 0,
-        percentaje: 100
-      }
+        percentaje: 100,
+      };
     },
 
-    sumField (key) {
+    sumField(key) {
       if (this.dataSet.length) {
-        const dataSetByKey = this.dataSet.filter(e => e[key])
+        const dataSetByKey = this.dataSet.filter((e) => e[key]);
         if (dataSetByKey.length) {
-          const initialValue = 0
+          const initialValue = 0;
           const average =
             dataSetByKey.reduce(function (total, currentValue) {
-              return total + currentValue[key].value || 0
-            }, initialValue) / dataSetByKey.length
-          return this.round(average)
+              return total + currentValue[key].value || 0;
+            }, initialValue) / dataSetByKey.length;
+          return this.round(average);
         }
-        return 0
+        return 0;
       }
-      return 0
+      return 0;
     },
 
-    sumFisica () {
+    sumFisica() {
       const states = [
         {
-          key: 'green',
+          key: "green",
           value: 1,
-          percentaje: 100
+          percentaje: 100,
         },
         {
-          key: 'yellow',
+          key: "yellow",
           value: 0.5,
-          percentaje: 100
+          percentaje: 100,
         },
         {
-          key: 'red',
+          key: "red",
           value: 0,
-          percentaje: 100
+          percentaje: 100,
         },
         {
-          key: 'not',
+          key: "not",
           value: 0,
-          percentaje: 100
-        }
-      ]
+          percentaje: 100,
+        },
+      ];
       if (this.dataSet.length) {
         const dataSetByKey = this.dataSet.filter(
-          e => e.heartRate && e.steps && e.calories
-        )
+          (e) => e.heartRate && e.steps && e.calories
+        );
         if (dataSetByKey.length) {
-          const initialValue = 0
+          const initialValue = 0;
           const average =
             dataSetByKey.reduce(function (total, item) {
               const heartRateValue = states.find(
-                e => e.key === (item.heartRate ? item.heartRate.state : 'not')
-              ).value
+                (e) => e.key === (item.heartRate ? item.heartRate.state : "not")
+              ).value;
               const stepsValue = states.find(
-                e => e.key === (item.steps ? item.steps.state : 'not')
-              ).value
+                (e) => e.key === (item.steps ? item.steps.state : "not")
+              ).value;
               const caloriesValue = states.find(
-                e => e.key === (item.calories ? item.calories.state : 'not')
-              ).value
+                (e) => e.key === (item.calories ? item.calories.state : "not")
+              ).value;
               const value =
-                0.5 * heartRateValue + 0.17 * stepsValue + 0.33 * caloriesValue
-              return total + value
-            }, initialValue) / dataSetByKey.length
+                0.5 * heartRateValue + 0.17 * stepsValue + 0.33 * caloriesValue;
+              return total + value;
+            }, initialValue) / dataSetByKey.length;
 
-          return this.round(average)
+          return this.round(average);
         }
-        return 0
+        return 0;
       }
-      return 0
+      return 0;
     },
 
-    sumMental () {
+    sumMental() {
       const states = [
         {
-          key: 'green',
+          key: "green",
           value: 1,
-          percentaje: 100
+          percentaje: 100,
         },
         {
-          key: 'yellow',
+          key: "yellow",
           value: 0.5,
-          percentaje: 100
+          percentaje: 100,
         },
         {
-          key: 'red',
+          key: "red",
           value: 0,
-          percentaje: 100
+          percentaje: 100,
         },
         {
-          key: 'not',
+          key: "not",
           value: 0,
-          percentaje: 100
-        }
-      ]
+          percentaje: 100,
+        },
+      ];
       if (this.dataSet.length) {
         const dataSetByKey = this.dataSet.filter(
-          e => e.mood && e.sleep && e.deepSleep
-        )
+          (e) => e.mood && e.sleep && e.deepSleep
+        );
         if (dataSetByKey.length) {
-          const initialValue = 0
+          const initialValue = 0;
           const average =
             dataSetByKey.reduce(function (total, item) {
               const sleepValue = states.find(
-                e =>
+                (e) =>
                   e.key ===
                   (item.sleep
                     ? item.sleep.state
                       ? item.sleep.state
                       : item.sleep.stateSleep
-                    : 'not')
-              ).value
+                    : "not")
+              ).value;
               const moodValue = states.find(
-                e =>
+                (e) =>
                   e.key ===
                   (item.mood
                     ? item.mood.state
                       ? item.mood.state
                       : item.mood.stateSleep
-                    : 'not')
-              ).value
+                    : "not")
+              ).value;
               const deepSleepValue = states.find(
-                e =>
+                (e) =>
                   e.key ===
                   (item.deepSleep
                     ? item.deepSleep.state
                       ? item.deepSleep.state
                       : item.deepSleep.stateSleepDeep
-                    : 'not')
-              ).value
+                    : "not")
+              ).value;
               const value =
-                0.5 * moodValue + 0.17 * sleepValue + 0.33 * deepSleepValue
+                0.5 * moodValue + 0.17 * sleepValue + 0.33 * deepSleepValue;
 
-              return total + value
-            }, initialValue) / dataSetByKey.length
+              return total + value;
+            }, initialValue) / dataSetByKey.length;
 
-          return this.round(average)
+          return this.round(average);
         }
-        return 0
+        return 0;
       }
-      return 0
+      return 0;
     },
 
-    overageValueDataSet (dd) {
+    overageValueDataSet(dd) {
       const valueFilter = dd.filter(
-        t => t.dataTypeName === 'app.web.hear-my-health.mood.segment'
-      )
+        (t) => t.dataTypeName === "app.web.hear-my-health.mood.segment"
+      );
       if (valueFilter.length) {
-        const initialValue = 0
+        const initialValue = 0;
         const average =
           valueFilter.reduce(function (total, currentValue) {
-            return total + currentValue.value || 0
-          }, initialValue) / valueFilter.length
+            return total + currentValue.value || 0;
+          }, initialValue) / valueFilter.length;
         if (average) {
-          return { ...valueFilter[0], value: average }
+          return { ...valueFilter[0], value: average };
         } else {
-          return null
+          return null;
         }
       } else {
-        return null
+        return null;
       }
     },
 
-    submit () {
-      this.$v.$touch()
+    checkHeartRateState(value) {
+      console.log("value", value);
+      if (value && this.values.length !== 0) {
+        if (value >= this.values.minSalud && value <= this.values.maxSalud) {
+          return "green";
+        }
+        if (
+          value >= this.values.minAcept &&
+          (value < this.values.minSalud || value > this.values.maxSalud) &&
+          value <= this.values.maxAcept &&
+          value !== 0
+        ) {
+          return "yellow";
+        }
+        return "red";
+      } else {
+        return "not";
+      }
     },
-    async updateInfo () {
+
+    submit() {
+      this.$v.$touch();
+    },
+    async updateInfo() {
       try {
-        const { uid } = this.auth
-        const { dni, dateOfBirth } = this
-        await this.$fire.firestore.collection('users').doc(uid).update({
+        const { uid } = this.auth;
+        const { dni, dateOfBirth } = this;
+        await this.$fire.firestore.collection("users").doc(uid).update({
           dni,
-          dateOfBirth
-        })
-        this.noData = false
+          dateOfBirth,
+        });
+        this.noData = false;
       } catch (error) {
-        this.$store.dispatch('SET_MESSAGE', { message: error })
+        this.$store.dispatch("SET_MESSAGE", { message: error });
       }
     },
 
-    round (num) {
-      return Math.round(num * 100) / 100
+    round(num) {
+      return Math.round(num * 100) / 100;
     },
 
-    formatDateTable (item) {
-      const ss = new Date(Number(item)).toISOString().substr(0, 10)
-      return ss
+    formatDateTable(item) {
+      const ss = new Date(Number(item)).toISOString().substr(0, 10);
+      return ss;
     },
 
-    formatDate (date) {
+    formatDate(date) {
       if (!date) {
-        return null
+        return null;
       }
 
-      const [year, month, day] = date.split('-')
-      return `${month}/${day}/${year}`
+      const [year, month, day] = date.split("-");
+      return `${month}/${day}/${year}`;
     },
-    parseDate (date) {
+    parseDate(date) {
       if (!date) {
-        return null
+        return null;
       }
 
-      const [month, day, year] = date.split('/')
-      return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
+      const [month, day, year] = date.split("/");
+      return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
     },
 
-    nameData (scope) {
+    nameData(scope) {
       switch (scope) {
-        case 'com.google.heart_rate.bpm':
-          return 'Ritmo cardiaco'
-        case 'com.google.step_count.cadence':
-          return 'Cadencia de conteo de pasos'
-        case 'com.google.step_count.delta':
-          return 'Delta de recuento de pasos'
-        case 'com.google.calories.expended':
-          return 'Calorías quemadas'
-        case 'com.google.sleep.segment':
-          return 'Sueño'
-        case 'app.web.hear-my-health.sleep.deep':
-          return 'Sueño profundo'
-        case 'app.web.hear-my-health.mood.segment':
-          return 'Estado de animo'
+        case "com.google.heart_rate.bpm":
+          return "Ritmo cardiaco";
+        case "com.google.step_count.cadence":
+          return "Cadencia de conteo de pasos";
+        case "com.google.step_count.delta":
+          return "Delta de recuento de pasos";
+        case "com.google.calories.expended":
+          return "Calorías quemadas";
+        case "com.google.sleep.segment":
+          return "Sueño";
+        case "app.web.hear-my-health.sleep.deep":
+          return "Sueño profundo";
+        case "app.web.hear-my-health.mood.segment":
+          return "Estado de animo";
         default:
-          return 'desconocido'
+          return "desconocido";
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style>

@@ -5,7 +5,7 @@ export default {
   extends: Bar,
   props: {
     label: {
-      type: String,
+      type: Object,
     },
     chartData: {
       type: Object,
@@ -25,12 +25,14 @@ export default {
       const datesTwo = this.chartData.tt2.map((d) => d.date);
       const totalsTwo = this.chartData.tt2.map((d) => d.data || 0);
 
+      const { sleepLabel, deepSleepLabel } = this.label;
+
       this.renderChart(
         {
           labels: datesOne,
           datasets: [
             {
-              label: this.label,
+              label: sleepLabel,
               data: totalsOne,
               borderColor: "#741bc2",
               pointBorderColor: "#741bc2",
@@ -38,7 +40,7 @@ export default {
               backgroundColor: "#741bc2",
             },
             {
-              label: this.label,
+              label: deepSleepLabel,
               data: totalsTwo,
               borderColor: "#d9710f",
               pointBorderColor: "#d9710f",
@@ -59,12 +61,14 @@ export default {
     const datesTwo = this.chartData.tt2.map((d) => d.date);
     const totalsTwo = this.chartData.tt2.map((d) => d.data || 0);
 
+    const { sleepLabel, deepSleepLabel } = this.label;
+
     this.renderChart(
       {
         labels: datesOne,
         datasets: [
           {
-            label: this.label,
+            label: sleepLabel,
             data: totalsOne,
             borderColor: "#741bc2",
             pointBorderColor: "#741bc2",
@@ -72,7 +76,7 @@ export default {
             backgroundColor: "#741bc2",
           },
           {
-            label: this.label,
+            label: deepSleepLabel,
             data: totalsTwo,
             borderColor: "#d9710f",
             pointBorderColor: "#d9710f",
