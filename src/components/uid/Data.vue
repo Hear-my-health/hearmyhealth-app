@@ -566,14 +566,6 @@ export default {
             ),
             mood: this.overageValueDataSet(dd),
           };
-          /*           } else {
-            const heartRate = dd.filter(
-              (t) =>
-                t.dataTypeName === "com.google.heart_rate.bpm" &&
-                t.value !== null
-            );
-            console.log("hr", heartRate);
-          } */
 
           start = dateEnd;
           tt.push(ee);

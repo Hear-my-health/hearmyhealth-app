@@ -2,9 +2,9 @@
   <v-container>
     <v-row justify="start" align="center"> Paciente: {{ user.name }} </v-row>
     <v-row>
-      <v-col cols="12" sm="12" md="8">
+      <v-col cols="12" sm="9" md="9">
         <v-row justify="center" align="top">
-          <v-col cols="12" sm="12" md="4">
+          <v-col cols="12" sm="4" md="4">
             <v-select
               v-model="selectedType"
               :items="selectTypes"
@@ -12,14 +12,13 @@
               outlined
             />
           </v-col>
-          <v-col cols="12" sm="12" md="4">
+          <v-col cols="12" sm="4" md="4">
             <v-menu
               ref="menu1"
               v-model="menu1"
               :close-on-content-click="false"
               transition="scale-transition"
               offset-y
-              max-width="290px"
               min-width="auto"
             >
               <template #activator="{ on, attrs }">
@@ -40,14 +39,13 @@
               />
             </v-menu>
           </v-col>
-          <v-col cols="12" sm="12" md="4">
+          <v-col cols="12" sm="4" md="4">
             <v-menu
               ref="menu2"
               v-model="menu2"
               :close-on-content-click="false"
               transition="scale-transition"
               offset-y
-              max-width="290px"
               min-width="auto"
             >
               <template #activator="{ on, attrs }">
@@ -75,7 +73,7 @@
             <v-col
               v-if="dataPhysicalHealth < 30 && dataPhysicalHealth > 0"
               cols="12"
-              sm="12"
+              sm="4"
               md="4"
               justify="center"
               align="center"
@@ -84,16 +82,16 @@
                 :rotate="-90"
                 :size="100"
                 :width="15"
-                :value="dataPhysicalHealth"
+                :value="100"
                 color="red"
               >
-                {{ Math.trunc(dataPhysicalHealth, 0) }}
+                {{ "S. Física" }}
               </v-progress-circular>
             </v-col>
             <v-col
               v-if="dataPhysicalHealth < 60 && dataPhysicalHealth >= 30"
               cols="12"
-              sm="12"
+              sm="4"
               md="4"
               justify="center"
               align="center"
@@ -102,10 +100,10 @@
                 :rotate="-90"
                 :size="100"
                 :width="15"
-                :value="dataPhysicalHealth"
+                :value="100"
                 color="amber"
               >
-                {{ Math.trunc(dataPhysicalHealth, 0) }}
+                {{ "S. Física" }}
               </v-progress-circular>
             </v-col>
             <v-col
@@ -113,6 +111,7 @@
               cols="12"
               sm="12"
               md="4"
+              lg="4"
               justify="center"
               align="center"
             >
@@ -120,17 +119,18 @@
                 :rotate="-90"
                 :size="100"
                 :width="15"
-                :value="dataPhysicalHealth"
+                :value="100"
                 color="green"
               >
-                {{ Math.trunc(dataPhysicalHealth, 0) }}
+                {{ "S. Física" }}
               </v-progress-circular>
             </v-col>
             <v-col
               v-if="dataStep.length > 0"
               cols="12"
               sm="12"
-              md="8"
+              md="11"
+              lg="11"
               justify="center"
               align="center"
             >
@@ -141,99 +141,78 @@
                 label="Pasos"
               />
             </v-col>
-            <v-col
-              v-if="dataHeartRate.length > 0"
-              cols="12"
-              sm="12"
-              md="8"
-              justify="center"
-              align="center"
-            >
-              <line-chart
-                :chart-data="dataHeartRate"
-                :options="chartOptions"
-                :chart-colors="heartRateColors"
-                label="Ritmo Cardiaco"
-              />
-            </v-col>
-            <v-col
-              v-if="dataCalories.length > 0"
-              cols="12"
-              sm="12"
-              md="8"
-              justify="center"
-              align="center"
-            >
-              <line-chart
-                :chart-data="dataCalories"
-                :options="chartOptions"
-                :chart-colors="caloriesColors"
-                label="Calorías"
-              />
-            </v-col>
           </v-container>
           <!-- FIN SALUD FÍSICA -->
           <!-- SALUD MENTAL -->
           <v-container v-if="selectedType === 'Salud Mental'">
-            <v-col
-              v-if="dataMentalHealth < 30 && dataMentalHealth > 0"
-              cols="12"
-              sm="12"
-              md="4"
-              justify="center"
-              align="center"
-            >
-              <v-progress-circular
-                :rotate="-90"
-                :size="100"
-                :width="15"
-                :value="dataMentalHealth"
-                color="red"
+            <v-row>
+              <v-col
+                v-if="dataMentalHealth < 30 && dataMentalHealth > 0"
+                cols="12"
+                sm="4"
+                md="4"
+                justify="center"
+                align="center"
               >
-                {{ Math.trunc(dataMentalHealth, 0) }}
-              </v-progress-circular>
-            </v-col>
-            <v-col
-              v-if="dataMentalHealth < 60 && dataMentalHealth >= 30"
-              cols="12"
-              sm="12"
-              md="4"
-              justify="center"
-              align="center"
-            >
-              <v-progress-circular
-                :rotate="-90"
-                :size="100"
-                :width="15"
-                :value="dataMentalHealth"
-                color="amber"
+                <v-progress-circular
+                  :rotate="-90"
+                  :size="100"
+                  :width="15"
+                  :value="100"
+                  color="red"
+                >
+                  {{ "S. Mental" }}
+                </v-progress-circular>
+              </v-col>
+              <v-col
+                v-if="dataMentalHealth < 60 && dataMentalHealth >= 30"
+                cols="12"
+                sm="4"
+                md="4"
+                justify="center"
+                align="center"
               >
-                {{ Math.trunc(dataMentalHealth, 0) }}
-              </v-progress-circular>
-            </v-col>
-            <v-col
-              v-if="dataMentalHealth >= 60"
-              cols="12"
-              sm="12"
-              md="4"
-              justify="center"
-              align="center"
-            >
-              <v-progress-circular
-                :rotate="-90"
-                :size="100"
-                :width="15"
-                :value="dataMentalHealth"
-                color="green"
+                <v-progress-circular
+                  :rotate="-90"
+                  :size="100"
+                  :width="15"
+                  :value="100"
+                  color="amber"
+                >
+                  {{ "S. Mental" }}
+                </v-progress-circular>
+              </v-col>
+              <v-col
+                v-if="dataMentalHealth >= 60"
+                cols="12"
+                sm="4"
+                md="4"
+                justify="center"
+                align="center"
               >
-                {{ Math.trunc(dataMentalHealth, 0) }}
-              </v-progress-circular>
-            </v-col>
+                <v-progress-circular
+                  :rotate="-90"
+                  :size="100"
+                  :width="15"
+                  :value="100"
+                  color="green"
+                >
+                  {{ "S. Mental" }}
+                </v-progress-circular>
+              </v-col>
+              <v-col cols="12" sm="7" md="7" justify="center" align="center">
+                <div>Valores estado de animo:</div>
+                <v-img
+                  src="https://firebasestorage.googleapis.com/v0/b/hear-my-health.appspot.com/o/caritasExplicacion.png?alt=media&token=caa42dc7-638a-4428-8ae1-5668fe6c4647"
+                  max-width="230"
+                />
+              </v-col>
+            </v-row>
             <v-col
               v-if="dataHeartRate.length > 0"
               cols="12"
-              sm="12"
-              md="8"
+              sm="11"
+              md="11"
               justify="center"
               align="center"
             >
@@ -281,10 +260,18 @@
                   <v-card class="mb-1 pa-2" elevation="0">
                     <div class="mb-2">
                       <span class="mr-2">
-                        <v-icon v-if="idata.state === 'red'" light>
+                        <v-icon
+                          v-if="idata.state === 'red'"
+                          light
+                          style="color: red"
+                        >
                           mdi-close-circle
                         </v-icon>
-                        <v-icon v-if="idata.state === 'yellow'" light>
+                        <v-icon
+                          v-if="idata.state === 'yellow'"
+                          light
+                          style="color: #ffe107"
+                        >
                           mdi-alert-circle
                         </v-icon>
                       </span>
@@ -303,6 +290,56 @@
           </div>
         </div>
       </v-col>
+    </v-row>
+    <v-row>
+      <v-container v-if="selectedType === 'Salud Física'">
+        <v-col
+          v-if="dataHeartRate.length > 0"
+          cols="12"
+          sm="12"
+          md="12"
+          justify="center"
+          align="center"
+        >
+          <line-chart
+            :chart-data="dataHeartRate"
+            :options="chartOptions"
+            :chart-colors="heartRateColors"
+            label="Ritmo Cardiaco"
+          />
+        </v-col>
+        <v-col
+          v-if="dataCalories.length > 0"
+          cols="12"
+          sm="12"
+          md="12"
+          justify="center"
+          align="center"
+        >
+          <line-chart
+            :chart-data="dataCalories"
+            :options="chartOptions"
+            :chart-colors="caloriesColors"
+            label="Calorías"
+          />
+        </v-col>
+      </v-container>
+      <v-container v-if="selectedType === 'Salud Mental'">
+        <v-col
+          v-if="dataStep.length > 0"
+          cols="12"
+          sm="12"
+          md="12"
+          justify="center"
+          align="center"
+        >
+          <double-bar-chart
+            :chart-data="dataSleepDeepSleep"
+            :options="chartOptions"
+            label="Sueño y Sueño Profundo"
+          />
+        </v-col>
+      </v-container>
     </v-row>
   </v-container>
 </template>
@@ -381,12 +418,8 @@ export default {
         "Estado de animo",
       ],
 
-      notificationSelectData: "all",
+      notificationSelectData: "red",
       notificationItems: [
-        {
-          id: "all",
-          name: "Todos",
-        },
         {
           id: "red",
           name: "Alertas",
@@ -394,6 +427,10 @@ export default {
         {
           id: "yellow",
           name: "Advertencias",
+        },
+        {
+          id: "all",
+          name: "Todos",
         },
       ],
 
@@ -1175,7 +1212,7 @@ export default {
 </script>
 <style lang="scss">
 .fixed-height-container {
-  height: calc(100vh - 128px);
+  height: calc(100vh - 328px);
 }
 
 .fixed-container {

@@ -3,7 +3,7 @@
     <v-col v-if="isClient" cols="12" sm="8" md="6">
       <div v-if="auth">
         <v-avatar color="primary" size="64" class="mt-5 mb-7">
-          <v-img :src="auth.photoURL" />
+          <v-img src="https://firebasestorage.googleapis.com/v0/b/hear-my-health.appspot.com/o/doctorProfile.webp?alt=media&token=b194c767-7127-493a-a73f-57f3de26fef2" />
         </v-avatar>
         <form @submit.prevent="updateInfo">
           <div>
