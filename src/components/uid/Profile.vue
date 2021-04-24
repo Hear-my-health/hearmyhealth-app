@@ -278,6 +278,7 @@ export default {
           !this.profile.height ||
           isNaN(this.profile.clinicHistory) ||
           isNaN(this.profile.weight) ||
+          !(this.profile.clinicHistory.length >= 6) ||
           isNaN(this.profile.height)) {
           console.log('No válido')
         } else {

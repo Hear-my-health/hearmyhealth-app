@@ -1,6 +1,8 @@
 <template>
   <v-container>
-    <v-row justify="start" align="center"> Paciente: {{ user.name }} </v-row>
+    <v-row class="pl-5" justify="start" align="center">
+      Paciente: {{ user.name }}
+    </v-row>
     <v-row>
       <v-col cols="12" sm="9" md="9">
         <v-row justify="center" align="top">
@@ -243,7 +245,9 @@
       </v-col>
       <v-col cols="12" sm="3" md="3">
         <div class="fixed-height-container">
-          <h4 class="mb-3">Recomendaciones</h4>
+          <h4 class="mb-3">
+            Recomendaciones
+          </h4>
           <v-select
             v-model="selectNotification"
             :item-text="'name'"
@@ -345,173 +349,173 @@
 </template>
 
 <script>
-import LineChart from "~/components/uid/charts/LineChart";
-import BarChart from "~/components/uid/charts/BarChart";
-import DoubleBarChart from "~/components/uid/charts/DoubleBarChart";
+import LineChart from '~/components/uid/charts/LineChart'
+import BarChart from '~/components/uid/charts/BarChart'
+import DoubleBarChart from '~/components/uid/charts/DoubleBarChart'
 
 export default {
   components: {
     LineChart,
     BarChart,
-    DoubleBarChart,
+    DoubleBarChart
   },
 
   props: {
     myUid: {
       type: String,
-      default: "",
-    },
+      default: ''
+    }
   },
 
-  data() {
+  data () {
     return {
       heartRateColors: {
-        borderColor: "#E55381",
-        pointBorderColor: "#E55381",
-        pointBackgroundColor: "#E55381",
-        backgroundColor: "transparent",
+        borderColor: '#E55381',
+        pointBorderColor: '#E55381',
+        pointBackgroundColor: '#E55381',
+        backgroundColor: 'transparent'
       },
       sleepLabel: {
-        sleepLabel: "Sueño",
-        deepSleepLabel: "Sueño profundo",
+        sleepLabel: 'Sueño',
+        deepSleepLabel: 'Sueño profundo'
       },
       stepColors: {
-        borderColor: "#077187",
-        pointBorderColor: "#0E1428",
-        pointBackgroundColor: "#AFD6AC",
-        backgroundColor: "#74A57F",
+        borderColor: '#077187',
+        pointBorderColor: '#0E1428',
+        pointBackgroundColor: '#AFD6AC',
+        backgroundColor: '#74A57F'
       },
       caloriesColors: {
-        borderColor: "#0345fc",
-        pointBorderColor: "#0345fc",
-        pointBackgroundColor: "#0345fc",
-        backgroundColor: "#5f7ed4",
+        borderColor: '#0345fc',
+        pointBorderColor: '#0345fc',
+        pointBackgroundColor: '#0345fc',
+        backgroundColor: '#5f7ed4'
       },
       moodColors: {
-        borderColor: "#0345fc",
-        pointBorderColor: "transparent",
-        pointBackgroundColor: "transparent",
-        backgroundColor: "#5f7ed4",
+        borderColor: '#0345fc',
+        pointBorderColor: 'transparent',
+        pointBackgroundColor: 'transparent',
+        backgroundColor: '#5f7ed4'
       },
       uid: this.$props.myUid,
-      dateStart: "",
-      dateStarFormatted: "",
-      dateEnd: "",
-      dateEndFormatted: "",
+      dateStart: '',
+      dateStarFormatted: '',
+      dateEnd: '',
+      dateEndFormatted: '',
       menu1: false,
       menu2: false,
       start: 0,
       end: 0,
       chartOptions: {
         responsive: true,
-        maintainAspectRatio: false,
+        maintainAspectRatio: false
       },
-      selectedType: "Salud Física",
-      selectTypes: ["Salud Física", "Salud Mental"],
+      selectedType: 'Salud Física',
+      selectTypes: ['Salud Física', 'Salud Mental'],
       selectItems: [
-        "Ritmo cardiaco",
-        "Cadencia de conteo de pasos",
-        "Delta de recuento de pasos",
-        "Calorías quemadas",
-        "Sueño",
-        "Sueño profundo",
-        "Estado de animo",
+        'Ritmo cardiaco',
+        'Cadencia de conteo de pasos',
+        'Delta de recuento de pasos',
+        'Calorías quemadas',
+        'Sueño',
+        'Sueño profundo',
+        'Estado de animo'
       ],
 
-      notificationSelectData: "red",
+      notificationSelectData: 'red',
       notificationItems: [
         {
-          id: "red",
-          name: "Alertas",
+          id: 'red',
+          name: 'Alertas'
         },
         {
-          id: "yellow",
-          name: "Advertencias",
+          id: 'yellow',
+          name: 'Advertencias'
         },
         {
-          id: "all",
-          name: "Todos",
-        },
+          id: 'all',
+          name: 'Todos'
+        }
       ],
 
-      selectNameData: "all",
+      selectNameData: 'all',
 
       selectNames: [
         {
-          id: "all",
-          name: "Todos",
+          id: 'all',
+          name: 'Todos'
         },
         {
-          id: "com.google.heart_rate.bpm",
-          name: "Ritmo cardiaco",
+          id: 'com.google.heart_rate.bpm',
+          name: 'Ritmo cardiaco'
         },
         {
-          id: "com.google.step_count.delta",
-          name: "Delta de recuento de pasos",
+          id: 'com.google.step_count.delta',
+          name: 'Delta de recuento de pasos'
         },
         {
-          id: "com.google.calories.expended",
-          name: "Calorías quemadas",
+          id: 'com.google.calories.expended',
+          name: 'Calorías quemadas'
         },
         {
-          id: "com.google.sleep.segment",
-          name: "Sueño",
+          id: 'com.google.sleep.segment',
+          name: 'Sueño'
         },
         {
-          id: "app.web.hear-my-health.sleep.deep",
-          name: "Sueño profundo",
+          id: 'app.web.hear-my-health.sleep.deep',
+          name: 'Sueño profundo'
         },
         {
-          id: "app.web.hear-my-health.mood.segment",
-          name: "Estado de animo",
-        },
-      ],
-    };
+          id: 'app.web.hear-my-health.mood.segment',
+          name: 'Estado de animo'
+        }
+      ]
+    }
   },
 
   computed: {
     selectNotification: {
-      get() {
-        return this.notificationSelectData;
+      get () {
+        return this.notificationSelectData
       },
-      set(newValue) {
-        this.notificationSelectData = newValue;
-      },
+      set (newValue) {
+        this.notificationSelectData = newValue
+      }
     },
 
     selectName: {
-      get() {
-        return this.selectNameData;
+      get () {
+        return this.selectNameData
       },
-      set(newValue) {
-        this.selectNameData = newValue;
-      },
+      set (newValue) {
+        this.selectNameData = newValue
+      }
     },
 
-    auth() {
-      return this.$store.state.authUser || null;
+    auth () {
+      return this.$store.state.authUser || null
     },
 
-    user() {
-      return this.$store.state.user;
+    user () {
+      return this.$store.state.user
     },
 
-    dataPhysicalHealth() {
-      const avgPhysical = [];
-      const dateStartTime = new Date(this.dateStart).getTime();
-      const end = new Date(this.dateEnd);
-      end.setDate(end.getDate() + 1);
-      const dateEndTime = end.getTime();
-      const dd = (dateEndTime - dateStartTime) / 86400000;
+    dataPhysicalHealth () {
+      const avgPhysical = []
+      const dateStartTime = new Date(this.dateStart).getTime()
+      const end = new Date(this.dateEnd)
+      end.setDate(end.getDate() + 1)
+      const dateEndTime = end.getTime()
+      const dd = (dateEndTime - dateStartTime) / 86400000
 
-      let start = dateStartTime;
+      let start = dateStartTime
 
       if (this.$store.state.dataSet.length > 0) {
         for (let index = 1; index <= Math.floor(dd); index++) {
-          const dateEnd = start + 86400000;
+          const dateEnd = start + 86400000
           const dd = this.$store.state.dataSet.filter(
-            (s) => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
-          );
+            s => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
+          )
           /* const heartRateTemp = dd.filter(
             (s) => s.dataTypeName === "com.google.heart_rate.bpm"
           );
@@ -551,100 +555,100 @@ export default {
           }); */
 
           const heartRateTemp = dd.find(
-            (t) =>
-              t.dataTypeName === "com.google.heart_rate.bpm" && t.value !== null
-          );
+            t =>
+              t.dataTypeName === 'com.google.heart_rate.bpm' && t.value !== null
+          )
 
           const hr =
             heartRateTemp !== null &&
             heartRateTemp !== undefined &&
             heartRateTemp.value !== null &&
             heartRateTemp.value !== undefined
-              ? heartRateTemp.state === "green"
+              ? heartRateTemp.state === 'green'
                 ? 1
-                : heartRateTemp.state === "yellow"
-                ? 0.5
-                : 0
-              : 0;
+                : heartRateTemp.state === 'yellow'
+                  ? 0.5
+                  : 0
+              : 0
 
           const stepsTemp = dd.find(
-            (t) =>
-              t.dataTypeName === "com.google.step_count.delta" &&
+            t =>
+              t.dataTypeName === 'com.google.step_count.delta' &&
               t.value !== null
-          );
+          )
 
           const st =
             stepsTemp !== null &&
             stepsTemp !== undefined &&
             stepsTemp.value !== null &&
             stepsTemp.value !== undefined
-              ? stepsTemp.state === "green"
+              ? stepsTemp.state === 'green'
                 ? 1
-                : stepsTemp.state === "yellow"
-                ? 0.5
-                : 0
-              : 0;
+                : stepsTemp.state === 'yellow'
+                  ? 0.5
+                  : 0
+              : 0
 
           const caloriesTemp = dd.find(
-            (t) =>
-              t.dataTypeName === "com.google.calories.expended" &&
+            t =>
+              t.dataTypeName === 'com.google.calories.expended' &&
               t.value !== null
-          );
+          )
 
           const c =
             caloriesTemp !== null &&
             caloriesTemp !== undefined &&
             caloriesTemp.value !== null &&
             caloriesTemp.value !== undefined
-              ? caloriesTemp.state === "green"
+              ? caloriesTemp.state === 'green'
                 ? 1
-                : caloriesTemp.state === "yellow"
-                ? 0.5
-                : 0
-              : 0;
+                : caloriesTemp.state === 'yellow'
+                  ? 0.5
+                  : 0
+              : 0
 
-          let avg = 0;
+          let avg = 0
           /* for (let x = 0; x < heartRateTemp.length; x++) {
             avg += 0.5 * hr[x] + 0.17 * st[x] + 0.33 * c[x];
             console.log("avg", avg);
           } */
-          avg += 0.5 * hr + 0.17 * st + 0.33 * c;
+          avg += 0.5 * hr + 0.17 * st + 0.33 * c
           if (avg !== 0) {
-            avgPhysical.push(avg);
+            avgPhysical.push(avg)
           }
 
-          start = dateEnd;
+          start = dateEnd
         }
       }
-      console.log("avgphysical", avgPhysical);
-      let myAvg = 0;
+      console.log('avgphysical', avgPhysical)
+      let myAvg = 0
       for (let y = 0; y < avgPhysical.length; y++) {
         if (isNaN(avgPhysical[y])) {
-          myAvg += 0;
+          myAvg += 0
         } else {
-          myAvg += avgPhysical[y];
+          myAvg += avgPhysical[y]
         }
       }
-      myAvg = myAvg / avgPhysical.length;
-      console.log("my avg", myAvg);
-      return Math.round(myAvg * 100);
+      myAvg = myAvg / avgPhysical.length
+      console.log('my avg', myAvg)
+      return Math.round(myAvg * 100)
     },
 
-    dataMentalHealth() {
-      const avgMental = [];
-      const dateStartTime = new Date(this.dateStart).getTime();
-      const end = new Date(this.dateEnd);
-      end.setDate(end.getDate() + 1);
-      const dateEndTime = end.getTime();
-      const dd = (dateEndTime - dateStartTime) / 86400000;
-      let start = dateStartTime;
+    dataMentalHealth () {
+      const avgMental = []
+      const dateStartTime = new Date(this.dateStart).getTime()
+      const end = new Date(this.dateEnd)
+      end.setDate(end.getDate() + 1)
+      const dateEndTime = end.getTime()
+      const dd = (dateEndTime - dateStartTime) / 86400000
+      let start = dateStartTime
 
       if (this.$store.state.dataSet.length > 0) {
         for (let index = 1; index <= Math.floor(dd); index++) {
-          const dateEnd = start + 86400000;
+          const dateEnd = start + 86400000
           const dd = this.$store.state.dataSet.filter(
-            (s) => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
-          );
+            s => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
+          )
           /* const moodTemp = dd.filter(
             (s) => s.dataTypeName === "app.web.hear-my-health.mood.segment"
           );
@@ -684,54 +688,54 @@ export default {
           }); */
 
           const sleepTemp = dd.find(
-            (t) =>
-              t.dataTypeName === "com.google.sleep.segment" && t.value !== null
-          );
+            t =>
+              t.dataTypeName === 'com.google.sleep.segment' && t.value !== null
+          )
 
           const sl =
             sleepTemp !== null &&
             sleepTemp !== undefined &&
             sleepTemp.value !== null &&
             sleepTemp.value !== undefined
-              ? sleepTemp.state === "green"
+              ? sleepTemp.state === 'green'
                 ? 1
-                : sleepTemp.state === "yellow"
-                ? 0.5
-                : 0
-              : 0;
+                : sleepTemp.state === 'yellow'
+                  ? 0.5
+                  : 0
+              : 0
 
           const deepSleepTemp = dd.find(
-            (t) =>
-              t.dataTypeName === "app.web.hear-my-health.sleep.deep" &&
+            t =>
+              t.dataTypeName === 'app.web.hear-my-health.sleep.deep' &&
               t.value !== null
-          );
+          )
 
           const dsl =
             deepSleepTemp !== null &&
             deepSleepTemp !== undefined &&
             deepSleepTemp.value !== null &&
             deepSleepTemp.value !== undefined
-              ? deepSleepTemp.state === "green"
+              ? deepSleepTemp.state === 'green'
                 ? 1
-                : deepSleepTemp.state === "yellow"
-                ? 0.5
-                : 0
-              : 0;
+                : deepSleepTemp.state === 'yellow'
+                  ? 0.5
+                  : 0
+              : 0
 
-          const moodTemp = this.overageValueDataSet(dd);
+          const moodTemp = this.overageValueDataSet(dd)
           const m =
             moodTemp !== null &&
             moodTemp !== undefined &&
             moodTemp.value !== null &&
             moodTemp.value !== undefined
-              ? moodTemp.state === "green"
+              ? moodTemp.state === 'green'
                 ? 1
-                : moodTemp.state === "yellow"
-                ? 0.5
-                : 0
-              : 0;
+                : moodTemp.state === 'yellow'
+                  ? 0.5
+                  : 0
+              : 0
 
-          let avg = 0;
+          let avg = 0
           /* for (let x = 0; x < sleepTemp.length; x++) {
             if (m[x]) {
               avg += 0.5 * m[x] + 0.17 * sl[x] + 0.33 * dsl[x];
@@ -746,56 +750,56 @@ export default {
               avg += 0.17 * sl + 0.33 * dsl;
             }
           } */
-          avg += 0.5 * m + 0.17 * sl + 0.33 * dsl;
+          avg += 0.5 * m + 0.17 * sl + 0.33 * dsl
           if (avg !== 0) {
-            avgMental.push(avg);
+            avgMental.push(avg)
           }
-          start = dateEnd;
+          start = dateEnd
         }
       }
 
-      console.log("avgMental", avgMental);
-      let myAvg = 0;
+      console.log('avgMental', avgMental)
+      let myAvg = 0
       for (let y = 0; y < avgMental.length; y++) {
         if (isNaN(avgMental[y])) {
-          myAvg += 0;
+          myAvg += 0
         } else {
-          myAvg += avgMental[y];
+          myAvg += avgMental[y]
         }
       }
-      console.log("myAvg", myAvg);
-      myAvg = myAvg / avgMental.length;
-      return Math.round(myAvg * 100);
+      console.log('myAvg', myAvg)
+      myAvg = myAvg / avgMental.length
+      return Math.round(myAvg * 100)
     },
 
-    dataCalories() {
-      const tt = [];
-      const dateStartTime = new Date(this.dateStart).getTime();
-      const end = new Date(this.dateEnd);
-      end.setDate(end.getDate() + 1);
-      const dateEndTime = end.getTime();
-      const dd = (dateEndTime - dateStartTime) / 86400000;
-      let start = dateStartTime;
+    dataCalories () {
+      const tt = []
+      const dateStartTime = new Date(this.dateStart).getTime()
+      const end = new Date(this.dateEnd)
+      end.setDate(end.getDate() + 1)
+      const dateEndTime = end.getTime()
+      const dd = (dateEndTime - dateStartTime) / 86400000
+      let start = dateStartTime
 
       if (this.$store.state.dataSet.length > 0) {
         for (let index = 1; index <= Math.floor(dd); index++) {
-          const dateEnd = start + 86400000;
+          const dateEnd = start + 86400000
           const dd = this.$store.state.dataSet.filter(
-            (s) => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
-          );
+            s => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
+          )
           /* const dataTemp = dd.filter(
             (s) => s.dataTypeName === "com.google.calories.expended"
           ); */
           const dataTemp = dd.find(
-            (t) =>
-              t.dataTypeName === "com.google.calories.expended" &&
+            t =>
+              t.dataTypeName === 'com.google.calories.expended' &&
               t.value !== null
-          );
+          )
           const ee = {
             date: this.formatDateTable(start),
-            data: dataTemp !== undefined ? Math.round(dataTemp.value) : 0,
-          };
-          tt.push(ee);
+            data: dataTemp !== undefined ? Math.round(dataTemp.value) : 0
+          }
+          tt.push(ee)
           /* dataTemp.forEach((e) => {
             const ee = {
               date: this.formatDateTable(start),
@@ -804,26 +808,26 @@ export default {
             tt.push(ee);
           }); */
 
-          start = dateEnd;
+          start = dateEnd
         }
       }
-      return tt;
+      return tt
     },
-    dataStep() {
-      const tt = [];
-      const dateStartTime = new Date(this.dateStart).getTime();
-      const end = new Date(this.dateEnd);
-      end.setDate(end.getDate() + 1);
-      const dateEndTime = end.getTime();
-      const dd = (dateEndTime - dateStartTime) / 86400000;
-      let start = dateStartTime;
+    dataStep () {
+      const tt = []
+      const dateStartTime = new Date(this.dateStart).getTime()
+      const end = new Date(this.dateEnd)
+      end.setDate(end.getDate() + 1)
+      const dateEndTime = end.getTime()
+      const dd = (dateEndTime - dateStartTime) / 86400000
+      let start = dateStartTime
 
       if (this.$store.state.dataSet.length > 0) {
         for (let index = 1; index <= Math.floor(dd); index++) {
-          const dateEnd = start + 86400000;
+          const dateEnd = start + 86400000
           const dd = this.$store.state.dataSet.filter(
-            (s) => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
-          );
+            s => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
+          )
           /* const dataTemp = dd.filter(
             (s) => s.dataTypeName === "com.google.step_count.delta"
           );
@@ -835,37 +839,37 @@ export default {
             tt.push(ee);
           }); */
           const dataTemp = dd.find(
-            (t) =>
-              t.dataTypeName === "com.google.step_count.delta" &&
+            t =>
+              t.dataTypeName === 'com.google.step_count.delta' &&
               t.value !== null
-          );
+          )
           const ee = {
             date: this.formatDateTable(start),
-            data: dataTemp !== undefined ? Math.round(dataTemp.value) : 0,
-          };
-          tt.push(ee);
+            data: dataTemp !== undefined ? Math.round(dataTemp.value) : 0
+          }
+          tt.push(ee)
 
-          start = dateEnd;
+          start = dateEnd
         }
       }
-      return tt;
+      return tt
     },
 
-    dataHeartRate() {
-      const tt = [];
-      const dateStartTime = new Date(this.dateStart).getTime();
-      const end = new Date(this.dateEnd);
-      end.setDate(end.getDate() + 1);
-      const dateEndTime = end.getTime();
-      const dd = (dateEndTime - dateStartTime) / 86400000;
-      let start = dateStartTime;
+    dataHeartRate () {
+      const tt = []
+      const dateStartTime = new Date(this.dateStart).getTime()
+      const end = new Date(this.dateEnd)
+      end.setDate(end.getDate() + 1)
+      const dateEndTime = end.getTime()
+      const dd = (dateEndTime - dateStartTime) / 86400000
+      let start = dateStartTime
 
       if (this.$store.state.dataSet.length > 0) {
         for (let index = 1; index <= Math.floor(dd); index++) {
-          const dateEnd = start + 86400000;
+          const dateEnd = start + 86400000
           const dd = this.$store.state.dataSet.filter(
-            (s) => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
-          );
+            s => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
+          )
           /* const dataTemp = dd.filter(
             (s) => s.dataTypeName === "com.google.heart_rate.bpm"
           );
@@ -877,36 +881,36 @@ export default {
             tt.push(ee);
           }); */
           const dataTemp = dd.find(
-            (t) =>
-              t.dataTypeName === "com.google.heart_rate.bpm" && t.value !== null
-          );
+            t =>
+              t.dataTypeName === 'com.google.heart_rate.bpm' && t.value !== null
+          )
           const ee = {
             date: this.formatDateTable(start),
-            data: dataTemp !== undefined ? Math.round(dataTemp.value) : 0,
-          };
-          tt.push(ee);
+            data: dataTemp !== undefined ? Math.round(dataTemp.value) : 0
+          }
+          tt.push(ee)
 
-          start = dateEnd;
+          start = dateEnd
         }
       }
-      return tt;
+      return tt
     },
 
-    dataMood() {
-      const tt = [];
-      const dateStartTime = new Date(this.dateStart).getTime();
-      const end = new Date(this.dateEnd);
-      end.setDate(end.getDate() + 1);
-      const dateEndTime = end.getTime();
-      const dd = (dateEndTime - dateStartTime) / 86400000;
-      let start = dateStartTime;
+    dataMood () {
+      const tt = []
+      const dateStartTime = new Date(this.dateStart).getTime()
+      const end = new Date(this.dateEnd)
+      end.setDate(end.getDate() + 1)
+      const dateEndTime = end.getTime()
+      const dd = (dateEndTime - dateStartTime) / 86400000
+      let start = dateStartTime
 
       if (this.$store.state.dataSet.length > 0) {
         for (let index = 1; index <= Math.floor(dd); index++) {
-          const dateEnd = start + 86400000;
+          const dateEnd = start + 86400000
           const dd = this.$store.state.dataSet.filter(
-            (s) => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
-          );
+            s => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
+          )
           /* const dataTemp = dd.filter(
             (s) => s.dataTypeName === "app.web.hear-my-health.mood.segment"
           ); */
@@ -917,37 +921,37 @@ export default {
             };
             tt.push(ee);
           }); */
-          const dataTemp = this.overageValueDataSet(dd);
+          const dataTemp = this.overageValueDataSet(dd)
           const ee = {
             date: this.formatDateTable(start),
             data:
-              dataTemp !== undefined && dataTemp !== null ? dataTemp.value : 0,
-          };
-          tt.push(ee);
-          start = dateEnd;
+              dataTemp !== undefined && dataTemp !== null ? dataTemp.value : 0
+          }
+          tt.push(ee)
+          start = dateEnd
         }
       }
-      console.log(tt);
-      return tt;
+      console.log(tt)
+      return tt
     },
 
-    dataSleepDeepSleep() {
-      const tt = [];
-      const tt2 = [];
-      const dateStartTime = new Date(this.dateStart).getTime();
-      const end = new Date(this.dateEnd);
-      end.setDate(end.getDate() + 1);
-      const dateEndTime = end.getTime();
-      const dd = (dateEndTime - dateStartTime) / 86400000;
+    dataSleepDeepSleep () {
+      const tt = []
+      const tt2 = []
+      const dateStartTime = new Date(this.dateStart).getTime()
+      const end = new Date(this.dateEnd)
+      end.setDate(end.getDate() + 1)
+      const dateEndTime = end.getTime()
+      const dd = (dateEndTime - dateStartTime) / 86400000
 
-      let start = dateStartTime;
+      let start = dateStartTime
 
       if (this.$store.state.dataSet.length > 0) {
         for (let index = 1; index <= Math.floor(dd); index++) {
-          const dateEnd = start + 86400000;
+          const dateEnd = start + 86400000
           const dd = this.$store.state.dataSet.filter(
-            (s) => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
-          );
+            s => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
+          )
           /* const dataTemp1 = dd.filter(
             (s) => s.dataTypeName === "com.google.sleep.segment"
           );
@@ -970,33 +974,33 @@ export default {
           }); */
 
           const dataTemp1 = dd.find(
-            (t) =>
-              t.dataTypeName === "com.google.sleep.segment" && t.value !== null
-          );
+            t =>
+              t.dataTypeName === 'com.google.sleep.segment' && t.value !== null
+          )
           const ee1 = {
             date: this.formatDateTable(start),
-            data: dataTemp1 !== undefined ? dataTemp1.value : 0,
-          };
-          tt.push(ee1);
+            data: dataTemp1 !== undefined ? dataTemp1.value : 0
+          }
+          tt.push(ee1)
 
           const dataTemp2 = dd.find(
-            (t) =>
-              t.dataTypeName === "app.web.hear-my-health.sleep.deep" &&
+            t =>
+              t.dataTypeName === 'app.web.hear-my-health.sleep.deep' &&
               t.value !== null
-          );
+          )
           const ee2 = {
             date: this.formatDateTable(start),
-            data: dataTemp2 !== undefined ? dataTemp2.value : 0,
-          };
-          tt2.push(ee2);
-          start = dateEnd;
+            data: dataTemp2 !== undefined ? dataTemp2.value : 0
+          }
+          tt2.push(ee2)
+          start = dateEnd
         }
       }
       const toR = {
         tt,
-        tt2,
-      };
-      return toR;
+        tt2
+      }
+      return toR
     },
 
     /* dataSetFilterSelect() {
@@ -1008,54 +1012,54 @@ export default {
       );
     }, */
     // eslint-disable-next-line vue/return-in-computed-property
-    dataSetFilterSelect() {
-      if (this.selectedType === "Salud Física") {
+    dataSetFilterSelect () {
+      if (this.selectedType === 'Salud Física') {
         return this.$store.state.dataSet.filter(
-          (e) =>
-            e.dataTypeName === "com.google.heart_rate.bpm" ||
-            e.dataTypeName === "com.google.calories.expended" ||
-            e.dataTypeName === "com.google.step_count.delta"
-        );
-      } else if (this.selectedType === "Salud Mental") {
+          e =>
+            e.dataTypeName === 'com.google.heart_rate.bpm' ||
+            e.dataTypeName === 'com.google.calories.expended' ||
+            e.dataTypeName === 'com.google.step_count.delta'
+        )
+      } else if (this.selectedType === 'Salud Mental') {
         return this.$store.state.dataSet.filter(
-          (e) =>
-            e.dataTypeName === "com.google.sleep.segment" ||
-            e.dataTypeName === "app.web.hear-my-health.sleep.deep" ||
-            e.dataTypeName === "app.web.hear-my-health.mood.segment"
-        );
+          e =>
+            e.dataTypeName === 'com.google.sleep.segment' ||
+            e.dataTypeName === 'app.web.hear-my-health.sleep.deep' ||
+            e.dataTypeName === 'app.web.hear-my-health.mood.segment'
+        )
       } else {
         // eslint-disable-next-line no-useless-return
-        return;
+        return
       }
     },
 
-    dataSetNotification() {
-      const tt = [];
-      const dateStartTime = new Date(this.dateStart).getTime();
-      const dateEndTime = new Date(this.dateEnd).getTime();
-      const dd = (dateEndTime - dateStartTime) / 86400000;
-      let start = dateStartTime;
+    dataSetNotification () {
+      const tt = []
+      const dateStartTime = new Date(this.dateStart).getTime()
+      const dateEndTime = new Date(this.dateEnd).getTime()
+      const dd = (dateEndTime - dateStartTime) / 86400000
+      let start = dateStartTime
 
       if (this.dataSetFilterSelect.length > 0) {
-        let dataSetState = [];
+        let dataSetState = []
 
-        if (this.notificationSelectData === "all") {
+        if (this.notificationSelectData === 'all') {
           dataSetState = this.dataSetFilterSelect.filter(
-            (s) => s.state === "yellow" || s.state === "red"
-          );
+            s => s.state === 'yellow' || s.state === 'red'
+          )
         } else {
           dataSetState = this.dataSetFilterSelect.filter(
-            (s) => s.state === this.notificationSelectData
-          );
+            s => s.state === this.notificationSelectData
+          )
         }
-        console.log(dataSetState);
+        console.log(dataSetState)
 
         for (let index = 1; index <= Math.floor(dd); index++) {
-          const dateEnd = start + 86400000;
+          const dateEnd = start + 86400000
 
           const dd = dataSetState.filter(
-            (s) => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
-          );
+            s => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
+          )
           const ee = {
             dateStart: start,
             dateEnd,
@@ -1070,37 +1074,37 @@ export default {
                 t.dataTypeName === "app.web.hear-my-health.mood.segment"
             ), */
             data:
-              this.selectedType === "Salud Física"
+              this.selectedType === 'Salud Física'
                 ? dd.filter(
-                    (t) =>
-                      t.dataTypeName === "com.google.heart_rate.bpm" ||
-                      t.dataTypeName === "com.google.calories.expended" ||
-                      "com.google.step_count.delta"
-                  )
+                  t =>
+                    t.dataTypeName === 'com.google.heart_rate.bpm' ||
+                      t.dataTypeName === 'com.google.calories.expended' ||
+                      'com.google.step_count.delta'
+                )
                 : dd.filter(
-                    (t) =>
-                      t.dataTypeName === "com.google.sleep.segment" ||
-                      t.dataTypeName === "app.web.hear-my-health.sleep.deep" ||
-                      t.dataTypeName === "app.web.hear-my-health.mood.segment"
-                  ),
-          };
-          console.log(ee);
-          start = dateEnd;
-          tt.push(ee);
+                  t =>
+                    t.dataTypeName === 'com.google.sleep.segment' ||
+                      t.dataTypeName === 'app.web.hear-my-health.sleep.deep' ||
+                      t.dataTypeName === 'app.web.hear-my-health.mood.segment'
+                )
+          }
+          console.log(ee)
+          start = dateEnd
+          tt.push(ee)
         }
       }
-      return tt;
-    },
+      return tt
+    }
   },
 
   watch: {
-    dateStart(val) {
-      this.dateStarFormatted = this.formatDate(this.dateStart);
+    dateStart (val) {
+      this.dateStarFormatted = this.formatDate(this.dateStart)
     },
-    dateEnd(val) {
-      this.dateEndFormatted = this.formatDate(this.dateEnd);
+    dateEnd (val) {
+      this.dateEndFormatted = this.formatDate(this.dateEnd)
     },
-    selectedType() {
+    selectedType () {
       /* if (this.selectedType === "Salud Física") {
         this.dataSetNotification = this.$store.state.dataSet.filter(
           (e) =>
@@ -1116,99 +1120,99 @@ export default {
             e.dataTypeName === "app.web.hear-my-health.mood.segment"
         );
       } */
-    },
+    }
   },
 
-  created() {
-    const date = new Date();
-    this.dateEnd = date.toISOString().substr(0, 10);
-    this.dateEndFormatted = this.formatDate(date.toISOString().substr(0, 10));
+  created () {
+    const date = new Date()
+    this.dateEnd = date.toISOString().substr(0, 10)
+    this.dateEndFormatted = this.formatDate(date.toISOString().substr(0, 10))
 
-    date.setDate(date.getDate() - 7);
-    this.dateStart = date.toISOString().substr(0, 10);
-    this.dateStarFormatted = this.formatDate(date.toISOString().substr(0, 10));
+    date.setDate(date.getDate() - 7)
+    this.dateStart = date.toISOString().substr(0, 10)
+    this.dateStarFormatted = this.formatDate(date.toISOString().substr(0, 10))
   },
 
-  mounted() {
-    const { authUser } = this.$store.state;
+  mounted () {
+    const { authUser } = this.$store.state
     if (!authUser) {
-      this.$router.push("/");
+      this.$router.push('/')
     } else {
-      this.$store.dispatch("getDataSet", { uid: this.uid });
-      this.$store.dispatch("getUser", { uid: this.uid });
+      this.$store.dispatch('getDataSet', { uid: this.uid })
+      this.$store.dispatch('getUser', { uid: this.uid })
     }
   },
 
   methods: {
-    overageValueDataSet(dd) {
+    overageValueDataSet (dd) {
       const valueFilter = dd.filter(
-        (t) => t.dataTypeName === "app.web.hear-my-health.mood.segment"
-      );
+        t => t.dataTypeName === 'app.web.hear-my-health.mood.segment'
+      )
       if (valueFilter.length) {
-        const initialValue = 0;
+        const initialValue = 0
         const average =
           valueFilter.reduce(function (total, currentValue) {
-            return total + currentValue.value || 0;
-          }, initialValue) / valueFilter.length;
+            return total + currentValue.value || 0
+          }, initialValue) / valueFilter.length
         if (average) {
-          return { ...valueFilter[0], value: average };
+          return { ...valueFilter[0], value: average }
         } else {
-          return null;
+          return null
         }
       } else {
-        return null;
+        return null
       }
     },
 
-    formatDateTable(item) {
-      const ss = new Date(Number(item)).toISOString().substr(0, 10);
-      return ss;
+    formatDateTable (item) {
+      const ss = new Date(Number(item)).toISOString().substr(0, 10)
+      return ss
     },
 
-    formatDate(date) {
+    formatDate (date) {
       if (!date) {
-        return null;
+        return null
       }
 
-      const [year, month, day] = date.split("-");
-      return `${month}/${day}/${year}`;
+      const [year, month, day] = date.split('-')
+      return `${month}/${day}/${year}`
     },
 
-    parseDate(date) {
+    parseDate (date) {
       if (!date) {
-        return null;
+        return null
       }
 
-      const [month, day, year] = date.split("/");
-      return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+      const [month, day, year] = date.split('/')
+      return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
     },
 
-    round(num) {
-      return Math.round(num * 100) / 100;
+    round (num) {
+      return Math.round(num * 100) / 100
     },
 
-    nameData(scope) {
+    nameData (scope) {
       switch (scope) {
-        case "com.google.heart_rate.bpm":
-          return "Ritmo cardiaco";
-        case "com.google.step_count.cadence":
-          return "Cadencia de conteo de pasos";
-        case "com.google.step_count.delta":
-          return "Delta de recuento de pasos";
-        case "com.google.calories.expended":
-          return "Calorías quemadas";
-        case "com.google.sleep.segment":
-          return "Sueño";
-        case "app.web.hear-my-health.sleep.deep":
-          return "Sueño profundo";
-        case "app.web.hear-my-health.mood.segment":
-          return "Estado de animo";
+        case 'com.google.heart_rate.bpm':
+          return 'Ritmo cardiaco'
+        case 'com.google.step_count.cadence':
+          return 'Cadencia de conteo de pasos'
+        case 'com.google.step_count.delta':
+          return 'Delta de recuento de pasos'
+        case 'com.google.calories.expended':
+          return 'Calorías quemadas'
+        case 'com.google.sleep.segment':
+          return 'Sueño'
+        case 'app.web.hear-my-health.sleep.deep':
+          return 'Sueño profundo'
+        case 'app.web.hear-my-health.mood.segment':
+          return 'Estado de animo'
         default:
-          return "desconocido";
+          return 'desconocido'
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>
 <style lang="scss">
 .fixed-height-container {
