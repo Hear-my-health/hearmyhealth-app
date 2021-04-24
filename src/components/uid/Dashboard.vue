@@ -255,7 +255,7 @@
               <double-bar-chart
                 :chart-data="dataSleepDeepSleep"
                 :options="chartOptions"
-                label="Sueño y Sueño Profundo"
+                :label="sleepLabel"
               />
             </v-col>
           </v-container>
@@ -333,6 +333,10 @@ export default {
         pointBorderColor: "#E55381",
         pointBackgroundColor: "#E55381",
         backgroundColor: "transparent",
+      },
+      sleepLabel: {
+        sleepLabel: "Sueño",
+        deepSleepLabel: "Sueño profundo",
       },
       stepColors: {
         borderColor: "#077187",
@@ -457,31 +461,32 @@ export default {
 
     dataPhysicalHealth() {
       const avgPhysical = [];
-      const dateStartTimePyshical = new Date(this.dateStart).getTime();
-      const dateEndTimePyshical = new Date(this.dateEnd).getTime();
-      const ddPyshical =
-        (dateEndTimePyshical - dateStartTimePyshical) / 86400000;
-      let start = dateStartTimePyshical;
+      const dateStartTime = new Date(this.dateStart).getTime();
+      const end = new Date(this.dateEnd);
+      end.setDate(end.getDate() + 1);
+      const dateEndTime = end.getTime();
+      const dd = (dateEndTime - dateStartTime) / 86400000;
+
+      let start = dateStartTime;
 
       if (this.$store.state.dataSet.length > 0) {
-        for (let index = 1; index <= Math.floor(ddPyshical); index++) {
-          const dateEndPyshical = start + 86400000;
-          const ddPyshical = this.$store.state.dataSet.filter(
-            (s) =>
-              s.startTimeMillis >= start && s.endTimeMillis <= dateEndPyshical
+        for (let index = 1; index <= Math.floor(dd); index++) {
+          const dateEnd = start + 86400000;
+          const dd = this.$store.state.dataSet.filter(
+            (s) => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
           );
-          const heartRateTemp = ddPyshical.filter(
+          /* const heartRateTemp = dd.filter(
             (s) => s.dataTypeName === "com.google.heart_rate.bpm"
           );
-          const stepsTemp = ddPyshical.filter(
+          const stepsTemp = dd.filter(
             (s) => s.dataTypeName === "com.google.step_count.delta"
           );
-          const caloriesTemp = ddPyshical.filter(
+          const caloriesTemp = dd.filter(
             (s) => s.dataTypeName === "com.google.calories.expended"
           );
 
           const hr = heartRateTemp.map((e) => {
-            return e.value !== null || e.value !== undefined
+            return e.value !== null && e.value !== undefined
               ? e.state === "green"
                 ? 1
                 : e.state === "yellow"
@@ -490,7 +495,7 @@ export default {
               : 0;
           });
           const st = stepsTemp.map((e) => {
-            return e.value !== null || e.value !== undefined
+            return e.value !== null && e.value !== undefined
               ? e.state === "green"
                 ? 1
                 : e.state === "yellow"
@@ -499,25 +504,82 @@ export default {
               : 0;
           });
           const c = caloriesTemp.map((e) => {
-            return e.value !== null || e.value !== undefined
+            return e.value !== null && e.value !== undefined
               ? e.state === "green"
                 ? 1
                 : e.state === "yellow"
                 ? 0.5
                 : 0
               : 0;
-          });
+          }); */
+
+          const heartRateTemp = dd.find(
+            (t) =>
+              t.dataTypeName === "com.google.heart_rate.bpm" && t.value !== null
+          );
+
+          const hr =
+            heartRateTemp !== null &&
+            heartRateTemp !== undefined &&
+            heartRateTemp.value !== null &&
+            heartRateTemp.value !== undefined
+              ? heartRateTemp.state === "green"
+                ? 1
+                : heartRateTemp.state === "yellow"
+                ? 0.5
+                : 0
+              : 0;
+
+          const stepsTemp = dd.find(
+            (t) =>
+              t.dataTypeName === "com.google.step_count.delta" &&
+              t.value !== null
+          );
+
+          const st =
+            stepsTemp !== null &&
+            stepsTemp !== undefined &&
+            stepsTemp.value !== null &&
+            stepsTemp.value !== undefined
+              ? stepsTemp.state === "green"
+                ? 1
+                : stepsTemp.state === "yellow"
+                ? 0.5
+                : 0
+              : 0;
+
+          const caloriesTemp = dd.find(
+            (t) =>
+              t.dataTypeName === "com.google.calories.expended" &&
+              t.value !== null
+          );
+
+          const c =
+            caloriesTemp !== null &&
+            caloriesTemp !== undefined &&
+            caloriesTemp.value !== null &&
+            caloriesTemp.value !== undefined
+              ? caloriesTemp.state === "green"
+                ? 1
+                : caloriesTemp.state === "yellow"
+                ? 0.5
+                : 0
+              : 0;
+
           let avg = 0;
-          for (let x = 0; x < heartRateTemp.length; x++) {
-            avg +=
-              Math.round(0.5 * hr[x]) +
-              Math.round(0.17 * st[x]) +
-              Math.round(0.33 * c[x]);
+          /* for (let x = 0; x < heartRateTemp.length; x++) {
+            avg += 0.5 * hr[x] + 0.17 * st[x] + 0.33 * c[x];
+            console.log("avg", avg);
+          } */
+          avg += 0.5 * hr + 0.17 * st + 0.33 * c;
+          if (avg !== 0) {
+            avgPhysical.push(avg);
           }
-          avgPhysical.push(avg);
-          start = dateEndPyshical;
+
+          start = dateEnd;
         }
       }
+      console.log("avgphysical", avgPhysical);
       let myAvg = 0;
       for (let y = 0; y < avgPhysical.length; y++) {
         if (isNaN(avgPhysical[y])) {
@@ -527,30 +589,32 @@ export default {
         }
       }
       myAvg = myAvg / avgPhysical.length;
-      return myAvg * 100;
+      console.log("my avg", myAvg);
+      return Math.round(myAvg * 100);
     },
 
     dataMentalHealth() {
       const avgMental = [];
-      const dateStartTimeMental = new Date(this.dateStart).getTime();
-      const dateEndTimeMental = new Date(this.dateEnd).getTime();
-      const ddMental = (dateEndTimeMental - dateStartTimeMental) / 86400000;
-      let start = dateStartTimeMental;
+      const dateStartTime = new Date(this.dateStart).getTime();
+      const end = new Date(this.dateEnd);
+      end.setDate(end.getDate() + 1);
+      const dateEndTime = end.getTime();
+      const dd = (dateEndTime - dateStartTime) / 86400000;
+      let start = dateStartTime;
 
       if (this.$store.state.dataSet.length > 0) {
-        for (let index = 1; index <= Math.floor(ddMental); index++) {
-          const dateEndMental = start + 86400000;
-          const ddMental = this.$store.state.dataSet.filter(
-            (s) =>
-              s.startTimeMillis >= start && s.endTimeMillis <= dateEndMental
+        for (let index = 1; index <= Math.floor(dd); index++) {
+          const dateEnd = start + 86400000;
+          const dd = this.$store.state.dataSet.filter(
+            (s) => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
           );
-          const moodTemp = ddMental.filter(
+          /* const moodTemp = dd.filter(
             (s) => s.dataTypeName === "app.web.hear-my-health.mood.segment"
           );
-          const sleepTemp = ddMental.filter(
+          const sleepTemp = dd.filter(
             (s) => s.dataTypeName === "com.google.sleep.segment"
           );
-          const deppSleepTemp = ddMental.filter(
+          const deppSleepTemp = dd.filter(
             (s) => s.dataTypeName === "app.web.hear-my-health.sleep.deep"
           );
 
@@ -580,18 +644,80 @@ export default {
                 ? 0.5
                 : 0
               : 0;
-          });
+          }); */
+
+          const sleepTemp = dd.find(
+            (t) =>
+              t.dataTypeName === "com.google.sleep.segment" && t.value !== null
+          );
+
+          const sl =
+            sleepTemp !== null &&
+            sleepTemp !== undefined &&
+            sleepTemp.value !== null &&
+            sleepTemp.value !== undefined
+              ? sleepTemp.state === "green"
+                ? 1
+                : sleepTemp.state === "yellow"
+                ? 0.5
+                : 0
+              : 0;
+
+          const deepSleepTemp = dd.find(
+            (t) =>
+              t.dataTypeName === "app.web.hear-my-health.sleep.deep" &&
+              t.value !== null
+          );
+
+          const dsl =
+            deepSleepTemp !== null &&
+            deepSleepTemp !== undefined &&
+            deepSleepTemp.value !== null &&
+            deepSleepTemp.value !== undefined
+              ? deepSleepTemp.state === "green"
+                ? 1
+                : deepSleepTemp.state === "yellow"
+                ? 0.5
+                : 0
+              : 0;
+
+          const moodTemp = this.overageValueDataSet(dd);
+          const m =
+            moodTemp !== null &&
+            moodTemp !== undefined &&
+            moodTemp.value !== null &&
+            moodTemp.value !== undefined
+              ? moodTemp.state === "green"
+                ? 1
+                : moodTemp.state === "yellow"
+                ? 0.5
+                : 0
+              : 0;
+
           let avg = 0;
-          for (let x = 0; x < moodTemp.length; x++) {
-            avg +=
-              Math.round(0.5 * m[x]) +
-              Math.round(0.17 * sl[x]) +
-              Math.round(0.33 * dsl[x]);
+          /* for (let x = 0; x < sleepTemp.length; x++) {
+            if (m[x]) {
+              avg += 0.5 * m[x] + 0.17 * sl[x] + 0.33 * dsl[x];
+            } else {
+              avg += 0.17 * sl[x] + 0.33 * dsl[x];
+            }
+          } */
+          /*           if (avg !== 0) {
+            if (m) {
+              avg += 0.5 * m + 0.17 * sl + 0.33 * dsl;
+            } else {
+              avg += 0.17 * sl + 0.33 * dsl;
+            }
+          } */
+          avg += 0.5 * m + 0.17 * sl + 0.33 * dsl;
+          if (avg !== 0) {
+            avgMental.push(avg);
           }
-          avgMental.push(avg);
-          start = dateEndMental;
+          start = dateEnd;
         }
       }
+
+      console.log("avgMental", avgMental);
       let myAvg = 0;
       for (let y = 0; y < avgMental.length; y++) {
         if (isNaN(avgMental[y])) {
@@ -600,14 +726,17 @@ export default {
           myAvg += avgMental[y];
         }
       }
+      console.log("myAvg", myAvg);
       myAvg = myAvg / avgMental.length;
-      return myAvg * 100;
+      return Math.round(myAvg * 100);
     },
 
     dataCalories() {
       const tt = [];
       const dateStartTime = new Date(this.dateStart).getTime();
-      const dateEndTime = new Date(this.dateEnd).getTime();
+      const end = new Date(this.dateEnd);
+      end.setDate(end.getDate() + 1);
+      const dateEndTime = end.getTime();
       const dd = (dateEndTime - dateStartTime) / 86400000;
       let start = dateStartTime;
 
@@ -617,16 +746,26 @@ export default {
           const dd = this.$store.state.dataSet.filter(
             (s) => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
           );
-          const dataTemp = dd.filter(
+          /* const dataTemp = dd.filter(
             (s) => s.dataTypeName === "com.google.calories.expended"
+          ); */
+          const dataTemp = dd.find(
+            (t) =>
+              t.dataTypeName === "com.google.calories.expended" &&
+              t.value !== null
           );
-          dataTemp.forEach((e) => {
+          const ee = {
+            date: this.formatDateTable(start),
+            data: dataTemp !== undefined ? Math.round(dataTemp.value) : 0,
+          };
+          tt.push(ee);
+          /* dataTemp.forEach((e) => {
             const ee = {
               date: this.formatDateTable(start),
               data: e.value !== null ? Math.round(e.value) : 0,
             };
             tt.push(ee);
-          });
+          }); */
 
           start = dateEnd;
         }
@@ -636,7 +775,9 @@ export default {
     dataStep() {
       const tt = [];
       const dateStartTime = new Date(this.dateStart).getTime();
-      const dateEndTime = new Date(this.dateEnd).getTime();
+      const end = new Date(this.dateEnd);
+      end.setDate(end.getDate() + 1);
+      const dateEndTime = end.getTime();
       const dd = (dateEndTime - dateStartTime) / 86400000;
       let start = dateStartTime;
 
@@ -646,7 +787,7 @@ export default {
           const dd = this.$store.state.dataSet.filter(
             (s) => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
           );
-          const dataTemp = dd.filter(
+          /* const dataTemp = dd.filter(
             (s) => s.dataTypeName === "com.google.step_count.delta"
           );
           dataTemp.forEach((e) => {
@@ -655,7 +796,17 @@ export default {
               data: e.value !== null ? Math.round(e.value) : 0,
             };
             tt.push(ee);
-          });
+          }); */
+          const dataTemp = dd.find(
+            (t) =>
+              t.dataTypeName === "com.google.step_count.delta" &&
+              t.value !== null
+          );
+          const ee = {
+            date: this.formatDateTable(start),
+            data: dataTemp !== undefined ? Math.round(dataTemp.value) : 0,
+          };
+          tt.push(ee);
 
           start = dateEnd;
         }
@@ -666,7 +817,9 @@ export default {
     dataHeartRate() {
       const tt = [];
       const dateStartTime = new Date(this.dateStart).getTime();
-      const dateEndTime = new Date(this.dateEnd).getTime();
+      const end = new Date(this.dateEnd);
+      end.setDate(end.getDate() + 1);
+      const dateEndTime = end.getTime();
       const dd = (dateEndTime - dateStartTime) / 86400000;
       let start = dateStartTime;
 
@@ -676,7 +829,7 @@ export default {
           const dd = this.$store.state.dataSet.filter(
             (s) => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
           );
-          const dataTemp = dd.filter(
+          /* const dataTemp = dd.filter(
             (s) => s.dataTypeName === "com.google.heart_rate.bpm"
           );
           dataTemp.forEach((e) => {
@@ -685,7 +838,16 @@ export default {
               data: e.value !== null ? Math.round(e.value) : 0,
             };
             tt.push(ee);
-          });
+          }); */
+          const dataTemp = dd.find(
+            (t) =>
+              t.dataTypeName === "com.google.heart_rate.bpm" && t.value !== null
+          );
+          const ee = {
+            date: this.formatDateTable(start),
+            data: dataTemp !== undefined ? Math.round(dataTemp.value) : 0,
+          };
+          tt.push(ee);
 
           start = dateEnd;
         }
@@ -696,7 +858,9 @@ export default {
     dataMood() {
       const tt = [];
       const dateStartTime = new Date(this.dateStart).getTime();
-      const dateEndTime = new Date(this.dateEnd).getTime();
+      const end = new Date(this.dateEnd);
+      end.setDate(end.getDate() + 1);
+      const dateEndTime = end.getTime();
       const dd = (dateEndTime - dateStartTime) / 86400000;
       let start = dateStartTime;
 
@@ -706,20 +870,27 @@ export default {
           const dd = this.$store.state.dataSet.filter(
             (s) => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
           );
-          const dataTemp = dd.filter(
+          /* const dataTemp = dd.filter(
             (s) => s.dataTypeName === "app.web.hear-my-health.mood.segment"
-          );
-          dataTemp.forEach((e) => {
+          ); */
+          /*  dataTemp.forEach((e) => {
             const ee = {
               date: this.formatDateTable(start),
               data: e.value !== null ? e.value : 0,
             };
             tt.push(ee);
-          });
-
+          }); */
+          const dataTemp = this.overageValueDataSet(dd);
+          const ee = {
+            date: this.formatDateTable(start),
+            data:
+              dataTemp !== undefined && dataTemp !== null ? dataTemp.value : 0,
+          };
+          tt.push(ee);
           start = dateEnd;
         }
       }
+      console.log(tt);
       return tt;
     },
 
@@ -727,8 +898,11 @@ export default {
       const tt = [];
       const tt2 = [];
       const dateStartTime = new Date(this.dateStart).getTime();
-      const dateEndTime = new Date(this.dateEnd).getTime();
+      const end = new Date(this.dateEnd);
+      end.setDate(end.getDate() + 1);
+      const dateEndTime = end.getTime();
       const dd = (dateEndTime - dateStartTime) / 86400000;
+
       let start = dateStartTime;
 
       if (this.$store.state.dataSet.length > 0) {
@@ -737,7 +911,7 @@ export default {
           const dd = this.$store.state.dataSet.filter(
             (s) => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
           );
-          const dataTemp1 = dd.filter(
+          /* const dataTemp1 = dd.filter(
             (s) => s.dataTypeName === "com.google.sleep.segment"
           );
           const dataTemp2 = dd.filter(
@@ -756,7 +930,28 @@ export default {
               data: e.value !== null ? e.value : 0,
             };
             tt2.push(ee);
-          });
+          }); */
+
+          const dataTemp1 = dd.find(
+            (t) =>
+              t.dataTypeName === "com.google.sleep.segment" && t.value !== null
+          );
+          const ee1 = {
+            date: this.formatDateTable(start),
+            data: dataTemp1 !== undefined ? dataTemp1.value : 0,
+          };
+          tt.push(ee1);
+
+          const dataTemp2 = dd.find(
+            (t) =>
+              t.dataTypeName === "app.web.hear-my-health.sleep.deep" &&
+              t.value !== null
+          );
+          const ee2 = {
+            date: this.formatDateTable(start),
+            data: dataTemp2 !== undefined ? dataTemp2.value : 0,
+          };
+          tt2.push(ee2);
           start = dateEnd;
         }
       }
@@ -908,6 +1103,31 @@ export default {
   },
 
   methods: {
+    overageValueDataSet(dd) {
+      const valueFilter = dd.filter(
+        (t) => t.dataTypeName === "app.web.hear-my-health.mood.segment"
+      );
+      if (valueFilter.length) {
+        const initialValue = 0;
+        const average =
+          valueFilter.reduce(function (total, currentValue) {
+            return total + currentValue.value || 0;
+          }, initialValue) / valueFilter.length;
+        if (average) {
+          return { ...valueFilter[0], value: average };
+        } else {
+          return null;
+        }
+      } else {
+        return null;
+      }
+    },
+
+    formatDateTable(item) {
+      const ss = new Date(Number(item)).toISOString().substr(0, 10);
+      return ss;
+    },
+
     formatDate(date) {
       if (!date) {
         return null;
@@ -915,11 +1135,6 @@ export default {
 
       const [year, month, day] = date.split("-");
       return `${month}/${day}/${year}`;
-    },
-
-    formatDateTable(item) {
-      const ss = new Date(Number(item)).toISOString().substr(0, 10);
-      return ss;
     },
 
     parseDate(date) {

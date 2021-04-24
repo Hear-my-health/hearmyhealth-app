@@ -78,13 +78,63 @@
           </template>
 
           <template #[`item.heartRate`]="{ item }">
-            <div
-              v-if="item.heartRate"
-              :class="`${item.heartRate.state}`"
-              class="py-1 text-center"
-            >
-              {{ round(item.heartRate.value) }}
+            <div v-if="item.heartRate">
+              <v-row>
+                <v-col
+                  class="py-1 text-center"
+                  :class="`${item.heartRate.state}`"
+                  style="height: 80%; margin-right: 5px"
+                >
+                  {{ round(item.heartRate.value) }}
+                </v-col>
+                <v-col
+                  v-if="!dataTest"
+                  class="py-1 text-center"
+                  style="height: 80%; margin-right: 5px"
+                >
+                  Max: {{ round(item.heartRate.point.value[1].fpVal) }}
+                </v-col>
+                <v-col
+                  v-if="!dataTest"
+                  class="py-1 text-center"
+                  style="height: 80%"
+                >
+                  Min: {{ round(item.heartRate.point.value[2].fpVal) }}
+                </v-col>
+              </v-row>
             </div>
+            <!--             <div v-if="item.heartRate" class="py-1 text-center">
+              <span :class="`${item.heartRate.state}`">{{
+                round(item.heartRate.value)
+              }}</span>
+
+              <span
+                v-if="!dataTest"
+                :class="`${
+                  round(item.heartRate.point.value[1].fpVal) < 0.4
+                    ? `red`
+                    : round(item.heartRate.point.value[1].fpVal) > 0.4 &&
+                      round(item.heartRate.point.value[1].fpVal) <= 0.7
+                    ? `yellow`
+                    : `green`
+                }`"
+              >
+                - {{ round(item.heartRate.point.value[1].fpVal) }}
+              </span>
+              <span
+                v-if="!dataTest"
+                :class="`${
+                  round(item.heartRate.point.value[2].fpVal) < 0.4
+                    ? `red`
+                    : round(item.heartRate.point.value[2].fpVal) > 0.4 &&
+                      round(item.heartRate.point.value[2].fpVal) <= 0.7
+                    ? `yellow`
+                    : `green`
+                }`"
+              >
+                - {{ round(item.heartRate.point.value[2].fpVal) }}
+              </span>
+            </div> -->
             <div
               v-if="!item.heartRate"
               class="py-1 text-center no-values"
@@ -344,6 +394,7 @@ export default {
         dni: "",
         dateOfBirth: "",
       },
+      dataTest: true,
       headers: [
         {
           text: "Fecha Inicio",
@@ -358,7 +409,7 @@ export default {
           value: "dateEnd",
         },
         {
-          text: "Frecuencia cardiaca",
+          text: "Frecuencia cardiaca (promedio, max, min)",
           align: "start",
           sortable: true,
           value: "heartRate",
@@ -411,6 +462,14 @@ export default {
     };
   },
 
+  async fetch({ store }) {
+    try {
+      await store.dispatch("getValues");
+    } catch (e) {
+      return "error";
+    }
+  },
+
   computed: {
     auth() {
       return this.$store.state.authUser || null;
@@ -418,6 +477,12 @@ export default {
 
     user() {
       return this.$store.state.user;
+    },
+
+    values() {
+      return this.$store.state.values.filter(
+        (e) => e.indicator === "heartRate"
+      );
     },
 
     dniErrors() {
@@ -464,9 +529,17 @@ export default {
           const dd = this.$store.state.dataSet.filter(
             (s) => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
           );
-          const tempHR = {
-            /*dataSourceId : app.web.hear-my-health.csv.claudia */
-          };
+
+          if (dd[index] !== undefined) {
+            const source = dd[index].dataSourceId ? dd[index].dataSourceId : "";
+            console.log("source", source, dd);
+            if (source === "app.web.hear-my-health.csv.claudia") {
+              this.dataTest = true;
+            } else {
+              this.dataTest = false;
+            }
+          }
+
           const ee = {
             dateStart: start,
             dateEnd,
@@ -493,6 +566,14 @@ export default {
             ),
             mood: this.overageValueDataSet(dd),
           };
+          /*           } else {
+            const heartRate = dd.filter(
+              (t) =>
+                t.dataTypeName === "com.google.heart_rate.bpm" &&
+                t.value !== null
+            );
+            console.log("hr", heartRate);
+          } */
 
           start = dateEnd;
           tt.push(ee);
@@ -537,6 +618,7 @@ export default {
       this.$store.dispatch("getDataSet", { uid: this.uid });
       /* this.$store.dispatch("getUser", { uid: authUser.uid }); */
       this.$store.dispatch("getUser", { uid: this.uid });
+      this.$store.dispatch("getValues");
     }
   },
 
@@ -731,6 +813,26 @@ export default {
         }
       } else {
         return null;
+      }
+    },
+
+    checkHeartRateState(value) {
+      console.log("value", value);
+      if (value && this.values.length !== 0) {
+        if (value >= this.values.minSalud && value <= this.values.maxSalud) {
+          return "green";
+        }
+        if (
+          value >= this.values.minAcept &&
+          (value < this.values.minSalud || value > this.values.maxSalud) &&
+          value <= this.values.maxAcept &&
+          value !== 0
+        ) {
+          return "yellow";
+        }
+        return "red";
+      } else {
+        return "not";
       }
     },
 
