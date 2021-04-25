@@ -1126,6 +1126,47 @@ export default {
           const dd = dataSetState.filter(
             (s) => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
           );
+
+          /*           const x = [];
+          const tempHR = dd.find(
+            (t) =>
+              t.dataTypeName === "com.google.heart_rate.bpm" && t.value !== null
+          );
+          const tempC = dd.find(
+            (t) =>
+              t.dataTypeName === "com.google.calories.expended" &&
+              t.value !== null
+          );
+          const tempST = dd.find(
+            (t) =>
+              t.dataTypeName === "com.google.step_count.delta" &&
+              t.value !== null
+          );
+          const tempSL = dd.find(
+            (t) =>
+              t.dataTypeName === "com.google.sleep.segment" && t.value !== null
+          );
+          const tempDSL = dd.find(
+            (t) =>
+              t.dataTypeName === "app.web.hear-my-health.sleep.deep" &&
+              t.value !== null
+          );
+          const tempM = dd.find(
+            (t) =>
+              t.dataTypeName === "app.web.hear-my-health.mood.segment" &&
+              t.value !== null
+          );
+
+          if (this.selectedType === "Salud Física") {
+            x.push(tempHR);
+            x.push(tempC);
+            x.push(tempST);
+          } else {
+            x.push(tempSL);
+            x.push(tempDSL);
+            x.push(tempM);
+          } */
+
           const ee = {
             dateStart: start,
             dateEnd,
@@ -1133,34 +1174,39 @@ export default {
               this.selectedType === "Salud Física"
                 ? dd.filter(
                     (t) =>
-                      t.dataTypeName === "com.google.heart_rate.bpm" ||
-                      t.dataTypeName === "com.google.calories.expended" ||
-                      t.dataTypeName === "com.google.step_count.delta"
+                      (t.dataTypeName === "com.google.heart_rate.bpm" &&
+                        t.value !== null) ||
+                      (t.dataTypeName === "com.google.calories.expended" &&
+                        t.value !== null) ||
+                      (t.dataTypeName === "com.google.step_count.delta" &&
+                        t.value !== null)
                   )
                 : dd.filter(
                     (t) =>
-                      t.dataTypeName === "com.google.sleep.segment" ||
-                      t.dataTypeName === "app.web.hear-my-health.sleep.deep" ||
-                      t.dataTypeName === "app.web.hear-my-health.mood.segment"
+                      (t.dataTypeName === "com.google.sleep.segment" &&
+                        t.value !== null) ||
+                      (t.dataTypeName === "app.web.hear-my-health.sleep.deep" &&
+                        t.value !== null) ||
+                      (t.dataTypeName ===
+                        "app.web.hear-my-health.mood.segment" &&
+                        t.value !== null)
                   ),
           };
 
           for (let i = 0; i < ee.data.length; i++) {
-            for (let j = 1; j < ee.data.length; j++) {
+            for (let j = i + 1; j < ee.data.length; j++) {
               if (
                 ee.data[i].dataTypeName === ee.data[j].dataTypeName &&
                 ee.data[i].dataTypeName !==
-                  "app.web.hear-my-health.mood.segment"
+                  "app.web.hear-my-health.mood.segment" &&
+                ee.data[i].startTimeMillis === ee.data[j].startTimeMillis
               ) {
-                if (ee.data[i].startTimeMillis === ee.data[j].startTimeMillis) {
-                  const index = ee.data.indexOf(ee.data[j]);
-                  console.log("index to delete", index);
-                  ee.data.splice(index, 1);
-                  console.log("new array", ee.data);
-                }
+                ee.data.splice(j, 1);
+                j = j - 1;
               }
             }
           }
+          console.log(ee);
           start = dateEnd;
           tt.push(ee);
         }
