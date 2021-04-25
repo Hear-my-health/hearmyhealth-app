@@ -207,7 +207,7 @@ export default {
           data: dataSourceFilter
         })
 
-        const startDateOrigin = '2021-03-01T00:00:00.000Z'
+        const startDateOrigin = '2021-04-22T00:00:00.000Z'
         const startTimeOrigin = new Date(startDateOrigin).getTime()
 
         const dataSaving =
@@ -215,10 +215,10 @@ export default {
             ? this.$store.state.dataSavingTime[0]
             : null
 
-        const startTime = dataSaving ? dataSaving.date : startTimeOrigin
+        const startTime = dataSaving != null ? dataSaving.date : startTimeOrigin
 
-        const endDate = new Date().setHours(0, 0, 0, 0)
-
+        const endDate = new Date()
+        endDate.setUTCHours(0, 0, 0, 0)
         const endTime = endDate.getTime()
 
         dataSourceFilter.forEach(async (item) => {

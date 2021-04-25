@@ -43,9 +43,7 @@
       </v-btn>
     </v-app-bar>
     <v-main class="grey lighten-5">
-      <v-container>
-        <nuxt />
-      </v-container>
+      <nuxt />
     </v-main>
   </v-app>
 </template>
@@ -73,11 +71,7 @@ export default {
           title: 'Mi Perfil',
           to: '/account'
         }
-      ],
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
-      title: 'Vuetify.js'
+      ]
     }
   },
   computed: {

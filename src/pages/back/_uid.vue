@@ -1,111 +1,31 @@
 <template>
   <div>
-    <v-tabs v-model="tab" background-color="transparent" color="basil" grow>
+    <v-tabs v-model="tab" background-color="transparent" color="basil" fixed-tabs>
       <v-tab v-for="item in tabs" :key="item.slug" :to="`#${item.slug}`">
         {{ item.name }}
       </v-tab>
     </v-tabs>
     <v-tabs-items v-model="tab" class="grey lighten-5">
       <v-tab-item value="dashboard">
-        <br />
+        <br>
         <Dashboard :my-uid="uid" class="mt-3" />
       </v-tab-item>
       <v-tab-item value="data">
-        <Data :my-uid="uid" class="mt-3" />
+        <Data :my-uid="uid" class="mt-4" />
       </v-tab-item>
       <v-tab-item value="devices" class="mt-3">
         <Device :my-uid="uid" />
       </v-tab-item>
-      <v-tab-item value="thoughts">
-        <h5 class="text-h5">Pensamientos</h5>
+      <v-tab-item value="thoughts" class="mt-3">
+        <h5 class="text-h5">
+          Pensamientos
+        </h5>
         <Thought :my-uid="uid" />
-        <!--         <v-timeline dense>
-          <v-row justify="center" align="center">
-            <v-col cols="12" sm="8" md="3">
-              <v-menu
-                ref="menu1"
-                v-model="menu1"
-                :close-on-content-click="false"
-                transition="scale-transition"
-                offset-y
-                max-width="290px"
-                min-width="auto"
-              >
-                <template #activator="{ on, attrs }">
-                  <v-text-field
-                    v-model="dateStarFormatted"
-                    label="Inicio"
-                    persistent-hint
-                    prepend-icon="mdi-calendar"
-                    v-bind="attrs"
-                    hint="MM/DD/YYYY"
-                    @blur="dateStart = parseDate(dateStarFormatted)"
-                    v-on="on"
-                  />
-                </template>
-                <v-date-picker
-                  v-model="dateStart"
-                  no-title
-                  @input="menu1 = false"
-                />
-              </v-menu>
-            </v-col>
-
-            <v-col cols="12" sm="8" md="3">
-              <v-menu
-                ref="menu2"
-                v-model="menu2"
-                :close-on-content-click="false"
-                transition="scale-transition"
-                offset-y
-                max-width="290px"
-                min-width="auto"
-              >
-                <template #activator="{ on, attrs }">
-                  <v-text-field
-                    v-model="dateEndFormatted"
-                    label="Fin"
-                    persistent-hint
-                    prepend-icon="mdi-calendar"
-                    v-bind="attrs"
-                    hint="MM/DD/YYYY"
-                    @blur="dateEnd = parseDate(dateEndFormatted)"
-                    v-on="on"
-                  />
-                </template>
-                <v-date-picker
-                  v-model="dateEnd"
-                  no-title
-                  @input="menu2 = false"
-                />
-              </v-menu>
-            </v-col>
-          </v-row>
-          <v-timeline-item v-for="(thought, ith) in thoughts" :key="ith">
-            <v-card class="elevation-0 blue-grey lighten-5">
-              <v-card-title class="title font-weight-regular">
-                <img
-                  :src="`/images/${thought.name}.svg`"
-                  alt="google-auth"
-                  style="width: 32px; height: 32px"
-                  class="mr-3"
-                />
-                {{ thought.thought }}
-              </v-card-title>
-              <v-card-text class="subtitle-1 font-weight-light">
-                {{
-                  "Fecha: " +
-                  formatDateTable(thought.date) +
-                  "  Hora: " +
-                  formatDateHour(thought.date)
-                }}
-              </v-card-text>
-            </v-card>
-          </v-timeline-item>
-        </v-timeline> -->
       </v-tab-item>
       <v-tab-item value="alerts">
-        <h5 class="text-h5">Alertas</h5>
+        <h5 class="text-h5">
+          Alertas
+        </h5>
         <Alert :my-uid="uid" />
       </v-tab-item>
       <v-tab-item value="profile">
@@ -115,13 +35,14 @@
   </div>
 </template>
 <script>
-import moment from "moment";
-import Data from "~/components/uid/Data";
-import Device from "~/components/uid/Device";
-import Dashboard from "~/components/uid/Dashboard";
-import Profile from "~/components/uid/Profile";
-import Alert from "~/components/uid/Alert";
-import Thought from "~/components/uid/Thought";
+// eslint-disable-next-line no-unused-vars
+import moment from 'moment'
+import Data from '~/components/uid/Data'
+import Device from '~/components/uid/Device'
+import Dashboard from '~/components/uid/Dashboard'
+import Profile from '~/components/uid/Profile'
+import Alert from '~/components/uid/Alert'
+import Thought from '~/components/uid/Thought'
 
 export default {
   components: {
@@ -130,65 +51,67 @@ export default {
     Dashboard,
     Profile,
     Alert,
-    Thought,
+    Thought
   },
-  layout: "back",
-  asyncData({ params }) {
-    const { uid } = params;
+  layout: 'back',
+  asyncData ({ params }) {
+    const { uid } = params
 
-    return { uid };
+    return { uid }
   },
 
-  data: (vm) => ({
+  data: vm => ({
     dialog: false,
     isEditing: true,
-    specialty: "",
+    specialty: '',
     form: {
-      alert: "",
-      type: "",
+      alert: '',
+      type: ''
     },
 
-    formTitle: "Agregar alerta",
+    formTitle: 'Agregar alerta',
     tab: null,
     tabs: [
       {
-        name: "Dashboard",
-        slug: "dashboard",
-        value: "dashboard",
+        name: 'Dashboard',
+        slug: 'dashboard',
+        value: 'dashboard'
       },
       {
-        name: "Datos",
-        slug: "data",
-        value: "data",
+        name: 'Datos',
+        slug: 'data',
+        value: 'data'
       },
       {
-        name: "Dispositivos",
-        slug: "devices",
-        value: "devices",
+        name: 'Dispositivos',
+        slug: 'devices',
+        value: 'devices'
       },
       {
-        name: "Pensamientos",
-        slug: "thoughts",
-        value: "thoughts",
+        name: 'Pensamientos',
+        slug: 'thoughts',
+        value: 'thoughts'
       },
       {
-        name: "Alertas",
-        slug: "alerts",
-        value: "alerts",
+        name: 'Alertas',
+        slug: 'alerts',
+        value: 'alerts'
       },
       {
-        name: "Información",
-        slug: "profile",
-        value: "profile",
-      },
+        name: 'Información',
+        slug: 'profile',
+        value: 'profile'
+      }
     ],
-    text: "loremos",
+    text: 'loremos'
   }),
 
-  async fetch({ store }) {
+  // eslint-disable-next-line require-await
+  async fetch ({ store }) {
+    // eslint-disable-next-line no-empty
     try {
     } catch (e) {
-      return "error";
+      return 'error'
     }
   },
 
@@ -199,24 +122,25 @@ export default {
   },
 
   watch: {
-    user() {
-      this.specialty = this.user.specialty;
-    },
+    user () {
+      this.specialty = this.user.specialty
+    }
   },
 
-  created() {},
-  mounted() {
-    const { authUser } = this.$store.state;
+  created () {},
+  mounted () {
+    const { authUser } = this.$store.state
     if (!authUser) {
-      this.$router.push("/");
+      this.$router.push('/')
+    // eslint-disable-next-line no-empty
     } else {
     }
   },
 
   methods: {
-    close() {
-      this.dialog = !this.dialog;
-    },
-  },
-};
+    close () {
+      this.dialog = !this.dialog
+    }
+  }
+}
 </script>
