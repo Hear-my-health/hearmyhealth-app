@@ -209,7 +209,7 @@
               </v-col>
             </v-row>
             <v-col
-              v-if="dataHeartRate.length > 0"
+              v-if="dataMood.length > 0"
               cols="12"
               sm="11"
               md="11"
@@ -221,20 +221,6 @@
                 :options="chartOptions"
                 :chart-colors="moodColors"
                 label="Estado de ánimo"
-              />
-            </v-col>
-            <v-col
-              v-if="dataStep.length > 0"
-              cols="12"
-              sm="12"
-              md="8"
-              justify="center"
-              align="center"
-            >
-              <double-bar-chart
-                :chart-data="dataSleepDeepSleep"
-                :options="chartOptions"
-                :label="sleepLabel"
               />
             </v-col>
           </v-container>
@@ -294,7 +280,9 @@
     <v-row>
       <v-container v-if="selectedType === 'Salud Física'">
         <v-col
-          v-if="dataHeartRate.length > 0"
+          v-if="
+            dataHeartRate.length > 0 && dataHeartRateAvgMinMax.tt2.length === 0
+          "
           cols="12"
           sm="12"
           md="12"
@@ -306,6 +294,20 @@
             :options="chartOptions"
             :chart-colors="heartRateColors"
             label="Ritmo Cardiaco"
+          />
+        </v-col>
+        <v-col
+          v-if="dataHeartRateAvgMinMax.tt2.length > 0"
+          cols="12"
+          sm="12"
+          md="12"
+          justify="center"
+          align="center"
+        >
+          <TripleLineChart
+            :chartData="dataHeartRateAvgMinMax"
+            :options="chartOptions"
+            :label="heartRateLabel"
           />
         </v-col>
         <v-col
@@ -336,7 +338,7 @@
           <double-bar-chart
             :chart-data="dataSleepDeepSleep"
             :options="chartOptions"
-            label="Sueño y Sueño Profundo"
+            :label="sleepLabel"
           />
         </v-col>
       </v-container>
@@ -348,12 +350,14 @@
 import LineChart from "~/components/uid/charts/LineChart";
 import BarChart from "~/components/uid/charts/BarChart";
 import DoubleBarChart from "~/components/uid/charts/DoubleBarChart";
+import TripleLineChart from "~/components/uid/charts/TripleLineChart";
 
 export default {
   components: {
     LineChart,
     BarChart,
     DoubleBarChart,
+    TripleLineChart,
   },
 
   props: {
@@ -375,6 +379,11 @@ export default {
         sleepLabel: "Sueño",
         deepSleepLabel: "Sueño profundo",
       },
+      heartRateLabel: {
+        avgHeartRateLabel: "Ritmo cardíaco",
+        maxHeartRateLabel: "Ritmo cardíaco máximo",
+        minHeartRateLabel: "Ritmo cardíaco mínimo",
+      },
       stepColors: {
         borderColor: "#077187",
         pointBorderColor: "#0E1428",
@@ -393,6 +402,7 @@ export default {
         pointBackgroundColor: "transparent",
         backgroundColor: "#5f7ed4",
       },
+      dataTest: true,
       uid: this.$props.myUid,
       dateStart: "",
       dateStarFormatted: "",
@@ -866,16 +876,6 @@ export default {
           const dd = this.$store.state.dataSet.filter(
             (s) => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
           );
-          /* const dataTemp = dd.filter(
-            (s) => s.dataTypeName === "com.google.heart_rate.bpm"
-          );
-          dataTemp.forEach((e) => {
-            const ee = {
-              date: this.formatDateTable(start),
-              data: e.value !== null ? Math.round(e.value) : 0,
-            };
-            tt.push(ee);
-          }); */
           const dataTemp = dd.find(
             (t) =>
               t.dataTypeName === "com.google.heart_rate.bpm" && t.value !== null
@@ -885,11 +885,76 @@ export default {
             data: dataTemp !== undefined ? Math.round(dataTemp.value) : 0,
           };
           tt.push(ee);
-
           start = dateEnd;
         }
       }
       return tt;
+    },
+
+    dataHeartRateAvgMinMax() {
+      const tt = [];
+      const tt2 = [];
+      const tt3 = [];
+      const dateStartTime = new Date(this.dateStart).getTime();
+      const end = new Date(this.dateEnd);
+      end.setDate(end.getDate() + 1);
+      const dateEndTime = end.getTime();
+      const dd = (dateEndTime - dateStartTime) / 86400000;
+      let start = dateStartTime;
+
+      if (this.$store.state.dataSet.length > 0) {
+        for (let index = 1; index <= Math.floor(dd); index++) {
+          const dateEnd = start + 86400000;
+          const dd = this.$store.state.dataSet.filter(
+            (s) => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
+          );
+
+          if (dd[index] !== undefined) {
+            const source = dd[index].dataSourceId ? dd[index].dataSourceId : "";
+
+            if (source !== "app.web.hear-my-health.csv.claudia") {
+              const dataTemp = dd.find(
+                (t) =>
+                  t.dataTypeName === "com.google.heart_rate.bpm" &&
+                  t.value !== null
+              );
+              const ee = {
+                date: this.formatDateTable(start),
+                data:
+                  dataTemp !== undefined
+                    ? Math.round(dataTemp.point.value[0].fpVal)
+                    : 0,
+              };
+              const ee1 = {
+                date: this.formatDateTable(start),
+                data:
+                  dataTemp !== undefined
+                    ? Math.round(dataTemp.point.value[1].fpVal)
+                    : 0,
+              };
+              const ee2 = {
+                date: this.formatDateTable(start),
+                data:
+                  dataTemp !== undefined
+                    ? Math.round(dataTemp.point.value[2].fpVal)
+                    : 0,
+              };
+
+              tt.push(ee);
+              tt2.push(ee1);
+              tt3.push(ee2);
+            }
+          }
+          start = dateEnd;
+        }
+      }
+      const toR = {
+        tt,
+        tt2,
+        tt3,
+      };
+      console.log(toR);
+      return toR;
     },
 
     dataMood() {
@@ -1031,8 +1096,14 @@ export default {
 
     dataSetNotification() {
       const tt = [];
-      const dateStartTime = new Date(this.dateStart).getTime();
+      /* const dateStartTime = new Date(this.dateStart).getTime();
       const dateEndTime = new Date(this.dateEnd).getTime();
+      const dd = (dateEndTime - dateStartTime) / 86400000;
+      let start = dateStartTime; */
+      const dateStartTime = new Date(this.dateStart).getTime();
+      const end = new Date(this.dateEnd);
+      end.setDate(end.getDate() + 1);
+      const dateEndTime = end.getTime();
       const dd = (dateEndTime - dateStartTime) / 86400000;
       let start = dateStartTime;
 
@@ -1048,7 +1119,6 @@ export default {
             (s) => s.state === this.notificationSelectData
           );
         }
-        console.log(dataSetState);
 
         for (let index = 1; index <= Math.floor(dd); index++) {
           const dateEnd = start + 86400000;
@@ -1059,23 +1129,13 @@ export default {
           const ee = {
             dateStart: start,
             dateEnd,
-            /* data: dd.filter(
-              (t) =>
-                t.dataTypeName === "com.google.heart_rate.bpm" ||
-                t.dataTypeName === "com.google.calories.expended" ||
-                t.dataTypeName === "com.google.step_count.delta" ||
-                t.dataTypeName === "com.google.sleep.segment" ||
-                t.dataTypeName === "com.google.sleep.segment" ||
-                t.dataTypeName === "app.web.hear-my-health.sleep.deep" ||
-                t.dataTypeName === "app.web.hear-my-health.mood.segment"
-            ), */
             data:
               this.selectedType === "Salud Física"
                 ? dd.filter(
                     (t) =>
                       t.dataTypeName === "com.google.heart_rate.bpm" ||
                       t.dataTypeName === "com.google.calories.expended" ||
-                      "com.google.step_count.delta"
+                      t.dataTypeName === "com.google.step_count.delta"
                   )
                 : dd.filter(
                     (t) =>
@@ -1084,7 +1144,23 @@ export default {
                       t.dataTypeName === "app.web.hear-my-health.mood.segment"
                   ),
           };
-          console.log(ee);
+
+          for (let i = 0; i < ee.data.length; i++) {
+            for (let j = 1; j < ee.data.length; j++) {
+              if (
+                ee.data[i].dataTypeName === ee.data[j].dataTypeName &&
+                ee.data[i].dataTypeName !==
+                  "app.web.hear-my-health.mood.segment"
+              ) {
+                if (ee.data[i].startTimeMillis === ee.data[j].startTimeMillis) {
+                  const index = ee.data.indexOf(ee.data[j]);
+                  console.log("index to delete", index);
+                  ee.data.splice(index, 1);
+                  console.log("new array", ee.data);
+                }
+              }
+            }
+          }
           start = dateEnd;
           tt.push(ee);
         }
