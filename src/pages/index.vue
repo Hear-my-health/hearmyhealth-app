@@ -34,7 +34,7 @@
             <h2 class="headline">
               Piloto de monitoreo continuo de pacientes con anorexia y bulimia
             </h2>
-            <br />
+            <br>
             <div class="display-2" style="text-align: center; color: #0bc5c3">
               ¿Qué ofrecemos?
             </div>
@@ -51,7 +51,9 @@
                 src="https://firebasestorage.googleapis.com/v0/b/mace-d54b3.appspot.com/o/disponibilidad2.png?alt=media&token=d66d381e-bfc3-4a56-b4e9-37704244fb33"
               />
               <v-card-title primary-title class="layout justify-center">
-                <div class="headline text-xs-center">Datos e indicadores</div>
+                <div class="headline text-xs-center">
+                  Datos e indicadores
+                </div>
               </v-card-title>
               <v-card-text class="text-center">
                 El piloto almacena y analiza los datos del paciente recopilados
@@ -69,7 +71,9 @@
                 src="https://firebasestorage.googleapis.com/v0/b/mace-d54b3.appspot.com/o/especialistas.png?alt=media&token=5e6bdfc7-5b1b-49d7-b44f-e40e7214fa06"
               />
               <v-card-title primary-title class="layout justify-center">
-                <div class="headline">Soporte a especialistas</div>
+                <div class="headline">
+                  Soporte a especialistas
+                </div>
               </v-card-title>
               <v-card-text class="text-center">
                 El piloto genera recomendaciones en base a los datos recopilados
@@ -121,7 +125,9 @@
                     />
                   </v-card-text>
                   <v-card-title primary-title class="layout justify-center">
-                    <div class="headline">Datos nutricionales</div>
+                    <div class="headline">
+                      Datos nutricionales
+                    </div>
                   </v-card-title>
                   <v-card-text class="text-center">
                     Medimos la salud nutricional a través de la ingesta total de
@@ -159,7 +165,7 @@
           <div class="headline white--text mb-3">
             Actualmente, la anorexia y bulimia son las enfermedades mentales más
             mortales del mundo
-            <br />
+            <br>
           </div>
           <v-text
             style="font-style: italic; font-size: medium; text-align: right"
@@ -194,8 +200,10 @@
       <v-container grid-list-md>
         <v-layout row wrap>
           <v-flex xs12 text-xs-center class="mt-5">
-            <div class="headline">¡Contáctanos!</div>
-            <br />
+            <div class="headline">
+              ¡Contáctanos!
+            </div>
+            <br>
             <div>
               Escríbenos tus sugerencias, recomendaciones o si deseas mayor
               información sobre este proyecto.
@@ -275,52 +283,52 @@
 
 <script>
 export default {
-  name: "App",
-  layout: "landing",
-  data() {
+  name: 'App',
+  layout: 'landing',
+  data () {
     return {
-      title: "Endorfine",
+      title: 'Endorfine',
       imageLink: {
         main:
-          "https://firebasestorage.googleapis.com/v0/b/hear-my-health.appspot.com/o/banprin.webp?alt=media&token=947e3460-665f-4a25-bf54-993e7b0f2347",
+          'https://firebasestorage.googleapis.com/v0/b/hear-my-health.appspot.com/o/banprin.webp?alt=media&token=947e3460-665f-4a25-bf54-993e7b0f2347',
         social_cover:
-          "https://firebasestorage.googleapis.com/v0/b/hear-my-health.appspot.com/o/slide.webp?alt=media&token=26aa3238-964a-498e-9c19-841786e4b648",
+          'https://firebasestorage.googleapis.com/v0/b/hear-my-health.appspot.com/o/slide.webp?alt=media&token=26aa3238-964a-498e-9c19-841786e4b648'
       },
-      email: "",
+      email: '',
       emailRules: [
         (v) => {
-          return !!v || "E-mail is required";
+          return !!v || 'E-mail is required'
         },
-        (v) =>
+        v =>
           /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
-          "E-mail must be valid",
+          'E-mail must be valid'
       ],
-      subscribed: false,
-    };
+      subscribed: false
+    }
   },
   computed: {
-    imgHeight() {
-      const offset = 320;
-      return this.pageHeight - offset;
-    },
+    imgHeight () {
+      const offset = 320
+      return this.pageHeight - offset
+    }
   },
 
-  mounted() {
-    const { authUser } = this.$store.state;
+  mounted () {
+    const { authUser } = this.$store.state
     if (authUser) {
-      this.$router.push("/app");
+      this.$router.push('/app')
     }
-    if (localStorage.getItem("role") === "admin") {
-      this.$router.push("/back");
+    if (localStorage.getItem('role') === 'admin') {
+      this.$router.push('/back')
     }
   },
 
   methods: {
-    subscribe() {
-      this.subscribed = !this.subscribed;
-    },
-  },
-};
+    subscribe () {
+      this.subscribed = !this.subscribed
+    }
+  }
+}
 </script>
 
 <style scoped>

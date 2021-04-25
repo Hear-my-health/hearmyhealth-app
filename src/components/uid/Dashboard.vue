@@ -1,6 +1,8 @@
 <template>
   <v-container>
-    <v-row justify="start" align="center"> Paciente: {{ user.name }} </v-row>
+    <v-row class="pl-5" justify="start" align="center">
+      Paciente: {{ user.name }}
+    </v-row>
     <v-row>
       <v-col cols="12" sm="9" md="9">
         <v-row justify="center" align="top">
@@ -1126,47 +1128,6 @@ export default {
           const dd = dataSetState.filter(
             (s) => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
           );
-
-          /*           const x = [];
-          const tempHR = dd.find(
-            (t) =>
-              t.dataTypeName === "com.google.heart_rate.bpm" && t.value !== null
-          );
-          const tempC = dd.find(
-            (t) =>
-              t.dataTypeName === "com.google.calories.expended" &&
-              t.value !== null
-          );
-          const tempST = dd.find(
-            (t) =>
-              t.dataTypeName === "com.google.step_count.delta" &&
-              t.value !== null
-          );
-          const tempSL = dd.find(
-            (t) =>
-              t.dataTypeName === "com.google.sleep.segment" && t.value !== null
-          );
-          const tempDSL = dd.find(
-            (t) =>
-              t.dataTypeName === "app.web.hear-my-health.sleep.deep" &&
-              t.value !== null
-          );
-          const tempM = dd.find(
-            (t) =>
-              t.dataTypeName === "app.web.hear-my-health.mood.segment" &&
-              t.value !== null
-          );
-
-          if (this.selectedType === "Salud Física") {
-            x.push(tempHR);
-            x.push(tempC);
-            x.push(tempST);
-          } else {
-            x.push(tempSL);
-            x.push(tempDSL);
-            x.push(tempM);
-          } */
-
           const ee = {
             dateStart: start,
             dateEnd,
