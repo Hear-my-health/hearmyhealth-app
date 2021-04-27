@@ -25,7 +25,7 @@
               v-on="on"
             />
           </template>
-          <v-date-picker v-model="dateStart" no-title @input="menu1 = false" />
+          <v-date-picker v-model="dateStart" min="2020-12-01" no-title @input="menu1 = false" />
         </v-menu>
       </v-col>
 
@@ -48,7 +48,13 @@
               v-on="on"
             />
           </template>
-          <v-date-picker v-model="dateEnd" no-title @input="menu2 = false" />
+          <v-date-picker
+            v-model="dateEnd"
+            :min="dateStart"
+            :max="nowDate"
+            no-title
+            @input="menu2 = false"
+          />
         </v-menu>
       </v-col>
 
@@ -162,49 +168,6 @@
             </div>
             <div v-if="!item.steps" class="py-1 text-center no-values" />
           </template>
-
-          <template #[`item.sleep`]="{ item }">
-            <div
-              v-if="item.sleep"
-              :class="`${item.sleep.state}`"
-              class="py-1 text-center"
-            >
-              {{ round(item.sleep.value) }}
-            </div>
-            <div v-if="!item.sleep" class="py-1 text-center no-values" />
-          </template>
-
-          <template #[`item.deepSleep`]="{ item }">
-            <div
-              v-if="item.deepSleep"
-              :class="`${item.deepSleep.state}`"
-              class="py-1 text-center"
-            >
-              {{ round(item.deepSleep.value) }}
-            </div>
-            <div
-              v-if="!item.deepSleep"
-              class="py-1 text-center no-values"
-            />
-          </template>
-
-          <template #[`item.mood`]="{ item }">
-            <div
-              v-if="item.mood"
-              :class="`${
-                item.mood.value < 0.4
-                  ? `red`
-                  : item.mood.value > 0.4 && item.mood.value <= 0.7
-                    ? `yellow`
-                    : `green`
-              }`"
-              class="py-1 text-center"
-            >
-              {{ round(item.mood.value) }}
-            </div>
-            <div v-if="!item.mood" class="py-1 text-center no-values" />
-          </template>
-
           <template #[`item.fisica`]="{ item }">
             <div
               v-if="item.heartRate && item.calories && item.steps"
@@ -254,6 +217,47 @@
               style="height: 50%; width: 80%"
             />
           </template>
+          <template #[`item.sleep`]="{ item }">
+            <div
+              v-if="item.sleep"
+              :class="`${item.sleep.state}`"
+              class="py-1 text-center"
+            >
+              {{ round(item.sleep.value) }}
+            </div>
+            <div v-if="!item.sleep" class="py-1 text-center no-values" />
+          </template>
+
+          <template #[`item.deepSleep`]="{ item }">
+            <div
+              v-if="item.deepSleep"
+              :class="`${item.deepSleep.state}`"
+              class="py-1 text-center"
+            >
+              {{ round(item.deepSleep.value) }}
+            </div>
+            <div
+              v-if="!item.deepSleep"
+              class="py-1 text-center no-values"
+            />
+          </template>
+
+          <template #[`item.mood`]="{ item }">
+            <div
+              v-if="item.mood"
+              :class="`${
+                item.mood.value < 0.4
+                  ? `red`
+                  : item.mood.value > 0.4 && item.mood.value <= 0.7
+                    ? `yellow`
+                    : `green`
+              }`"
+              class="py-1 text-center"
+            >
+              {{ round(item.mood.value) }}
+            </div>
+            <div v-if="!item.mood" class="py-1 text-center no-values" />
+          </template>
 
           <template #[`item.mental`]="{ item }">
             <div
@@ -300,6 +304,25 @@
                       0.17 * findState(item.sleep.state).value +
                         0 +
                         0.33 * findState(item.deepSleep.state).value
+                    ) <= 0.7
+                    ? `yellow`
+                    : `green`
+              }`"
+              style="height: 50%; width: 80%"
+            />
+            <div
+              v-if="!item.sleep && !item.deepSleep && item.mood"
+              class="text-center"
+              :class="`${
+                round(
+                  0.5 * findState(item.mood.state).value
+                ) <= 0.4
+                  ? `red`
+                  : round(
+                    0.5 * findState(item.mood.state).value
+                  ) > 0.4 &&
+                    round(
+                      0.5 * findState(item.mood.state).value
                     ) <= 0.7
                     ? `yellow`
                     : `green`
@@ -382,6 +405,7 @@ export default {
 
   data () {
     return {
+      nowDate: new Date().toISOString().slice(0, 10),
       uid: this.$props.myUid,
       dateStart: '',
       dateStarFormatted: '',
@@ -413,49 +437,49 @@ export default {
         {
           text: 'Ritmo cardiaco: Min -  PROM - Max',
           align: 'start',
-          sortable: true,
+          sortable: false,
           value: 'heartRate'
         },
         {
           text: 'Calorias',
           align: 'start',
-          sortable: true,
+          sortable: false,
           value: 'calories'
         },
         {
           text: 'Pasos',
           align: 'start',
-          sortable: true,
+          sortable: false,
           value: 'steps'
+        },
+        {
+          text: 'Salud física',
+          align: 'start',
+          sortable: false,
+          value: 'fisica'
         },
         {
           text: 'Sueño',
           align: 'start',
-          sortable: true,
+          sortable: false,
           value: 'sleep'
         },
         {
           text: 'S. profundo',
           align: 'start',
-          sortable: true,
+          sortable: false,
           value: 'deepSleep'
         },
         {
           text: 'Estado ánimo',
           align: 'start',
-          sortable: true,
+          sortable: false,
           value: 'mood'
-        },
-        {
-          text: 'Salud física',
-          align: 'start',
-          sortable: true,
-          value: 'fisica'
         },
         {
           text: 'Salud mental',
           align: 'start',
-          sortable: true,
+          sortable: false,
           value: 'mental'
         }
       ],

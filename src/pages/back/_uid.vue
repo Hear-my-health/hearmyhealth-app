@@ -17,15 +17,9 @@
         <Device :my-uid="uid" />
       </v-tab-item>
       <v-tab-item value="thoughts" class="mt-3">
-        <h5 class="text-h5">
-          Pensamientos
-        </h5>
         <Thought :my-uid="uid" />
       </v-tab-item>
-      <v-tab-item value="alerts">
-        <h5 class="text-h5">
-          Alertas
-        </h5>
+      <v-tab-item value="alerts" class="mt-4">
         <Alert :my-uid="uid" />
       </v-tab-item>
       <v-tab-item value="profile">

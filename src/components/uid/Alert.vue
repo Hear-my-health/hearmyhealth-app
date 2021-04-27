@@ -5,8 +5,8 @@
     </v-row>
     <br>
     <br>
-    <v-row>
-      <v-btn elevation="0" outlined raised @click="open">
+    <v-row class="pl-5">
+      <v-btn elevation="1" outlined raised @click="open">
         Agregar alerta
       </v-btn>
     </v-row>

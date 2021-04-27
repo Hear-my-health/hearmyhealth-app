@@ -53,6 +53,11 @@ export default {
       { name: 'Producto', to: '#product' },
       { name: 'Contacto', to: '#contact' }
     ]
-  })
+  }),
+  methods: {
+    isMobile () {
+      return this.$vuetify.breakpoint.xsOnly
+    }
+  }
 }
 </script>

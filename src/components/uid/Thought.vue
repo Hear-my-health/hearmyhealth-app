@@ -31,6 +31,7 @@
             </template>
             <v-date-picker
               v-model="dateStart"
+              min="2020-12-01"
               no-title
               @input="menu1 = false"
             />
@@ -59,7 +60,13 @@
                 v-on="on"
               />
             </template>
-            <v-date-picker v-model="dateEnd" no-title @input="menu2 = false" />
+            <v-date-picker
+              v-model="dateEnd"
+              :min="dateStart"
+              :max="nowDate"
+              no-title
+              @input="menu2 = false"
+            />
           </v-menu>
         </v-col>
       </v-row>
@@ -94,6 +101,7 @@ export default {
   props: ['myUid'],
   data () {
     return {
+      nowDate: new Date().toISOString().slice(0, 10),
       params: {
         uid: '',
         start: 0,
