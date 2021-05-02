@@ -11,26 +11,31 @@
         </v-toolbar>
       </v-col>
 
-      <v-col cols="12" md="10">
-        <v-timeline dense>
-          <v-timeline-item v-for="(thoug, ith) in thoughts" :key="ith" small>
-            <v-card class="elevation-0 blue-grey lighten-5">
-              <v-card-title class="title font-weight-regular">
-                <img
-                  :src="`/images/${thoug.name}.svg`"
-                  alt="google-auth"
-                  style="width: 32px; height: 32px"
-                  class="mr-3"
-                />
-                {{ thoug.thought }}
-              </v-card-title>
-              <v-card-text class="subtitle-1 font-weight-light">
-                {{ formatDateT(thoug.date) }}
-              </v-card-text>
-            </v-card>
-          </v-timeline-item>
-        </v-timeline>
-      </v-col>
+      <v-row no-gutters>
+        <v-col cols="12" md="10" xs="8">
+          <v-timeline v-for="(thoug, ith) in thoughts" :key="ith" dense>
+            <v-timeline-item small>
+              <v-card
+                class="elevation-0 blue-grey lighten-5"
+                style="margin-left: -18px"
+              >
+                <v-card-title class="title font-weight-regular">
+                  <img
+                    :src="`/images/${thoug.name}.svg`"
+                    alt="google-auth"
+                    style="width: 32px; height: 32px"
+                    class="mr-3"
+                  />
+                  {{ thoug.thought }}
+                </v-card-title>
+                <v-card-text class="subtitle-1 font-weight-light">
+                  {{ formatDateT(thoug.date) }}
+                </v-card-text>
+              </v-card>
+            </v-timeline-item>
+          </v-timeline>
+        </v-col>
+      </v-row>
     </v-row>
 
     <v-dialog v-model="dialog" max-width="500px" elevation="0" persistent>
@@ -58,13 +63,12 @@
                     />
                   </v-card>
                 </v-col>
-                <v-col cols="12" md="12">
-                  <p v-if="noMood" class="red--text">
-                    Seleccione un estado de ánimo
-                  </p>
-                </v-col>
+                <p v-if="noMood" class="red--text">
+                  Seleccione un estado de ánimo
+                </p>
                 <v-col cols="12" md="12">
                   <v-textarea
+                    rows="7"
                     v-model="thought"
                     outlined
                     name="input-7-4"
@@ -78,8 +82,7 @@
               </v-row>
             </v-container>
           </v-card-text>
-
-          <v-card-actions>
+          <v-card-actions style="margin-top: -50px">
             <v-spacer />
             <v-btn elevation="0" raised @click="closeAndClean">
               Cancelar

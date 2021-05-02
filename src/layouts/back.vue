@@ -15,7 +15,7 @@
             src="~/assets/images/logo-white.svg"
             alt="logo-icon"
             height="24"
-          >
+          />
         </v-list-item>
         <v-list-item
           v-for="(item, i) in items"
@@ -50,34 +50,35 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       clipped: false,
       drawer: true,
       fixed: false,
+      miniVariant: false,
       items: [
         {
-          icon: 'mdi-chart-bar',
-          title: 'Pacientes',
-          to: '/'
+          icon: "mdi-chart-bar",
+          title: "Pacientes",
+          to: "/",
         },
         {
-          icon: 'mdi-numeric',
-          title: 'Valores',
-          to: '/values'
+          icon: "mdi-numeric",
+          title: "Valores",
+          to: "/values",
         },
         {
-          icon: 'mdi-account',
-          title: 'Mi Perfil',
-          to: '/account'
-        }
-      ]
-    }
+          icon: "mdi-account",
+          title: "Mi Perfil",
+          to: "/account",
+        },
+      ],
+    };
   },
   computed: {
-    auth () {
-      return this.$store.state.authUser || null
-    }
-  }
-}
+    auth() {
+      return this.$store.state.authUser || null;
+    },
+  },
+};
 </script>
