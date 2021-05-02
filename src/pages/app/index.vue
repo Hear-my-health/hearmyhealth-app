@@ -3,7 +3,9 @@
     <v-row justify="center" align="center">
       <v-col cols="12" md="10">
         <v-toolbar flat class="grey lighten-5">
-          <v-toolbar-title class="headline"> Diario </v-toolbar-title>
+          <v-toolbar-title class="headline">
+            Diario
+          </v-toolbar-title>
           <v-spacer />
           <v-btn elevation="0" outlined raised @click="dialog = !dialog">
             Nueva entrada
@@ -21,7 +23,7 @@
                   alt="google-auth"
                   style="width: 32px; height: 32px"
                   class="mr-3"
-                />
+                >
                 {{ thoug.thought }}
               </v-card-title>
               <v-card-text class="subtitle-1 font-weight-light">
@@ -55,7 +57,7 @@
                       }.svg`"
                       alt="google-auth"
                       style="width: 48px; height: 48px"
-                    />
+                    >
                   </v-card>
                 </v-col>
                 <v-col cols="12" md="12">
@@ -156,266 +158,266 @@
   </div>
 </template>
 <script>
-import { validationMixin } from "vuelidate";
-import { required, maxLength, minLength } from "vuelidate/lib/validators";
+import { validationMixin } from 'vuelidate'
+import { required, maxLength, minLength } from 'vuelidate/lib/validators'
 export default {
   mixins: [validationMixin],
-  layout: "dashboard",
+  layout: 'dashboard',
   validations: {
     dni: { required, minLength: minLength(8), maxLength: maxLength(8) },
     dateOfBirth: { required },
-    thought: { required, minLength: minLength(3) },
+    thought: { required, minLength: minLength(3) }
   },
-  data() {
+  data () {
     return {
-      userType: "",
-      thought: "",
+      userType: '',
+      thought: '',
       noMood: false,
       noData: false,
-      dni: "",
-      dateOfBirth: "",
+      dni: '',
+      dateOfBirth: '',
       info: {
-        dni: "",
-        dateOfBirth: "",
+        dni: '',
+        dateOfBirth: ''
       },
       dialog: false,
       form: {
-        thought: "",
+        thought: ''
       },
-      formTitle: "¿Cómo te va?",
+      formTitle: '¿Cómo te va?',
       moods: [
         {
           id: 1,
-          name: "sad",
+          name: 'sad',
           value: 0,
-          select: false,
+          select: false
         },
         {
           id: 2,
-          name: "sceptic",
+          name: 'sceptic',
           value: 0.5,
-          select: false,
+          select: false
         },
         {
           id: 3,
-          name: "happy",
+          name: 'happy',
           value: 1,
-          select: false,
-        },
-      ],
-    };
+          select: false
+        }
+      ]
+    }
   },
 
   computed: {
-    thoughts() {
-      return this.$store.state.thoughts.filter((e) => !!e.thought);
+    thoughts () {
+      return this.$store.state.thoughts.filter(e => !!e.thought)
     },
 
-    auth() {
-      return this.$store.state.authUser || null;
+    auth () {
+      return this.$store.state.authUser || null
     },
 
-    user() {
-      return this.$store.state.user;
+    user () {
+      return this.$store.state.user
     },
 
-    dniErrors() {
-      const errors = [];
+    dniErrors () {
+      const errors = []
       if (!this.$v.dni.$dirty) {
-        return errors;
+        return errors
       }
       (!this.$v.dni.maxLength || !this.$v.dni.minLength) &&
-        errors.push("El DNI debe tener 8 caracteres");
-      !this.$v.dni.required && errors.push("El DNI es requerido");
-      return errors;
+        errors.push('El DNI debe tener 8 caracteres')
+      !this.$v.dni.required && errors.push('El DNI es requerido')
+      return errors
     },
-    dateOfBirthErrors() {
-      const errors = [];
+    dateOfBirthErrors () {
+      const errors = []
       if (!this.$v.dateOfBirth.$dirty) {
-        return errors;
+        return errors
       }
       !this.$v.dateOfBirth.required &&
-        errors.push("La fecha de nacimiento es requerida");
-      return errors;
+        errors.push('La fecha de nacimiento es requerida')
+      return errors
     },
-    thoughtErrors() {
-      const errors = [];
+    thoughtErrors () {
+      const errors = []
       if (!this.$v.thought.$dirty) {
-        return errors;
+        return errors
       }
       !this.$v.thought.minLength &&
         errors.push(
-          "La mensaje del pensamiento debe tener 3 caracteres como mínimo"
-        );
+          'La mensaje del pensamiento debe tener 3 caracteres como mínimo'
+        )
       !this.$v.thought.required &&
-        errors.push("El mensaje del pensamiento es requerido");
-      return errors;
-    },
+        errors.push('El mensaje del pensamiento es requerido')
+      return errors
+    }
   },
 
   watch: {
-    user() {
-      localStorage.setItem("role", this.user.role);
+    user () {
+      localStorage.setItem('role', this.user.role)
       if (!this.user.dni || !this.user.dateOfBirth) {
-        this.noData = true;
+        this.noData = true
       } else {
-        this.noData = false;
+        this.noData = false
       }
-    },
+    }
   },
 
-  async mounted() {
-    const { authUser } = this.$store.state;
+  async mounted () {
+    const { authUser } = this.$store.state
     if (!authUser) {
-      this.$router.push("/");
+      this.$router.push('/')
     } else {
-      await this.$store.dispatch("getUser", { uid: authUser.uid });
-      const { user } = this.$store.state;
+      await this.$store.dispatch('getUser', { uid: authUser.uid })
+      const { user } = this.$store.state
       if (user) {
-        this.userType = user.role;
-        if (this.userType === "admin") {
-          this.$router.push("/back");
+        this.userType = user.role
+        if (this.userType === 'admin') {
+          this.$router.push('/back')
         } else {
-          this.$store.dispatch("getValues");
-          this.$store.dispatch("getThoughts", { uid: authUser.uid });
-          this.$store.dispatch("getUser", { uid: authUser.uid });
+          this.$store.dispatch('getValues')
+          this.$store.dispatch('getThoughts', { uid: authUser.uid })
+          this.$store.dispatch('getUser', { uid: authUser.uid })
         }
       } else {
-        this.$router.push("/");
+        this.$router.push('/')
       }
     }
   },
 
   methods: {
-    submitThought() {
-      this.$v.$touch();
+    submitThought () {
+      this.$v.$touch()
     },
-    submit() {
-      this.$v.$touch();
+    submit () {
+      this.$v.$touch()
     },
-    close() {
-      this.dialog = false;
+    close () {
+      this.dialog = false
     },
-    clean() {
-      this.$v.$reset();
-      this.thought = "";
-      this.select("");
-      this.noMood = false;
+    clean () {
+      this.$v.$reset()
+      this.thought = ''
+      this.select('')
+      this.noMood = false
     },
-    closeAndClean() {
-      this.dialog = false;
-      this.$v.$reset();
-      this.thought = "";
-      this.select("");
-      this.noMood = false;
+    closeAndClean () {
+      this.dialog = false
+      this.$v.$reset()
+      this.thought = ''
+      this.select('')
+      this.noMood = false
     },
-    open() {
-      this.dialog = true;
+    open () {
+      this.dialog = true
     },
-    async updateInfo() {
+    async updateInfo () {
       try {
-        const { uid } = this.$store.state.authUser;
-        const { dni, dateOfBirth } = this;
-        await this.$fire.firestore.collection("users").doc(uid).update({
+        const { uid } = this.$store.state.authUser
+        const { dni, dateOfBirth } = this
+        await this.$fire.firestore.collection('users').doc(uid).update({
           dni,
-          dateOfBirth,
-        });
-        this.noData = false;
+          dateOfBirth
+        })
+        this.noData = false
       } catch (error) {
-        this.$store.dispatch("SET_MESSAGE", { message: error });
+        this.$store.dispatch('SET_MESSAGE', { message: error })
       }
     },
-    formatDateT(item) {
-      const ss = new Date(Number(item)).toISOString().substr(0, 10);
-      return ss;
+    formatDateT (item) {
+      const ss = new Date(Number(item)).toISOString().substr(0, 10)
+      return ss
     },
-    formatHour(item) {
-      const ss = new Date(Number(item)).toISOString().substr(11, 5);
-      return ss;
+    formatHour (item) {
+      const ss = new Date(Number(item)).toISOString().substr(11, 5)
+      return ss
     },
 
-    select(item) {
+    select (item) {
       const ss = this.moods.map((e) => {
-        e.select = e.id === item.id;
-        return e;
-      });
-      this.moods = ss;
-      this.noMood = false;
+        e.select = e.id === item.id
+        return e
+      })
+      this.moods = ss
+      this.noMood = false
     },
 
-    getState(obj) {
-      const { value } = obj;
+    getState (obj) {
+      const { value } = obj
       if (value >= 0) {
         const dd = this.$store.state.values.find(
-          (v) => v.dataTypeName === obj.dataTypeName
-        );
+          v => v.dataTypeName === obj.dataTypeName
+        )
         if (value >= dd.minSalud && value <= dd.maxSalud) {
-          return "green";
+          return 'green'
         }
         if (value >= dd.minAcept && value <= dd.maxAcept) {
-          return "yellow";
+          return 'yellow'
         }
-        return "red";
+        return 'red'
       } else {
-        return "not";
+        return 'not'
       }
     },
 
-    async createThought() {
-      const moodSelect = this.moods.filter((e) => e.select);
+    async createThought () {
+      const moodSelect = this.moods.filter(e => e.select)
       if (moodSelect.length) {
         try {
-          this.close();
-          const item = moodSelect[0];
-          const { uid } = this.$store.state.authUser;
-          const { thought } = this;
-          const date = new Date().getTime();
+          this.close()
+          const item = moodSelect[0]
+          const { uid } = this.$store.state.authUser
+          const { thought } = this
+          const date = new Date().getTime()
           if (!thought || thought.length < 3) {
-            this.dialog = true;
+            this.dialog = true
           } else {
             await this.$fire.firestore
-              .collection("thoughts")
+              .collection('thoughts')
               .doc()
               .set({
                 date,
                 thought,
                 uid,
-                ...item,
-              });
+                ...item
+              })
             const obj = {
-              dataSourceId: "",
-              dataTypeName: "app.web.hear-my-health.mood.segment",
+              dataSourceId: '',
+              dataTypeName: 'app.web.hear-my-health.mood.segment',
               endTimeMillis: date,
-              endTimeNanos: "",
-              originDataSourceId: "",
+              endTimeNanos: '',
+              originDataSourceId: '',
               point: item,
               startTimeMillis: date,
-              startTimeNanos: "",
+              startTimeNanos: '',
 
               value: item.value,
 
               name: item.name,
-              modifiedTimeMillis: "",
-              activityType: "",
-            };
-            const stateSleep = this.getState(obj);
+              modifiedTimeMillis: '',
+              activityType: ''
+            }
+            const stateSleep = this.getState(obj)
             await this.$fire.firestore
-              .collection("dataSet")
+              .collection('dataSet')
               .doc()
               .set({
                 uid,
                 ...obj,
-                state: stateSleep,
-              });
+                state: stateSleep
+              })
           }
-          this.clean();
+          this.clean()
         } catch (error) {
-          return error;
+          return error
         }
       } else {
-        this.noMood = true;
+        this.noMood = true
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>

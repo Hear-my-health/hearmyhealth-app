@@ -1,8 +1,14 @@
 <template>
   <v-container>
     <v-row justify="center" align="center" class="mt-3">
-      <v-col cols="10" sm="8" md="4">
-        <h2 class="text-h3 mb-9">
+      <v-col
+        cols="10"
+        xs="5"
+        sm="7 "
+        md="6"
+        lg="5"
+      >
+        <h2 class="text-h3 mb-9" justify="center" align="center">
           Iniciar sesión
         </h2>
         <div class="mb-9">
@@ -24,7 +30,7 @@
               class="pa-1"
               style="width: 48px; height: 48px"
             >
-            <span class="mx-2"> Inicia sesión con Google </span>
+            <span class="mx-2"> Inicia sesión </span>
           </v-btn>
         </div>
         <div>
