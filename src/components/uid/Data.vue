@@ -4,7 +4,7 @@
       Paciente: {{ user.name }}
     </v-row>
     <v-row justify="center" align="center">
-      <v-col cols="12" sm="4" md="4">
+      <!-- <v-col cols="12" sm="4" md="4">
         <v-menu
           ref="menu1"
           v-model="menu1"
@@ -25,7 +25,12 @@
               v-on="on"
             />
           </template>
-          <v-date-picker v-model="dateStart" min="2020-12-01" no-title @input="menu1 = false" />
+          <v-date-picker
+            v-model="dateStart"
+            min="2020-12-01"
+            no-title
+            @input="menu1 = false"
+          />
         </v-menu>
       </v-col>
 
@@ -56,13 +61,13 @@
             @input="menu2 = false"
           />
         </v-menu>
-      </v-col>
+      </v-col> -->
 
       <v-col v-if="dataSet.length">
         <v-data-table
           :headers="headers"
           :items="dataSet"
-          :items-per-page="30"
+          :items-per-page="5"
           :sort-by="['dataTypeName', 'type']"
           :sort-desc="[true, true]"
           multi-sort
@@ -141,10 +146,7 @@
                 - {{ round(item.heartRate.point.value[2].fpVal) }}
               </span>
             </div> -->
-            <div
-              v-if="!item.heartRate"
-              class="py-1 text-center no-values"
-            />
+            <div v-if="!item.heartRate" class="py-1 text-center no-values" />
           </template>
 
           <template #[`item.calories`]="{ item }">
@@ -179,17 +181,17 @@
                 ) < 0.4
                   ? `red`
                   : round(
-                    0.5 * findState(item.heartRate.state).value +
-                      0.17 * findState(item.steps.state).value +
-                      0.33 * findState(item.calories.state).value
-                  ) > 0.4 &&
+                      0.5 * findState(item.heartRate.state).value +
+                        0.17 * findState(item.steps.state).value +
+                        0.33 * findState(item.calories.state).value
+                    ) > 0.4 &&
                     round(
                       0.5 * findState(item.heartRate.state).value +
                         0.17 * findState(item.steps.state).value +
                         0.33 * findState(item.calories.state).value
                     ) <= 0.7
-                    ? `yellow`
-                    : `green`
+                  ? `yellow`
+                  : `green`
               }`"
               class="text-center"
               style="height: 50%; width: 80%"
@@ -203,15 +205,15 @@
                 ) < 0.4
                   ? `red`
                   : round(
-                    0.17 * findState(item.steps.state).value +
-                      0.33 * findState(item.calories.state).value
-                  ) > 0.4 &&
+                      0.17 * findState(item.steps.state).value +
+                        0.33 * findState(item.calories.state).value
+                    ) > 0.4 &&
                     round(
                       0.17 * findState(item.steps.state).value +
                         0.33 * findState(item.calories.state).value
                     ) <= 0.7
-                    ? `yellow`
-                    : `green`
+                  ? `yellow`
+                  : `green`
               }`"
               class="text-center"
               style="height: 50%; width: 80%"
@@ -236,10 +238,7 @@
             >
               {{ round(item.deepSleep.value) }}
             </div>
-            <div
-              v-if="!item.deepSleep"
-              class="py-1 text-center no-values"
-            />
+            <div v-if="!item.deepSleep" class="py-1 text-center no-values" />
           </template>
 
           <template #[`item.mood`]="{ item }">
@@ -249,8 +248,8 @@
                 item.mood.value < 0.4
                   ? `red`
                   : item.mood.value > 0.4 && item.mood.value <= 0.7
-                    ? `yellow`
-                    : `green`
+                  ? `yellow`
+                  : `green`
               }`"
               class="py-1 text-center"
             >
@@ -271,17 +270,17 @@
                 ) <= 0.4
                   ? `red`
                   : round(
-                    0.17 * findState(item.sleep.state).value +
-                      0.5 * findState(item.mood.state).value +
-                      0.33 * findState(item.deepSleep.state).value
-                  ) > 0.4 &&
+                      0.17 * findState(item.sleep.state).value +
+                        0.5 * findState(item.mood.state).value +
+                        0.33 * findState(item.deepSleep.state).value
+                    ) > 0.4 &&
                     round(
                       0.17 * findState(item.sleep.state).value +
                         0.5 * findState(item.mood.state).value +
                         0.33 * findState(item.deepSleep.state).value
                     ) <= 0.7
-                    ? `yellow`
-                    : `green`
+                  ? `yellow`
+                  : `green`
               }`"
               style="height: 50%; width: 80%"
             />
@@ -296,17 +295,17 @@
                 ) <= 0.4
                   ? `red`
                   : round(
-                    0.17 * findState(item.sleep.state).value +
-                      0 +
-                      0.33 * findState(item.deepSleep.state).value
-                  ) > 0.4 &&
+                      0.17 * findState(item.sleep.state).value +
+                        0 +
+                        0.33 * findState(item.deepSleep.state).value
+                    ) > 0.4 &&
                     round(
                       0.17 * findState(item.sleep.state).value +
                         0 +
                         0.33 * findState(item.deepSleep.state).value
                     ) <= 0.7
-                    ? `yellow`
-                    : `green`
+                  ? `yellow`
+                  : `green`
               }`"
               style="height: 50%; width: 80%"
             />
@@ -314,18 +313,12 @@
               v-if="!item.sleep && !item.deepSleep && item.mood"
               class="text-center"
               :class="`${
-                round(
-                  0.5 * findState(item.mood.state).value
-                ) <= 0.4
+                round(0.5 * findState(item.mood.state).value) <= 0.4
                   ? `red`
-                  : round(
-                    0.5 * findState(item.mood.state).value
-                  ) > 0.4 &&
-                    round(
-                      0.5 * findState(item.mood.state).value
-                    ) <= 0.7
-                    ? `yellow`
-                    : `green`
+                  : round(0.5 * findState(item.mood.state).value) > 0.4 &&
+                    round(0.5 * findState(item.mood.state).value) <= 0.7
+                  ? `yellow`
+                  : `green`
               }`"
               style="height: 50%; width: 80%"
             />
@@ -341,9 +334,7 @@
             >
               Ver
 
-              <v-icon small class="mr-2">
-                mdi-arrow-right
-              </v-icon>
+              <v-icon small class="mr-2"> mdi-arrow-right </v-icon>
             </v-btn>
           </template>
 
@@ -386,47 +377,57 @@
 </template>
 
 <script>
-import { validationMixin } from 'vuelidate'
-import { required, maxLength, minLength } from 'vuelidate/lib/validators'
+import { validationMixin } from "vuelidate";
+import { required, maxLength, minLength } from "vuelidate/lib/validators";
 export default {
   mixins: [validationMixin],
 
   props: {
     myUid: {
       type: String,
-      default: ''
-    }
+      default: "",
+    },
+    dateStart: {
+      type: String,
+      default: "",
+    },
+    dateEnd: {
+      type: String,
+      default: "",
+    },
   },
 
   validations: {
     dni: { required, minLength: minLength(8), maxLength: maxLength(8) },
-    dateOfBirth: { required }
+    dateOfBirth: { required },
   },
 
-  data () {
+  data() {
     return {
       nowDate: new Date().toISOString().slice(0, 10),
       uid: this.$props.myUid,
-      dateStart: '',
-      dateStarFormatted: '',
-      dateEnd: '',
-      dateEndFormatted: '',
+      /* dateStart: "", */
+      dateStart: this.$props.dateStart,
+      dateEnd: this.$props.dateEnd,
+      dateStarFormatted: "",
+      /* dateEnd: "", */
+      dateEndFormatted: "",
       menu1: false,
       menu2: false,
       noData: false,
-      dni: '',
-      dateOfBirth: '',
+      dni: "",
+      dateOfBirth: "",
       info: {
-        dni: '',
-        dateOfBirth: ''
+        dni: "",
+        dateOfBirth: "",
       },
       dataTest: true,
       headers: [
         {
-          text: 'Fecha',
-          align: 'start',
+          text: "Fecha",
+          align: "start",
           sortable: false,
-          value: 'dateStart'
+          value: "dateStart",
         },
         // {
         //   text: 'Fecha Fin',
@@ -435,136 +436,136 @@ export default {
         //   value: 'dateEnd'
         // },
         {
-          text: 'Ritmo cardiaco: Min -  PROM - Max',
-          align: 'start',
+          text: "Ritmo cardiaco: Min -  PROM - Max",
+          align: "start",
           sortable: false,
-          value: 'heartRate'
+          value: "heartRate",
         },
         {
-          text: 'Calorias',
-          align: 'start',
+          text: "Calorias",
+          align: "start",
           sortable: false,
-          value: 'calories'
+          value: "calories",
         },
         {
-          text: 'Pasos',
-          align: 'start',
+          text: "Pasos",
+          align: "start",
           sortable: false,
-          value: 'steps'
+          value: "steps",
         },
         {
-          text: 'Salud física',
-          align: 'start',
+          text: "Salud física",
+          align: "start",
           sortable: false,
-          value: 'fisica'
+          value: "fisica",
         },
         {
-          text: 'Sueño',
-          align: 'start',
+          text: "Sueño",
+          align: "start",
           sortable: false,
-          value: 'sleep'
+          value: "sleep",
         },
         {
-          text: 'S. profundo',
-          align: 'start',
+          text: "S. profundo",
+          align: "start",
           sortable: false,
-          value: 'deepSleep'
+          value: "deepSleep",
         },
         {
-          text: 'Estado ánimo',
-          align: 'start',
+          text: "Estado ánimo",
+          align: "start",
           sortable: false,
-          value: 'mood'
+          value: "mood",
         },
         {
-          text: 'Salud mental',
-          align: 'start',
+          text: "Salud mental",
+          align: "start",
           sortable: false,
-          value: 'mental'
-        }
+          value: "mental",
+        },
       ],
       start: 0,
-      end: 0
-    }
+      end: 0,
+    };
   },
 
-  async fetch ({ store }) {
+  /*   async fetch ({ store }) {
     try {
       await store.dispatch('getValues')
     } catch (e) {
       return 'error'
     }
-  },
+  }, */
 
   computed: {
-    auth () {
-      return this.$store.state.authUser || null
+    auth() {
+      return this.$store.state.authUser || null;
     },
 
-    user () {
-      return this.$store.state.user
+    user() {
+      return this.$store.state.user;
     },
 
-    values () {
+    values() {
       return this.$store.state.values.filter(
-        e => e.indicator === 'heartRate'
-      )
+        (e) => e.indicator === "heartRate"
+      );
     },
 
-    dniErrors () {
-      const errors = []
+    dniErrors() {
+      const errors = [];
       if (!this.$v.dni.$dirty) {
-        return errors
+        return errors;
       }
       (!this.$v.dni.maxLength || !this.$v.dni.minLength) &&
-        errors.push('El DNI debe tener 8 caracteres')
+        errors.push("El DNI debe tener 8 caracteres");
       /* !this.$v.dni.minLength && errors.push("El DNI debe tener 8 caracteres");  */
-      !this.$v.dni.required && errors.push('El DNI es requerido')
-      return errors
+      !this.$v.dni.required && errors.push("El DNI es requerido");
+      return errors;
     },
 
-    dateOfBirthErrors () {
-      const errors = []
+    dateOfBirthErrors() {
+      const errors = [];
       if (!this.$v.dateOfBirth.$dirty) {
-        return errors
+        return errors;
       }
       !this.$v.dateOfBirth.required &&
-        errors.push('La fecha de nacimiento es requerida')
-      return errors
+        errors.push("La fecha de nacimiento es requerida");
+      return errors;
     },
 
-    dataSetSleep () {
+    dataSetSleep() {
       return this.$store.state.dataSet.filter(
-        s => s.dataTypeName === 'com.google.sleep.segment'
-      )
+        (s) => s.dataTypeName === "com.google.sleep.segment"
+      );
     },
 
-    dataSet () {
-      const tt = []
-      const dateStartTime = new Date(this.dateStart).getTime()
-      const end = new Date(this.dateEnd)
-      end.setDate(end.getDate() + 1)
-      const dateEndTime = end.getTime()
-      const dd = (dateEndTime - dateStartTime) / 86400000
+    dataSet() {
+      const tt = [];
+      const dateStartTime = new Date(this.dateStart).getTime();
+      const end = new Date(this.dateEnd);
+      end.setDate(end.getDate() + 1);
+      const dateEndTime = end.getTime();
+      const dd = (dateEndTime - dateStartTime) / 86400000;
 
-      let start = dateStartTime
+      let start = dateStartTime;
 
       if (this.$store.state.dataSet.length > 0) {
         for (let index = 1; index <= Math.floor(dd); index++) {
-          const dateEnd = start + 86400000
+          const dateEnd = start + 86400000;
           const dd = this.$store.state.dataSet.filter(
-            s => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
-          )
+            (s) => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
+          );
 
           if (dd[index] !== undefined) {
-            const source = dd[index].dataSourceId ? dd[index].dataSourceId : ''
-            console.log('source', source, dd)
-            if (source === 'app.web.hear-my-health.csv.claudia') {
+            const source = dd[index].dataSourceId ? dd[index].dataSourceId : "";
+            console.log("source", source, dd);
+            if (source === "app.web.hear-my-health.csv.claudia") {
               // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-              this.dataTest = true
+              this.dataTest = true;
             } else {
               // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-              this.dataTest = false
+              this.dataTest = false;
             }
           }
 
@@ -572,275 +573,275 @@ export default {
             dateStart: start,
             dateEnd,
             heartRate: dd.find(
-              t =>
-                t.dataTypeName === 'com.google.heart_rate.bpm' &&
+              (t) =>
+                t.dataTypeName === "com.google.heart_rate.bpm" &&
                 t.value !== null
             ),
             calories: dd.find(
-              t =>
-                t.dataTypeName === 'com.google.calories.expended' &&
+              (t) =>
+                t.dataTypeName === "com.google.calories.expended" &&
                 t.value !== null
             ),
             steps: dd.find(
-              t =>
-                t.dataTypeName === 'com.google.step_count.delta' &&
+              (t) =>
+                t.dataTypeName === "com.google.step_count.delta" &&
                 t.value !== null
             ),
             sleep: dd.find(
-              t => t.dataTypeName === 'com.google.sleep.segment'
+              (t) => t.dataTypeName === "com.google.sleep.segment"
             ),
             deepSleep: dd.find(
-              t => t.dataTypeName === 'app.web.hear-my-health.sleep.deep'
+              (t) => t.dataTypeName === "app.web.hear-my-health.sleep.deep"
             ),
-            mood: this.overageValueDataSet(dd)
-          }
+            mood: this.overageValueDataSet(dd),
+          };
 
-          start = dateEnd
-          tt.push(ee)
+          start = dateEnd;
+          tt.push(ee);
         }
       }
-      console.log(tt)
-      return tt
-    }
+      console.log(tt);
+      return tt;
+    },
   },
 
   watch: {
-    dateStart (val) {
-      this.dateStarFormatted = this.formatDate(this.dateStart)
+    /* dateStart(val) {
+      this.dateStarFormatted = this.formatDate(this.dateStart);
     },
-    dateEnd (val) {
-      this.dateEndFormatted = this.formatDate(this.dateEnd)
-    },
-    user () {
+    dateEnd(val) {
+      this.dateEndFormatted = this.formatDate(this.dateEnd);
+    }, */
+    user() {
       if (!this.user.dni || !this.user.dateOfBirth) {
-        this.noData = true
+        this.noData = true;
       } else {
-        this.noData = false
+        this.noData = false;
       }
-    }
+    },
   },
-  created () {
-    const date = new Date()
-    this.dateEnd = date.toISOString().substr(0, 10)
-    this.dateEndFormatted = this.formatDate(date.toISOString().substr(0, 10))
+  /*   created() {
+    const date = new Date();
+    this.dateEnd = date.toISOString().substr(0, 10);
+    this.dateEndFormatted = this.formatDate(date.toISOString().substr(0, 10));
 
-    date.setDate(date.getDate() - 7)
-    this.dateStart = date.toISOString().substr(0, 10)
-    this.dateStarFormatted = this.formatDate(date.toISOString().substr(0, 10))
-  },
+    date.setDate(date.getDate() - 7);
+    this.dateStart = date.toISOString().substr(0, 10);
+    this.dateStarFormatted = this.formatDate(date.toISOString().substr(0, 10));
+  }, */
 
-  mounted () {
-    const { authUser } = this.$store.state
+  mounted() {
+    const { authUser } = this.$store.state;
     if (!authUser) {
-      this.$router.push('/')
+      this.$router.push("/");
     } else {
       /* this.$store.dispatch("getDataSet", { uid: authUser.uid }); */
-      this.$store.dispatch('getDataSet', { uid: this.uid })
+      this.$store.dispatch("getDataSet", { uid: this.uid });
       /* this.$store.dispatch("getUser", { uid: authUser.uid }); */
-      this.$store.dispatch('getUser', { uid: this.uid })
-      this.$store.dispatch('getValues')
+      this.$store.dispatch("getUser", { uid: this.uid });
+      this.$store.dispatch("getValues");
     }
   },
 
   methods: {
-    findState (key) {
+    findState(key) {
       if (key) {
         const state = [
           {
-            key: 'green',
+            key: "green",
             value: 1,
-            percentaje: 100
+            percentaje: 100,
           },
           {
-            key: 'yellow',
+            key: "yellow",
             value: 0.5,
-            percentaje: 100
+            percentaje: 100,
           },
           {
-            key: 'red',
+            key: "red",
             value: 0,
-            percentaje: 100
+            percentaje: 100,
           },
           {
-            key: 'not',
+            key: "not",
             value: 0,
-            percentaje: 100
-          }
-        ]
-        return state.find(e => e.key === key)
+            percentaje: 100,
+          },
+        ];
+        return state.find((e) => e.key === key);
       }
 
       return {
-        key: 'not',
+        key: "not",
         value: 0,
-        percentaje: 100
-      }
+        percentaje: 100,
+      };
     },
 
-    sumField (key) {
+    sumField(key) {
       if (this.dataSet.length) {
-        const dataSetByKey = this.dataSet.filter(e => e[key])
+        const dataSetByKey = this.dataSet.filter((e) => e[key]);
         if (dataSetByKey.length) {
-          const initialValue = 0
+          const initialValue = 0;
           const average =
             dataSetByKey.reduce(function (total, currentValue) {
-              return total + currentValue[key].value || 0
-            }, initialValue) / dataSetByKey.length
-          return this.round(average)
+              return total + currentValue[key].value || 0;
+            }, initialValue) / dataSetByKey.length;
+          return this.round(average);
         }
-        return 0
+        return 0;
       }
-      return 0
+      return 0;
     },
 
-    sumFisica () {
+    sumFisica() {
       const states = [
         {
-          key: 'green',
+          key: "green",
           value: 1,
-          percentaje: 100
+          percentaje: 100,
         },
         {
-          key: 'yellow',
+          key: "yellow",
           value: 0.5,
-          percentaje: 100
+          percentaje: 100,
         },
         {
-          key: 'red',
+          key: "red",
           value: 0,
-          percentaje: 100
+          percentaje: 100,
         },
         {
-          key: 'not',
+          key: "not",
           value: 0,
-          percentaje: 100
-        }
-      ]
+          percentaje: 100,
+        },
+      ];
       if (this.dataSet.length) {
         const dataSetByKey = this.dataSet.filter(
-          e => e.heartRate && e.steps && e.calories
-        )
+          (e) => e.heartRate && e.steps && e.calories
+        );
         if (dataSetByKey.length) {
-          const initialValue = 0
+          const initialValue = 0;
           const average =
             dataSetByKey.reduce(function (total, item) {
               const heartRateValue = states.find(
-                e => e.key === (item.heartRate ? item.heartRate.state : 'not')
-              ).value
+                (e) => e.key === (item.heartRate ? item.heartRate.state : "not")
+              ).value;
               const stepsValue = states.find(
-                e => e.key === (item.steps ? item.steps.state : 'not')
-              ).value
+                (e) => e.key === (item.steps ? item.steps.state : "not")
+              ).value;
               const caloriesValue = states.find(
-                e => e.key === (item.calories ? item.calories.state : 'not')
-              ).value
+                (e) => e.key === (item.calories ? item.calories.state : "not")
+              ).value;
               const value =
-                0.5 * heartRateValue + 0.17 * stepsValue + 0.33 * caloriesValue
-              return total + value
-            }, initialValue) / dataSetByKey.length
+                0.5 * heartRateValue + 0.17 * stepsValue + 0.33 * caloriesValue;
+              return total + value;
+            }, initialValue) / dataSetByKey.length;
 
-          return this.round(average)
+          return this.round(average);
         }
-        return 0
+        return 0;
       }
-      return 0
+      return 0;
     },
 
-    sumMental () {
+    sumMental() {
       const states = [
         {
-          key: 'green',
+          key: "green",
           value: 1,
-          percentaje: 100
+          percentaje: 100,
         },
         {
-          key: 'yellow',
+          key: "yellow",
           value: 0.5,
-          percentaje: 100
+          percentaje: 100,
         },
         {
-          key: 'red',
+          key: "red",
           value: 0,
-          percentaje: 100
+          percentaje: 100,
         },
         {
-          key: 'not',
+          key: "not",
           value: 0,
-          percentaje: 100
-        }
-      ]
+          percentaje: 100,
+        },
+      ];
       if (this.dataSet.length) {
         const dataSetByKey = this.dataSet.filter(
-          e => e.mood && e.sleep && e.deepSleep
-        )
+          (e) => e.mood && e.sleep && e.deepSleep
+        );
         if (dataSetByKey.length) {
-          const initialValue = 0
+          const initialValue = 0;
           const average =
             dataSetByKey.reduce(function (total, item) {
               const sleepValue = states.find(
-                e =>
+                (e) =>
                   e.key ===
                   (item.sleep
                     ? item.sleep.state
                       ? item.sleep.state
                       : item.sleep.stateSleep
-                    : 'not')
-              ).value
+                    : "not")
+              ).value;
               const moodValue = states.find(
-                e =>
+                (e) =>
                   e.key ===
                   (item.mood
                     ? item.mood.state
                       ? item.mood.state
                       : item.mood.stateSleep
-                    : 'not')
-              ).value
+                    : "not")
+              ).value;
               const deepSleepValue = states.find(
-                e =>
+                (e) =>
                   e.key ===
                   (item.deepSleep
                     ? item.deepSleep.state
                       ? item.deepSleep.state
                       : item.deepSleep.stateSleepDeep
-                    : 'not')
-              ).value
+                    : "not")
+              ).value;
               const value =
-                0.5 * moodValue + 0.17 * sleepValue + 0.33 * deepSleepValue
+                0.5 * moodValue + 0.17 * sleepValue + 0.33 * deepSleepValue;
 
-              return total + value
-            }, initialValue) / dataSetByKey.length
+              return total + value;
+            }, initialValue) / dataSetByKey.length;
 
-          return this.round(average)
+          return this.round(average);
         }
-        return 0
+        return 0;
       }
-      return 0
+      return 0;
     },
 
-    overageValueDataSet (dd) {
+    overageValueDataSet(dd) {
       const valueFilter = dd.filter(
-        t => t.dataTypeName === 'app.web.hear-my-health.mood.segment'
-      )
+        (t) => t.dataTypeName === "app.web.hear-my-health.mood.segment"
+      );
       if (valueFilter.length) {
-        const initialValue = 0
+        const initialValue = 0;
         const average =
           valueFilter.reduce(function (total, currentValue) {
-            return total + currentValue.value || 0
-          }, initialValue) / valueFilter.length
+            return total + currentValue.value || 0;
+          }, initialValue) / valueFilter.length;
         if (average) {
-          return { ...valueFilter[0], value: average }
+          return { ...valueFilter[0], value: average };
         } else {
-          return null
+          return null;
         }
       } else {
-        return null
+        return null;
       }
     },
 
-    checkHeartRateState (value) {
-      console.log('value', value)
+    checkHeartRateState(value) {
+      console.log("value", value);
       if (value && this.values.length !== 0) {
         if (value >= this.values.minSalud && value <= this.values.maxSalud) {
-          return 'green'
+          return "green";
         }
         if (
           value >= this.values.minAcept &&
@@ -848,79 +849,79 @@ export default {
           value <= this.values.maxAcept &&
           value !== 0
         ) {
-          return 'yellow'
+          return "yellow";
         }
-        return 'red'
+        return "red";
       } else {
-        return 'not'
+        return "not";
       }
     },
 
-    submit () {
-      this.$v.$touch()
+    submit() {
+      this.$v.$touch();
     },
-    async updateInfo () {
+    async updateInfo() {
       try {
-        const { uid } = this.auth
-        const { dni, dateOfBirth } = this
-        await this.$fire.firestore.collection('users').doc(uid).update({
+        const { uid } = this.auth;
+        const { dni, dateOfBirth } = this;
+        await this.$fire.firestore.collection("users").doc(uid).update({
           dni,
-          dateOfBirth
-        })
-        this.noData = false
+          dateOfBirth,
+        });
+        this.noData = false;
       } catch (error) {
-        this.$store.dispatch('SET_MESSAGE', { message: error })
+        this.$store.dispatch("SET_MESSAGE", { message: error });
       }
     },
 
-    round (num) {
-      return Math.round(num * 100) / 100
+    round(num) {
+      return Math.round(num * 100) / 100;
     },
 
-    formatDateTable (item) {
-      const ss = new Date(Number(item)).toISOString().substr(0, 10)
-      return ss
+    formatDateTable(item) {
+      const ss = new Date(Number(item)).toISOString().substr(0, 10);
+      return ss;
     },
 
-    formatDate (date) {
+    formatDate(date) {
       if (!date) {
-        return null
+        return null;
       }
 
-      const [year, month, day] = date.split('-')
-      return `${month}/${day}/${year}`
+      const [year, month, day] = date.split("-");
+      return `${month}/${day}/${year}`;
     },
-    parseDate (date) {
+    parseDate(date) {
       if (!date) {
-        return null
+        return null;
       }
 
-      const [month, day, year] = date.split('/')
-      return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
+      const [month, day, year] = date.split("/");
+      return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
     },
 
-    nameData (scope) {
+    nameData(scope) {
       switch (scope) {
-        case 'com.google.heart_rate.bpm':
-          return 'Ritmo cardiaco'
-        case 'com.google.step_count.cadence':
-          return 'Cadencia de conteo de pasos'
-        case 'com.google.step_count.delta':
-          return 'Delta de recuento de pasos'
-        case 'com.google.calories.expended':
-          return 'Calorías quemadas'
-        case 'com.google.sleep.segment':
-          return 'Sueño'
-        case 'app.web.hear-my-health.sleep.deep':
-          return 'Sueño profundo'
-        case 'app.web.hear-my-health.mood.segment':
-          return 'Estado de animo'
+        case "com.google.heart_rate.bpm":
+          return "Ritmo cardiaco";
+        case "com.google.step_count.cadence":
+          return "Cadencia de conteo de pasos";
+        case "com.google.step_count.delta":
+          return "Delta de recuento de pasos";
+        case "com.google.calories.expended":
+          return "Calorías quemadas";
+        case "com.google.sleep.segment":
+          return "Sueño";
+        case "app.web.hear-my-health.sleep.deep":
+          return "Sueño profundo";
+        case "app.web.hear-my-health.mood.segment":
+          return "Estado de animo";
         default:
-          return 'desconocido'
+          return "desconocido";
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style>

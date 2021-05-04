@@ -30,10 +30,13 @@
             </v-btn>
           </template>
         </v-data-table>
-        <br>
-        <br>
+        <br />
+        <br />
         <div>Explicación de rangos:</div>
-        <v-img size="20%" src="https://firebasestorage.googleapis.com/v0/b/hear-my-health.appspot.com/o/RANGOS-FOTOUX.png?alt=media&token=3e3bcfcb-c04a-4912-bef0-fe15509d306b" />
+        <v-img
+          size="20%"
+          src="https://firebasestorage.googleapis.com/v0/b/hear-my-health.appspot.com/o/RANGOS-FOTOUX.png?alt=media&token=3e3bcfcb-c04a-4912-bef0-fe15509d306b"
+        />
       </v-col>
     </v-row>
 
@@ -176,9 +179,7 @@
 
           <v-card-actions>
             <v-spacer />
-            <v-btn elevation="0" raised @click="dialog = !dialog">
-              Cancelar
-            </v-btn>
+            <v-btn elevation="0" raised @click="close()"> Cancelar </v-btn>
 
             <v-btn elevation="0" outlined raised type="submit" @click="submit">
               Guardar
@@ -190,7 +191,7 @@
   </div>
 </template>
 <script>
-import { validationMixin } from 'vuelidate'
+import { validationMixin } from "vuelidate";
 import {
   required,
   // eslint-disable-next-line no-unused-vars
@@ -198,29 +199,29 @@ import {
   decimal,
   // eslint-disable-next-line no-unused-vars
   numeric,
-  minValue
-} from 'vuelidate/lib/validators'
+  minValue,
+} from "vuelidate/lib/validators";
 export default {
   mixins: [validationMixin],
-  layout: 'back',
+  layout: "back",
   validations: {
     minAcept: { required, decimal, minValue: minValue(0) },
     maxAcept: { required, decimal, minValue: minValue(0) },
     minSalud: { required, decimal, minValue: minValue(0) },
-    maxSalud: { required, decimal, minValue: minValue(0) }
+    maxSalud: { required, decimal, minValue: minValue(0) },
   },
-  data () {
+  data() {
     return {
       dialog: false,
-      formTitle: 'Agregar Valor',
-      id: '',
-      key: '',
-      name: '',
-      indicator: '',
-      indicatorUnit: '',
-      dataTypeName: '',
-      type: '',
-      frequency: '',
+      formTitle: "Agregar Valor",
+      id: "",
+      key: "",
+      name: "",
+      indicator: "",
+      indicatorUnit: "",
+      dataTypeName: "",
+      type: "",
+      frequency: "",
       maxSalud: 0,
       minSalud: 0,
       maxAcept: 0,
@@ -228,19 +229,19 @@ export default {
       weight: 0,
       weightPercentage: 0,
       form: {
-        key: '',
-        name: '',
-        indicator: '',
-        indicatorUnit: '',
-        dataTypeName: '',
-        type: '',
-        frequency: '',
+        key: "",
+        name: "",
+        indicator: "",
+        indicatorUnit: "",
+        dataTypeName: "",
+        type: "",
+        frequency: "",
         maxSalud: 0,
         minSalud: 0,
         maxAcept: 0,
         minAcept: 0,
         weight: 0,
-        weightPercentage: 0
+        weightPercentage: 0,
       },
       headers: [
         // {
@@ -250,10 +251,10 @@ export default {
         //   value: 'key'
         // },
         {
-          text: 'Indicador',
-          align: 'start',
+          text: "Indicador",
+          align: "start",
           sortable: false,
-          value: 'name'
+          value: "name",
         },
         // {
         //   text: 'Indicador',
@@ -262,10 +263,10 @@ export default {
         //   value: 'indicator'
         // },
         {
-          text: 'Unidad Indicador',
-          align: 'start',
+          text: "Unidad Indicador",
+          align: "start",
           sortable: false,
-          value: 'indicatorUnit'
+          value: "indicatorUnit",
         },
         // {
         //   text: 'Tipo dato',
@@ -286,28 +287,28 @@ export default {
         //   value: 'frequency'
         // },
         {
-          text: 'Min Aceptable',
-          align: 'start',
+          text: "Min Aceptable",
+          align: "start",
           sortable: false,
-          value: 'minAcept'
+          value: "minAcept",
         },
         {
-          text: 'Min Saludable',
-          align: 'start',
+          text: "Min Saludable",
+          align: "start",
           sortable: false,
-          value: 'minSalud'
+          value: "minSalud",
         },
         {
-          text: 'Max Saludable',
-          align: 'start',
+          text: "Max Saludable",
+          align: "start",
           sortable: false,
-          value: 'maxSalud'
+          value: "maxSalud",
         },
         {
-          text: 'Max Aceptable',
-          align: 'start',
+          text: "Max Aceptable",
+          align: "start",
           sortable: false,
-          value: 'maxAcept'
+          value: "maxAcept",
         },
         // {
         //   text: 'Peso',
@@ -321,116 +322,116 @@ export default {
         //   sortable: false,
         //   value: 'weightPercentage'
         // },
-        { text: 'Acciones', value: 'actions' }
-      ]
-    }
+        { text: "Acciones", value: "actions" },
+      ],
+    };
   },
 
-  async fetch ({ store }) {
+  async fetch({ store }) {
     try {
-      await store.dispatch('getValues')
+      await store.dispatch("getValues");
     } catch (e) {
-      return 'error'
+      return "error";
     }
   },
 
   computed: {
-    values () {
-      return this.$store.state.values.filter(e => e.indicator !== 'mood')
+    values() {
+      return this.$store.state.values.filter((e) => e.indicator !== "mood");
     },
-    minAceptErrors () {
-      const errors = []
+    minAceptErrors() {
+      const errors = [];
       if (!this.$v.minAcept.$dirty) {
-        return errors
+        return errors;
       }
       !this.$v.minAcept.minValue &&
-        errors.push('El valor mínimo aceptado debe ser mayor a 0')
+        errors.push("El valor mínimo aceptado debe ser mayor a 0");
       !this.$v.minAcept.required &&
-        errors.push('El valor mínimo aceptado es requerido')
+        errors.push("El valor mínimo aceptado es requerido");
       !this.$v.minAcept.decimal &&
-        errors.push('El valor mínimo aceptado debe ser un número')
-      return errors
+        errors.push("El valor mínimo aceptado debe ser un número");
+      return errors;
     },
-    maxAceptErrors () {
-      const errors = []
+    maxAceptErrors() {
+      const errors = [];
       if (!this.$v.maxAcept.$dirty) {
-        return errors
+        return errors;
       }
       !this.$v.maxAcept.minValue &&
-        errors.push('El valor máximo aceptado debe ser mayor a 0')
+        errors.push("El valor máximo aceptado debe ser mayor a 0");
       !this.$v.maxAcept.required &&
-        errors.push('El valor máximo aceptado es requerido')
+        errors.push("El valor máximo aceptado es requerido");
       !this.$v.maxAcept.decimal &&
-        errors.push('El valor máximo aceptado debe ser un número')
-      return errors
+        errors.push("El valor máximo aceptado debe ser un número");
+      return errors;
     },
-    minSaludErrors () {
-      const errors = []
+    minSaludErrors() {
+      const errors = [];
       if (!this.$v.minSalud.$dirty) {
-        return errors
+        return errors;
       }
       !this.$v.minSalud.minValue &&
-        errors.push('El valor mínimo saludable debe ser mayor a 0')
+        errors.push("El valor mínimo saludable debe ser mayor a 0");
       !this.$v.minSalud.required &&
-        errors.push('El valor mínimo saludable es requerido')
+        errors.push("El valor mínimo saludable es requerido");
       !this.$v.minSalud.decimal &&
-        errors.push('El valor mínimo saludable debe ser un número')
-      return errors
+        errors.push("El valor mínimo saludable debe ser un número");
+      return errors;
     },
-    maxSaludErrors () {
-      const errors = []
+    maxSaludErrors() {
+      const errors = [];
       if (!this.$v.maxSalud.$dirty) {
-        return errors
+        return errors;
       }
       !this.$v.maxSalud.minValue &&
         errors.push('El valor máximo saludable debe ser  mayor a 0')
       !this.$v.maxSalud.required &&
         errors.push('El valor máximo saludable es requerido')
       !this.$v.maxSalud.decimal &&
-        errors.push('El valor máximo saludable debe ser un número')
-      return errors
-    }
+        errors.push("El valor máximo saludable debe ser un número");
+      return errors;
+    },
   },
 
-  mounted () {
-    const { authUser } = this.$store.state
+  mounted() {
+    const { authUser } = this.$store.state;
     if (!authUser) {
-      this.$router.push('/')
+      this.$router.push("/");
     } else {
-      this.$store.dispatch('getValues')
+      this.$store.dispatch("getValues");
     }
   },
 
   methods: {
-    submit () {
-      this.$v.$touch()
+    submit() {
+      this.$v.$touch();
     },
-    close () {
-      this.dialog = !this.dialog
-    },
-
-    updateValue (item) {
-      const rr = { ...item, id: item.id }
-      this.form = JSON.parse(JSON.stringify(rr))
-      this.id = JSON.parse(JSON.stringify(rr.id))
-      this.key = JSON.parse(JSON.stringify(rr.key))
-      this.name = JSON.parse(JSON.stringify(rr.name))
-      this.indicator = JSON.parse(JSON.stringify(rr.indicator))
-      this.indicatorUnit = JSON.parse(JSON.stringify(rr.indicatorUnit))
-      this.dataTypeName = JSON.parse(JSON.stringify(rr.dataTypeName))
-      this.type = JSON.parse(JSON.stringify(rr.type))
-      this.frequency = JSON.parse(JSON.stringify(rr.frequency))
-      this.minAcept = JSON.parse(JSON.stringify(rr.minAcept))
-      this.maxAcept = JSON.parse(JSON.stringify(rr.maxAcept))
-      this.minSalud = JSON.parse(JSON.stringify(rr.minSalud))
-      this.maxSalud = JSON.parse(JSON.stringify(rr.maxSalud))
-      this.weight = JSON.parse(JSON.stringify(rr.weight))
-      this.weightPercentage = JSON.parse(JSON.stringify(rr.weightPercentage))
-      this.close()
-      this.edit = true
+    close() {
+      this.dialog = false;
     },
 
-    async createValue () {
+    updateValue(item) {
+      this.dialog = true;
+      const rr = { ...item, id: item.id };
+      this.form = JSON.parse(JSON.stringify(rr));
+      this.id = JSON.parse(JSON.stringify(rr.id));
+      this.key = JSON.parse(JSON.stringify(rr.key));
+      this.name = JSON.parse(JSON.stringify(rr.name));
+      this.indicator = JSON.parse(JSON.stringify(rr.indicator));
+      this.indicatorUnit = JSON.parse(JSON.stringify(rr.indicatorUnit));
+      this.dataTypeName = JSON.parse(JSON.stringify(rr.dataTypeName));
+      this.type = JSON.parse(JSON.stringify(rr.type));
+      this.frequency = JSON.parse(JSON.stringify(rr.frequency));
+      this.minAcept = JSON.parse(JSON.stringify(rr.minAcept));
+      this.maxAcept = JSON.parse(JSON.stringify(rr.maxAcept));
+      this.minSalud = JSON.parse(JSON.stringify(rr.minSalud));
+      this.maxSalud = JSON.parse(JSON.stringify(rr.maxSalud));
+      this.weight = JSON.parse(JSON.stringify(rr.weight));
+      this.weightPercentage = JSON.parse(JSON.stringify(rr.weightPercentage));
+      this.edit = true;
+    },
+
+    async createValue() {
       try {
         if (
           !this.minAcept ||
@@ -442,11 +443,12 @@ export default {
           isNaN(this.maxAcept) ||
           isNaN(this.maxSalud)
         ) {
-          console.log('No válido')
+          console.log("No válido");
         } else {
-          console.log('Válido')
+          console.log("Válido");
+          this.close();
           if (this.edit) {
-            await this.$fire.firestore.collection('values').doc(this.id).set({
+            await this.$fire.firestore.collection("values").doc(this.id).set({
               key: this.key,
               name: this.name,
               indicator: this.indicator,
@@ -459,11 +461,10 @@ export default {
               maxAcept: this.maxAcept,
               minAcept: this.minAcept,
               weight: this.weight,
-              weightPercentage: this.weightPercentage
-            })
-            this.close()
+              weightPercentage: this.weightPercentage,
+            });
           } else {
-            await this.$fire.firestore.collection('values').doc().set({
+            await this.$fire.firestore.collection("values").doc().set({
               key: this.key,
               name: this.name,
               indicator: this.indicator,
@@ -476,15 +477,15 @@ export default {
               maxAcept: this.maxAcept,
               minAcept: this.minAcept,
               weight: this.weight,
-              weightPercentage: this.weightPercentage
-            })
+              weightPercentage: this.weightPercentage,
+            });
           }
         }
       } catch (error) {
-        console.log(error)
-        return error
+        console.log(error);
+        return error;
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
