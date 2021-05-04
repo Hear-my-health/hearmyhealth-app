@@ -4,13 +4,13 @@
       <v-parallax :src="imageLink.main" height="450">
         <v-layout column align-center justify-center class="white--text">
           <h1
-            class="white--text mb-2 display-3 text-xs-center"
+            class="white--text mb-2 display-3 text-center"
             style="font-weight: 900"
           >
             Hear my Health
           </h1>
           <div
-            class="white--text display-1 mb-3 text-xs-center"
+            class="white--text display-1 mb-3 text-center"
             style="font-weight: 900"
           >
             Decisiones médicas basadas en datos
@@ -30,7 +30,7 @@
     <section>
       <v-layout column wrap class="my-5" align-center>
         <v-flex xs12 sm4 class="my-3">
-          <div class="text-xs-center">
+          <div class="text-center">
             <h2 class="headline">
               Piloto de monitoreo continuo de pacientes con anorexia y bulimia
             </h2>
@@ -88,8 +88,8 @@
     <section>
       <v-layout column wrap class="my-5" align-center>
         <v-flex xs12 sm4 class="my-3">
-          <div class="text-xs-center">
-            <v-text class="display-2" style="color: #0bc5c3">
+          <div class="text-center">
+            <v-text class="display-2" style="color: #0bc5c3" align-center>
               ¿Qué datos procesamos?
             </v-text>
           </div>

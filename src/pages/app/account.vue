@@ -56,11 +56,11 @@
               <v-row>
                 <v-col>
                   <p class="mb-1">
-                    N° historia clínica
+                    N° historia
                   </p>
                   <v-text-field
                     v-model="form.clinicHistory"
-                    placeholder="N° historia clínica"
+                    placeholder="N° historia"
                     color="black"
                     outlined
                     dense

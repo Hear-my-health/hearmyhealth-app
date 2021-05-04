@@ -384,9 +384,9 @@ export default {
         return errors;
       }
       !this.$v.maxSalud.minValue &&
-        errors.push("El valor máximo aceptado debe ser  mayor a 0");
+        errors.push('El valor máximo saludable debe ser  mayor a 0')
       !this.$v.maxSalud.required &&
-        errors.push("El valor máximo aceptado es requerido");
+        errors.push('El valor máximo saludable es requerido')
       !this.$v.maxSalud.decimal &&
         errors.push("El valor máximo saludable debe ser un número");
       return errors;
