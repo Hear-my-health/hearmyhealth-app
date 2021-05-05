@@ -38,11 +38,11 @@
       <v-spacer />
     </v-app-bar>
     <v-app-bar
+      v-if="!isMobile"
       style="background-color: #0c314c"
       fixed
       app
       class="elevation-0"
-      v-if="!isMobile"
     >
       <v-img
         class="mx-2"
@@ -79,7 +79,7 @@
             style="color: white; text-decoration: none"
             href="mailto:u201616577@upc.edu.pe"
             target="_blank"
-            ><v-icon>mdi-email</v-icon>
+          ><v-icon>mdi-email</v-icon>
           </a>
         </v-card-text>
       </v-card>
@@ -95,26 +95,26 @@ export default {
     miniVariant: false,
     isMobile: false,
     links: [
-      { name: "Inicio", to: "/" },
-      { name: "Producto", to: "#product" },
-      { name: "Contacto", to: "#contact" },
-    ],
+      { name: 'Inicio', to: '/' },
+      { name: 'Producto', to: '#product' },
+      { name: 'Contacto', to: '#contact' }
+    ]
   }),
-  beforeDestroy() {
-    if (typeof window === "undefined") return;
+  beforeDestroy () {
+    if (typeof window === 'undefined') { return }
 
-    window.removeEventListener("resize", this.onResize, { passive: true });
+    window.removeEventListener('resize', this.onResize, { passive: true })
   },
 
-  mounted() {
-    this.onResize();
+  mounted () {
+    this.onResize()
 
-    window.addEventListener("resize", this.onResize, { passive: true });
+    window.addEventListener('resize', this.onResize, { passive: true })
   },
   methods: {
-    onResize() {
-      this.isMobile = window.innerWidth < 600;
-    },
-  },
-};
+    onResize () {
+      this.isMobile = window.innerWidth < 600
+    }
+  }
+}
 </script>
