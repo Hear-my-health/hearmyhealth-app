@@ -1,18 +1,14 @@
 <template>
   <div>
-    <!-- <v-btn elevation="0" outlined raised @click="dialog = !dialog">
-      Agregar value
-    </v-btn> -->
-
     <v-row justify="center" align="center">
-      <v-col cols="12" sm="12" md="12">
+      <v-col cols="12" sm="10" md="10">
         <v-data-table
           :headers="headers"
           :items="values"
           :sort-by="['email', 'name']"
           :sort-desc="[false, true]"
           multi-sort
-          class="elevation-1"
+          class="elevation-0"
         >
           <template #top>
             <v-toolbar flat>
@@ -34,10 +30,17 @@
             </v-btn>
           </template>
         </v-data-table>
+        <br />
+        <br />
+        <div>Explicación de rangos:</div>
+        <v-img
+          size="20%"
+          src="https://firebasestorage.googleapis.com/v0/b/hear-my-health.appspot.com/o/RANGOS-FOTOUX.png?alt=media&token=3e3bcfcb-c04a-4912-bef0-fe15509d306b"
+        />
       </v-col>
     </v-row>
 
-    <v-dialog v-model="dialog" max-width="500px" elevation="0">
+    <v-dialog v-model="dialog" max-width="600px" elevation="0">
       <form @submit.prevent="createValue">
         <v-card>
           <v-card-title>
@@ -47,104 +50,118 @@
           <v-card-text>
             <v-container>
               <v-row>
-                <v-col cols="12" md="6">
+                <!-- <v-col cols="12" md="6">
                   <v-text-field
                     v-model="form.key"
                     outlined
-                    :counter="10"
                     label="key"
-                    required
+                    disabled
                   />
-                </v-col>
-                <v-col cols="12" md="6">
+                </v-col> -->
+                <v-col cols="12" md="4">
                   <v-text-field
-                    v-model="form.name"
+                    v-model="name"
                     outlined
-                    :counter="20"
-                    label="Nombre"
-                    required
+                    label="Indicador"
+                    disabled
                   />
                 </v-col>
-                <v-col cols="12" md="6">
+                <!-- <v-col cols="12" md="4">
                   <v-text-field
                     v-model="form.indicator"
                     outlined
-                    :counter="10"
                     label="Indicador"
-                    required
+                    disabled
                   />
-                </v-col>
-                <v-col cols="12" md="6">
+                </v-col> -->
+                <v-col cols="12" md="4">
                   <v-text-field
-                    v-model="form.indicatorUnit"
+                    v-model="indicatorUnit"
                     outlined
-                    :counter="10"
                     label="Unidad Indicador"
-                    required
+                    disabled
                   />
                 </v-col>
-                <v-col cols="12" md="12">
+                <!-- <v-col cols="12" md="12">
                   <v-text-field
                     v-model="form.dataTypeName"
                     outlined
-                    name="input-7-4"
+                    disabled
                     label="Tipo dato"
                   />
-                </v-col>
-                <v-col cols="12" md="6">
+                </v-col> -->
+                <v-col cols="12" md="4">
                   <v-text-field
-                    v-model="form.type"
+                    v-model="type"
                     outlined
+                    disabled
                     name="input-7-4"
                     label="Tipo"
                   />
                 </v-col>
-                <v-col cols="12" md="6">
+                <!-- <v-col cols="12" md="6">
                   <v-text-field
                     v-model="form.frequency"
                     outlined
                     name="input-7-4"
                     label="Frecuencia"
                   />
-                </v-col>
-                <v-col cols="12" md="4">
+                </v-col> -->
+                <v-col cols="12" md="3">
                   <v-text-field
-                    v-model="form.maxSalud"
+                    v-model="minAcept"
+                    type="numeric"
                     outlined
                     name="input-7-4"
-                    label="Máximo saludable"
+                    label="Mín aceptable"
+                    :error-messages="minAceptErrors"
+                    @input="$v.minAcept.$touch()"
+                    @blur="$v.minAcept.$touch()"
                   />
                 </v-col>
-                <v-col cols="12" md="4">
+                <v-col cols="12" md="3">
                   <v-text-field
-                    v-model="form.minSalud"
+                    v-model="minSalud"
+                    type="numeric"
                     outlined
                     name="input-7-4"
-                    label="Mínimo saludable"
+                    label="Mín saludable"
+                    :error-messages="minSaludErrors"
+                    @input="$v.minSalud.$touch()"
+                    @blur="$v.minSalud.$touch()"
                   />
                 </v-col>
-                <v-col cols="12" md="4">
+                <v-col cols="12" md="3">
                   <v-text-field
-                    v-model="form.maxAcept"
+                    v-model="maxSalud"
+                    type="numeric"
                     outlined
                     name="input-7-4"
-                    label="Máximo aceptable"
+                    label="Máx saludable"
+                    :error-messages="maxSaludErrors"
+                    @input="$v.maxSalud.$touch()"
+                    @blur="$v.maxSalud.$touch()"
                   />
                 </v-col>
-                <v-col cols="12" md="4">
+                <v-col cols="12" md="3">
                   <v-text-field
-                    v-model="form.minAcept"
+                    v-model="maxAcept"
+                    type="numeric"
                     outlined
                     name="input-7-4"
-                    label="Mínimo aceptable"
+                    label="Máx aceptable"
+                    :error-messages="maxAceptErrors"
+                    @input="$v.maxAcept.$touch()"
+                    @blur="$v.maxAcept.$touch()"
                   />
                 </v-col>
-                <v-col cols="12" md="4">
+                <!-- <v-col cols="12" md="4">
                   <v-text-field
                     v-model="form.weight"
                     outlined
                     name="input-7-4"
-                    label="Pensamiento"
+                    label="Peso"
+                    disabled
                   />
                 </v-col>
                 <v-col cols="12" md="4">
@@ -152,20 +169,19 @@
                     v-model="form.weightPercentage"
                     outlined
                     name="input-7-4"
-                    label="Pensamiento"
+                    label="Porcentaje"
+                    disabled
                   />
-                </v-col>
+                </v-col> -->
               </v-row>
             </v-container>
           </v-card-text>
 
           <v-card-actions>
             <v-spacer />
-            <v-btn elevation="0" raised @click="dialog = !dialog">
-              Cancelar
-            </v-btn>
+            <v-btn elevation="0" raised @click="close()"> Cancelar </v-btn>
 
-            <v-btn elevation="0" outlined raised type="submit">
+            <v-btn elevation="0" outlined raised type="submit" @click="submit">
               Guardar
             </v-btn>
           </v-card-actions>
@@ -175,27 +191,57 @@
   </div>
 </template>
 <script>
+import { validationMixin } from "vuelidate";
+import {
+  required,
+  // eslint-disable-next-line no-unused-vars
+  minLength,
+  decimal,
+  // eslint-disable-next-line no-unused-vars
+  numeric,
+  minValue,
+} from "vuelidate/lib/validators";
 export default {
-  layout: 'back',
-
-  data () {
+  mixins: [validationMixin],
+  layout: "back",
+  validations: {
+    minAcept: { required, decimal, minValue: minValue(0) },
+    maxAcept: { required, decimal, minValue: minValue(0) },
+    minSalud: { required, decimal, minValue: minValue(0) },
+    maxSalud: { required, decimal, minValue: minValue(0) },
+  },
+  data() {
     return {
       dialog: false,
-      formTitle: 'Agregar Valor',
+      formTitle: "Agregar Valor",
+      id: "",
+      key: "",
+      name: "",
+      indicator: "",
+      indicatorUnit: "",
+      dataTypeName: "",
+      type: "",
+      frequency: "",
+      maxSalud: 0,
+      minSalud: 0,
+      maxAcept: 0,
+      minAcept: 0,
+      weight: 0,
+      weightPercentage: 0,
       form: {
-        key: '',
-        name: '',
-        indicator: '',
-        indicatorUnit: '',
-        dataTypeName: '',
-        type: '',
-        frequency: '',
+        key: "",
+        name: "",
+        indicator: "",
+        indicatorUnit: "",
+        dataTypeName: "",
+        type: "",
+        frequency: "",
         maxSalud: 0,
         minSalud: 0,
         maxAcept: 0,
         minAcept: 0,
         weight: 0,
-        weightPercentage: 0
+        weightPercentage: 0,
       },
       headers: [
         // {
@@ -205,10 +251,10 @@ export default {
         //   value: 'key'
         // },
         {
-          text: 'Indicador',
-          align: 'start',
+          text: "Indicador",
+          align: "start",
           sortable: false,
-          value: 'name'
+          value: "name",
         },
         // {
         //   text: 'Indicador',
@@ -216,12 +262,12 @@ export default {
         //   sortable: false,
         //   value: 'indicator'
         // },
-        // {
-        //   text: 'Unidad Indicador',
-        //   align: 'start',
-        //   sortable: false,
-        //   value: 'indicatorUnit'
-        // },
+        {
+          text: "Unidad Indicador",
+          align: "start",
+          sortable: false,
+          value: "indicatorUnit",
+        },
         // {
         //   text: 'Tipo dato',
         //   align: 'start',
@@ -241,28 +287,28 @@ export default {
         //   value: 'frequency'
         // },
         {
-          text: 'Max',
-          align: 'start',
+          text: "Min Aceptable",
+          align: "start",
           sortable: false,
-          value: 'maxSalud'
+          value: "minAcept",
         },
         {
-          text: 'Min',
-          align: 'start',
+          text: "Min Saludable",
+          align: "start",
           sortable: false,
-          value: 'minSalud'
+          value: "minSalud",
         },
         {
-          text: 'Max Acept',
-          align: 'start',
+          text: "Max Saludable",
+          align: "start",
           sortable: false,
-          value: 'maxAcept'
+          value: "maxSalud",
         },
         {
-          text: 'Min Acept',
-          align: 'start',
+          text: "Max Aceptable",
+          align: "start",
           sortable: false,
-          value: 'minAcept'
+          value: "maxAcept",
         },
         // {
         //   text: 'Peso',
@@ -276,69 +322,170 @@ export default {
         //   sortable: false,
         //   value: 'weightPercentage'
         // },
-        { text: 'Acciones', value: 'actions' }
-      ]
-    }
+        { text: "Acciones", value: "actions" },
+      ],
+    };
   },
 
-  async fetch ({ store }) {
+  async fetch({ store }) {
     try {
-      await store.dispatch('getValues')
+      await store.dispatch("getValues");
     } catch (e) {
-      return 'error'
+      return "error";
     }
   },
 
   computed: {
-    values () {
-      return this.$store.state.values
-    }
+    values() {
+      return this.$store.state.values.filter((e) => e.indicator !== "mood");
+    },
+    minAceptErrors() {
+      const errors = [];
+      if (!this.$v.minAcept.$dirty) {
+        return errors;
+      }
+      !this.$v.minAcept.minValue &&
+        errors.push("El valor mínimo aceptado debe ser mayor a 0");
+      !this.$v.minAcept.required &&
+        errors.push("El valor mínimo aceptado es requerido");
+      !this.$v.minAcept.decimal &&
+        errors.push("El valor mínimo aceptado debe ser un número");
+      return errors;
+    },
+    maxAceptErrors() {
+      const errors = [];
+      if (!this.$v.maxAcept.$dirty) {
+        return errors;
+      }
+      !this.$v.maxAcept.minValue &&
+        errors.push("El valor máximo aceptado debe ser mayor a 0");
+      !this.$v.maxAcept.required &&
+        errors.push("El valor máximo aceptado es requerido");
+      !this.$v.maxAcept.decimal &&
+        errors.push("El valor máximo aceptado debe ser un número");
+      return errors;
+    },
+    minSaludErrors() {
+      const errors = [];
+      if (!this.$v.minSalud.$dirty) {
+        return errors;
+      }
+      !this.$v.minSalud.minValue &&
+        errors.push("El valor mínimo saludable debe ser mayor a 0");
+      !this.$v.minSalud.required &&
+        errors.push("El valor mínimo saludable es requerido");
+      !this.$v.minSalud.decimal &&
+        errors.push("El valor mínimo saludable debe ser un número");
+      return errors;
+    },
+    maxSaludErrors() {
+      const errors = [];
+      if (!this.$v.maxSalud.$dirty) {
+        return errors;
+      }
+      !this.$v.maxSalud.minValue &&
+        errors.push("El valor máximo aceptado debe ser  mayor a 0");
+      !this.$v.maxSalud.required &&
+        errors.push("El valor máximo aceptado es requerido");
+      !this.$v.maxSalud.decimal &&
+        errors.push("El valor máximo saludable debe ser un número");
+      return errors;
+    },
   },
 
-  mounted () {
-    const { authUser } = this.$store.state
+  mounted() {
+    const { authUser } = this.$store.state;
     if (!authUser) {
-      this.$router.push('/')
+      this.$router.push("/");
     } else {
-      this.$store.dispatch('getValues')
+      this.$store.dispatch("getValues");
     }
   },
 
   methods: {
-    close () {
-      this.dialog = !this.dialog
+    submit() {
+      this.$v.$touch();
+    },
+    close() {
+      this.dialog = false;
     },
 
-    updateValue (item) {
-      const rr = { ...item, id: item.id }
-      this.form = JSON.parse(JSON.stringify(rr))
-      this.close()
-      this.edit = true
+    updateValue(item) {
+      this.dialog = true;
+      const rr = { ...item, id: item.id };
+      this.form = JSON.parse(JSON.stringify(rr));
+      this.id = JSON.parse(JSON.stringify(rr.id));
+      this.key = JSON.parse(JSON.stringify(rr.key));
+      this.name = JSON.parse(JSON.stringify(rr.name));
+      this.indicator = JSON.parse(JSON.stringify(rr.indicator));
+      this.indicatorUnit = JSON.parse(JSON.stringify(rr.indicatorUnit));
+      this.dataTypeName = JSON.parse(JSON.stringify(rr.dataTypeName));
+      this.type = JSON.parse(JSON.stringify(rr.type));
+      this.frequency = JSON.parse(JSON.stringify(rr.frequency));
+      this.minAcept = JSON.parse(JSON.stringify(rr.minAcept));
+      this.maxAcept = JSON.parse(JSON.stringify(rr.maxAcept));
+      this.minSalud = JSON.parse(JSON.stringify(rr.minSalud));
+      this.maxSalud = JSON.parse(JSON.stringify(rr.maxSalud));
+      this.weight = JSON.parse(JSON.stringify(rr.weight));
+      this.weightPercentage = JSON.parse(JSON.stringify(rr.weightPercentage));
+      this.edit = true;
     },
 
-    async createValue () {
+    async createValue() {
       try {
-        if (this.edit) {
-          await this.$fire.firestore
-            .collection('values')
-            .doc(this.form.id)
-            .set({
-              ...this.form
-            })
+        if (
+          !this.minAcept ||
+          !this.minSalud ||
+          !this.maxAcept ||
+          !this.maxSalud ||
+          isNaN(this.minAcept) ||
+          isNaN(this.minSalud) ||
+          isNaN(this.maxAcept) ||
+          isNaN(this.maxSalud)
+        ) {
+          console.log("No válido");
         } else {
-          await this.$fire.firestore
-            .collection('values')
-            .doc()
-            .set({
-              ...this.form
-            })
+          console.log("Válido");
+          this.close();
+          if (this.edit) {
+            await this.$fire.firestore.collection("values").doc(this.id).set({
+              key: this.key,
+              name: this.name,
+              indicator: this.indicator,
+              indicatorUnit: this.indicatorUnit,
+              dataTypeName: this.dataTypeName,
+              type: this.type,
+              frequency: this.frequency,
+              maxSalud: this.maxSalud,
+              minSalud: this.minSalud,
+              maxAcept: this.maxAcept,
+              minAcept: this.minAcept,
+              weight: this.weight,
+              weightPercentage: this.weightPercentage,
+            });
+          } else {
+            await this.$fire.firestore.collection("values").doc().set({
+              key: this.key,
+              name: this.name,
+              indicator: this.indicator,
+              indicatorUnit: this.indicatorUnit,
+              dataTypeName: this.dataTypeName,
+              type: this.type,
+              frequency: this.frequency,
+              maxSalud: this.maxSalud,
+              minSalud: this.minSalud,
+              maxAcept: this.maxAcept,
+              minAcept: this.minAcept,
+              weight: this.weight,
+              weightPercentage: this.weightPercentage,
+            });
+          }
         }
-
-        this.close()
       } catch (error) {
-        return error
+        console.log(error);
+        return error;
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>

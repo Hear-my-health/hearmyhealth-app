@@ -2,7 +2,7 @@
 import { firestoreAction } from 'vuexfire'
 
 export default {
-  async nuxtServerInit ({ dispatch, commit }, ctx) {
+  async nuxtServerInit({ dispatch, commit }, ctx) {
     if (this.$fire.auth === null) {
       throw 'nuxtServerInit Example not working - this.$fire.auth cannot be accessed.'
     }
@@ -42,8 +42,7 @@ export default {
     }
   },
 
-  onAuthStateChanged ({ commit }, { authUser, claims }) {
-    console.log('onAuthStateChanged', authUser)
+  onAuthStateChanged({ commit }, { authUser, claims }) {
     if (!authUser) {
       commit('RESET_STORE')
       return
@@ -59,7 +58,6 @@ export default {
 
   getUser: firestoreAction(async function ({ state, bindFirestoreRef }, ctx) {
     const { uid } = ctx
-    console.log('getUser uid', uid)
     const res = this.$fire.firestore
       .collection('users')
       .doc(uid)
@@ -72,6 +70,19 @@ export default {
     const res = this.$fire.firestore
       .collection('thoughts')
       .where('uid', '==', uid)
+      .orderBy('date', 'desc').limit(100)
+
+    await bindFirestoreRef('thoughts', res, { wait: true })
+  }),
+
+  getThoughtsByDate: firestoreAction(async function ({ state, bindFirestoreRef }, params) {
+    console.log(params);
+    const { start, end, uid } = params;
+    const res = this.$fire.firestore
+      .collection('thoughts')
+      .where('uid', '==', uid)
+      .where('date', '<', end)
+      .where('date', '>', start)
       .orderBy('date', 'desc').limit(100)
 
     await bindFirestoreRef('thoughts', res, { wait: true })
@@ -98,7 +109,6 @@ export default {
   }),
 
   getValues: firestoreAction(async function ({ state, bindFirestoreRef }, ctx) {
-    console.log('get.values')
     const res = this.$fire.firestore
       .collection('values')
 
@@ -107,19 +117,16 @@ export default {
 
   getDataSet: firestoreAction(async function ({ state, bindFirestoreRef }, ctx) {
     const { uid } = ctx
-    console.log('getDataSet uid', uid)
     const res = this.$fire.firestore
       .collection('dataSet')
       .where('uid', '==', uid)
-      .orderBy('startTimeMillis', 'desc').limit(400)
+      .orderBy('startTimeMillis', 'desc').limit(600)
 
     await bindFirestoreRef('dataSet', res, { wait: true })
   }),
 
   getDevices: firestoreAction(async function ({ state, bindFirestoreRef }, ctx) {
     const { uid } = ctx
-
-    console.log('getDevices uid', uid)
 
     const res = this.$fire.firestore
       .collection('devices')
@@ -136,4 +143,5 @@ export default {
 
     await bindFirestoreRef('dataSource', res, { wait: true })
   })
+
 }

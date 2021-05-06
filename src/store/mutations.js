@@ -56,5 +56,9 @@ export default {
 
   SET_USER: (state, user) => {
     state.user = user
+  },
+
+  SET_MESSAGE: (state, message) => {
+    state.message = message
   }
 }

@@ -5,43 +5,6 @@
         <v-avatar color="primary" size="64" class="mt-5 mb-7">
           <v-img :src="auth.photoURL" />
         </v-avatar>
-        <!--         <div>
-          <p class="mb-1">UID</p>
-          <v-text-field
-            v-model="auth.uid"
-            placeholder="UID"
-            color="black"
-            outlined
-            dense
-            type="text"
-            disabled
-          />
-        </div>
-        <div>
-          <p class="mb-1">Correo</p>
-          <v-text-field
-            v-model="auth.email"
-            placeholder="Correo"
-            outlined
-            color="black"
-            dense
-            type="email"
-            disabled
-          />
-        </div> -->
-
-        <!-- <div>
-            <p class="mb-1">Nombres</p>
-            <v-text-field
-              v-model="auth.providerData.displayName"
-              placeholder="Nombres"
-              color="black"
-              outlined
-              dense
-              type="text"
-              required
-            />
-          </div> -->
         <form @submit.prevent="updateInfo">
           <div>
             <p class="mb-1">
@@ -58,14 +21,14 @@
               :disabled="isEditing"
             />
           </div>
-          <div v-if="user.role === 'user'">
+          <div v-if="user.role === 'admin'">
             <div>
               <p class="mb-1">
-                DNI
+                Especialidad
               </p>
               <v-text-field
-                v-model="form.dni"
-                placeholder="DNI"
+                v-model="form.specialty"
+                placeholder="Especialidad"
                 color="black"
                 outlined
                 dense
@@ -73,6 +36,22 @@
                 :disabled="isEditing"
               />
             </div>
+          </div>
+          <div>
+            <p class="mb-1">
+              DNI
+            </p>
+            <v-text-field
+              v-model="form.dni"
+              placeholder="DNI"
+              color="black"
+              outlined
+              dense
+              type="text"
+              :disabled="isEditing"
+            />
+          </div>
+          <div v-if="user.role === 'user'">
             <div>
               <v-row>
                 <v-col>
@@ -119,63 +98,26 @@
                 </v-col>
               </v-row>
             </div>
-            <div>
-              <v-row>
-                <v-col>
-                  <p class="mb-1">
-                    Fecha de nacimiento
-                  </p>
-                  <v-text-field
-                    v-model="form.dateOfBirth"
-                    placeholder="Fecha de nacimiento"
-                    color="black"
-                    outlined
-                    dense
-                    type="text"
-                    :disabled="isEditing"
-                  />
-                </v-col>
-              </v-row>
-            </div>
+          </div>
+          <div>
+            <v-row>
+              <v-col>
+                <p class="mb-1">
+                  Fecha de nacimiento
+                </p>
+                <v-text-field
+                  v-model="form.dateOfBirth"
+                  placeholder="Fecha de nacimiento"
+                  color="black"
+                  outlined
+                  dense
+                  type="text"
+                  :disabled="isEditing"
+                />
+              </v-col>
+            </v-row>
           </div>
           <v-row>
-            <!--             <v-col>
-              <v-btn
-                v-if="isEditing === false"
-                elevation="0"
-                large
-                outlined
-                raised
-                type="submit"
-              >
-                Actualizar
-              </v-btn>
-            </v-col>
-            <v-col>
-              <v-btn
-                v-if="isEditing === false"
-                elevation="0"
-                large
-                outlined
-                raised
-                @click="isEditing = !isEditing"
-              >
-                Cancelar
-              </v-btn>
-            </v-col>
-            <v-col>
-              <v-btn
-                v-if="isEditing === true"
-                elevation="0"
-                large
-                outlined
-                raised
-                type="button"
-                @click="isEditing = !isEditing"
-              >
-                Editar
-              </v-btn>
-            </v-col> -->
             <v-col>
               <v-btn elevation="0" large outlined raised @click="signOut">
                 Cerrar sesión
@@ -198,6 +140,7 @@ export default {
       isEditing: true,
       form: {
         name: '',
+        specialty: '',
         dni: '',
         clinicHistory: '',
         dateOfBirth: '',
@@ -219,6 +162,7 @@ export default {
   watch: {
     user () {
       this.form.name = this.user.name
+      this.form.specialty = this.user.specialty
       this.form.dni = this.user.dni
       this.form.clinicHistory = this.user.clinicHistory
       this.form.dateOfBirth = this.user.dateOfBirth
@@ -237,6 +181,7 @@ export default {
     }
     if (this.user) {
       this.form.name = this.user.name
+      this.form.specialty = this.user.specialty
       this.form.dni = this.user.dni
       this.form.clinicHistory = this.user.clinicHistory
       this.form.dateOfBirth = this.user.dateOfBirth
@@ -249,34 +194,50 @@ export default {
     async signOut () {
       try {
         await this.$fireModule.auth().signOut()
+        localStorage.removeItem('role')
         this.$router.push('/')
       } catch (error) {
         console.log('error', error)
       }
     },
     async updateInfo () {
-      console.log(this.auth.uid)
-      try {
-        const { uid } = this.auth
-        const {
-          name,
-          dni,
-          clinicHistory,
-          dateOfBirth,
-          weight,
-          height
-        } = this.form
-        await this.$fire.firestore.collection('users').doc(uid).update({
-          name,
-          dni,
-          clinicHistory,
-          dateOfBirth,
-          weight,
-          height
-        })
-        this.isEditing = true
-      } catch (error) {
-        console.log('error', error)
+      if (this.user.role === 'user') {
+        try {
+          const { uid } = this.auth
+          const {
+            name,
+            dni,
+            clinicHistory,
+            dateOfBirth,
+            weight,
+            height
+          } = this.form
+          await this.$fire.firestore.collection('users').doc(uid).update({
+            name,
+            dni,
+            clinicHistory,
+            dateOfBirth,
+            weight,
+            height
+          })
+          this.isEditing = true
+        } catch (error) {
+          console.log('error', error)
+        }
+      } else {
+        try {
+          const { uid } = this.auth
+          const { name, dni, specialty, dateOfBirth } = this.form
+          await this.$fire.firestore.collection('users').doc(uid).update({
+            name,
+            dni,
+            specialty,
+            dateOfBirth
+          })
+          this.isEditing = true
+        } catch (error) {
+          console.log('error', error)
+        }
       }
     }
   }

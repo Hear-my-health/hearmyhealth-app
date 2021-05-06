@@ -1,24 +1,35 @@
 <template>
-  <v-row justify="center" align="center">
+  <v-row v-if="userType === 'admin'" justify="center" align="center">
     <v-col cols="12" sm="10" md="10">
       <v-data-table
         :headers="headers"
         :items="users"
+        :items-per-page="15"
+        :item-key="`uid`"
         :sort-by="['email', 'name']"
         :sort-desc="[false, true]"
+        :search="search"
         multi-sort
-        class="elevation-1"
+        class="elevation-0"
       >
         <template #top>
           <v-toolbar flat>
-            <v-toolbar-title>Usuarios</v-toolbar-title>
+            <v-toolbar-title>Pacientes</v-toolbar-title>
             <v-divider class="mx-4" inset vertical />
             <v-spacer />
+            <v-spacer />
+            <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              label="Buscar"
+              single-line
+              hide-details
+            />
           </v-toolbar>
         </template>
         <template #[`item.picture`]="{ item }">
           <v-avatar size="36">
-            <img :src="item.picture" alt="John" />
+            <img :src="item.picture" alt="John">
           </v-avatar>
         </template>
 
@@ -28,105 +39,300 @@
             elevation="0"
             outlined
             raised
-            :to="`/back/${item.uid}#data`"
+            :to="`/back/${item.uid}#dashboard`"
           >
             Ver
 
-            <v-icon small class="mr-2"> mdi-arrow-right </v-icon>
+            <v-icon small class="mr-2">
+              mdi-arrow-right
+            </v-icon>
           </v-btn>
         </template>
       </v-data-table>
     </v-col>
+    <v-dialog
+      v-if="
+        noData === true && user.role === 'admin' && authUser.uid === user.uid
+      "
+      v-model="info"
+      max-width="500px"
+      elevation="0"
+    >
+      <form @submit.prevent="updateInfo">
+        <!-- <form> -->
+        <v-card>
+          <v-card-title>
+            <span class="headline">Actualice sus datos</span>
+          </v-card-title>
+
+          <v-card-text>
+            <v-container>
+              <v-row>
+                <v-col cols="12" md="12">
+                  <v-text-field
+                    v-model="dni"
+                    outlined
+                    label="DNI"
+                    required
+                    :error-messages="dniErrors"
+                    @input="$v.dni.$touch()"
+                    @blur="$v.dni.$touch()"
+                  />
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="12" md="12">
+                  <v-select
+                    v-model="specialty"
+                    outlined
+                    :items="specialties"
+                    label="Especialidad"
+                    :error-messages="specialtyErrors"
+                    @input="$v.specialty.$touch()"
+                    @blur="$v.specialty.$touch()"
+                  />
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="12" md="12">
+                  <v-text-field
+                    v-model="dateOfBirth"
+                    type="date"
+                    outlined
+                    label="Fecha de nacimiento"
+                    required
+                    :error-messages="dateOfBirthErrors"
+                    @input="$v.dateOfBirth.$touch()"
+                    @blur="$v.dateOfBirth.$touch()"
+                  />
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card-text>
+
+          <v-card-actions>
+            <v-spacer />
+            <v-btn type="submit" elevation="0" outlined raised @click="submit">
+              Actualizar
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </form>
+    </v-dialog>
   </v-row>
 </template>
 
 <script>
+import { validationMixin } from 'vuelidate'
+import { required, maxLength, minLength } from 'vuelidate/lib/validators'
 export default {
-  layout: "back",
-
-  data() {
+  mixins: [validationMixin],
+  layout: 'back',
+  validations: {
+    dni: { required, minLength: minLength(8), maxLength: maxLength(8) },
+    specialty: { required, minLength: minLength(3) },
+    dateOfBirth: { required }
+  },
+  data () {
     return {
+      search: '',
+      userType: '',
+      noData: false,
+      specialties: ['Psicólogo', 'Nutricionista', 'Médico general', 'Otro'],
+      dni: '',
+      specialty: '',
+      dateOfBirth: '',
+      info: {
+        dni: '',
+        specialty: '',
+        dateOfBirth: ''
+      },
       form: {
-        email: "",
-        password: "",
+        email: '',
+        password: ''
       },
 
-      passwordRules: [(v) => !!v || "Password is required"],
+      passwordRules: [v => !!v || 'Password is required'],
 
       emailRules: [
-        (v) => !!v || "E-mail is required",
-        (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
+        v => !!v || 'E-mail is required',
+        v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
       ],
 
       headers: [
         {
-          text: "Imagen",
-          align: "start",
+          text: 'Imagen',
+          align: 'start',
           sortable: false,
-          value: "picture",
+          value: 'picture'
         },
         {
-          text: "Email",
-          align: "start",
-          sortable: false,
-          value: "email",
+          text: 'Email',
+          align: 'start',
+          sortable: true,
+          value: 'email'
         },
         {
-          text: "Id",
-          align: "start",
+          text: 'DNI',
+          align: 'start',
           sortable: false,
-          value: "uid",
+          value: 'dni'
         },
         {
-          text: "Nombre",
-          align: "start",
-          sortable: false,
-          value: "name",
+          text: 'Nombre',
+          align: 'start',
+          sortable: true,
+          value: 'name'
         },
-        {
-          text: "Rol",
-          align: "start",
-          sortable: false,
-          value: "role",
-        },
-        { text: "Acciones", value: "actions" },
-      ],
-    };
-  },
-
-  async fetch({ store }) {
-    try {
-      await store.dispatch("getUsers");
-    } catch (e) {
-      return "error";
+        { text: '', value: 'actions', sortable: false }
+      ]
     }
   },
 
   computed: {
-    users() {
-      return this.$store.state.users.filter((user) => user.role === "user");
+    authUser () {
+      return this.$store.state.authUser
     },
-  },
+    user () {
+      return this.$store.state.user
+    },
+    users () {
+      return this.$store.state.users.filter(user => user.role === 'user')
+    },
+    dniErrors () {
+      const errors = []
+      if (!this.$v.dni.$dirty) {
+        return errors
+      }
+      (!this.$v.dni.maxLength || !this.$v.dni.minLength) &&
+        errors.push('El DNI debe tener 8 caracteres')
+      !this.$v.dni.required && errors.push('El DNI es requerido')
+      return errors
+    },
 
-  mounted() {
-    this.$store.dispatch("getUsers");
+    specialtyErrors () {
+      const errors = []
+      if (!this.$v.specialty.$dirty) {
+        return errors
+      }
+      !this.$v.specialty.minLength &&
+        errors.push('La especialidad debe tener 5 caracteres como mínimo')
+      !this.$v.specialty.required &&
+        errors.push('La especialidad es requerida')
+      return errors
+    },
+
+    dateOfBirthErrors () {
+      const errors = []
+      if (!this.$v.dateOfBirth.$dirty) {
+        return errors
+      }
+      !this.$v.dateOfBirth.required &&
+        errors.push('La fecha de nacimiento es requerida')
+      return errors
+    }
+  },
+  watch: {
+    user () {
+      if (this.user.specialty) {
+        localStorage.setItem('doctorSpecialty', this.user.specialty)
+      }
+      if (this.user.name) {
+        localStorage.setItem('doctorName', this.user.name)
+      }
+      if (this.user.role) {
+        localStorage.setItem('role', this.user.role)
+      }
+      if (!this.user.dni || !this.user.dateOfBirth || !this.user.specialty) {
+        this.noData = true
+      } else {
+        this.noData = false
+      }
+    }
+  },
+  // eslint-disable-next-line require-await
+  async mounted () {
+    if (localStorage.getItem('role') === 'user') {
+      this.userType = localStorage.getItem('role')
+      this.$router.push('/app')
+    } else {
+      this.userType = localStorage.getItem('role')
+      const { authUser } = this.$store.state
+      if (!authUser) {
+        this.$router.push('/')
+      } else {
+        this.$store.dispatch('getUsers')
+        this.$store.dispatch('getUser', { uid: authUser.uid })
+      }
+      /* if (localStorage.getItem("role") !== "admin") {
+        this.$router.push("/");
+      } else {
+        this.$store.dispatch("getUsers");
+        this.$store.dispatch("getUser", { uid: authUser.uid });
+      } */
+    }
+    /*      const { authUser } = this.$store.state
+     if (!authUser) {
+       this.$router.push('/')
+     } else {
+       await this.$store.dispatch('getUser', { uid: authUser.uid })
+       const { user } = this.$store.state
+       if (user) {
+         this.userType = localStorage.getItem('role')
+          this.userType = user.role
+         if (this.userType === 'admin') {
+           this.$store.dispatch('getUsers')
+         } else {
+           this.$router.push('/app')
+         }
+       } else {
+         this.$router.push('/')
+       }
+     } */
   },
 
   methods: {
-    async createDoctor() {
+    filterOnlyCapsText (value, search, item) {
+      return (
+        value != null &&
+        search != null &&
+        typeof value === 'string' &&
+        value.toString().includes(search)
+      )
+    },
+
+    submit () {
+      this.$v.$touch()
+    },
+
+    async updateInfo () {
       try {
-        const { email, password } = this.form;
+        const { uid } = this.$store.state.authUser
+        const { dni, specialty, dateOfBirth } = this
+        await this.$fire.firestore.collection('users').doc(uid).update({
+          dni,
+          specialty,
+          dateOfBirth
+        })
+        this.noData = false
+      } catch (error) {
+        this.$store.dispatch('SET_MESSAGE', { message: error })
+      }
+    },
+    async createDoctor () {
+      try {
+        const { email, password } = this.form
         await this.$fireModule
           .auth()
-          .createUserWithEmailAndPassword(email, password);
+          .createUserWithEmailAndPassword(email, password)
       } catch (error) {
-        console.log("error", error);
+        this.$store.dispatch('SET_MESSAGE', { message: error })
       }
     },
 
-    resetValidation() {
-      this.$refs.form.resetValidation();
-    },
-  },
-};
+    resetValidation () {
+      this.$refs.form.resetValidation()
+    }
+  }
+}
 </script>

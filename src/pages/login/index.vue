@@ -1,51 +1,57 @@
 <template>
-  <v-app dark>
-    <v-app-bar fixed app class="elevation-0 grey lighten-5" height="120px">
-      <v-container>
-        <nuxt-link to="/">
-          <img src="~/assets/images/logo-2.svg" height="36" alt="google-icon">
-        </nuxt-link>
-        <v-spacer />
-      </v-container>
-    </v-app-bar>
-    <v-main class="grey lighten-5">
-      <v-container>
-        <v-row justify="center" align="center" class="mt-3">
-          <v-col cols="10" sm="8" md="4">
-            <h2 class="text-h3 mb-9">
-              Sign In
-            </h2>
-            <p class="mb-6">
-              We only accept social auth here:
-            </p>
-            <v-btn
-              x-large
-              elevation="0"
-              raised
-              outlined
-              class="pa-2"
-              @click="signInWithGoogle"
+  <v-container>
+    <v-row justify="center" align="center" class="mt-3">
+      <v-col cols="10" sm="8" md="4">
+        <h2 class="text-h3 mb-9">
+          Iniciar sesión
+        </h2>
+        <div class="mb-9">
+          <p class="mb-3">
+            Iniciar sesión como paciente
+          </p>
+          <v-btn
+            x-large
+            elevation="0"
+            raised
+            outlined
+            class="pa-2"
+            block
+            @click="signInWithGoogle"
+          >
+            <img
+              src="~/assets/images/google-auth.svg"
+              alt="google-auth"
+              class="pa-1"
+              style="width: 48px; height: 48px"
             >
-              <img
-                src="~/assets/images/google-auth.svg"
-                alt="google-auth"
-                class="pa-1"
-                style="width: 48px; height: 48px"
-              >
-              <span class="mx-2"> Sign in with Google </span>
-            </v-btn>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-main>
-  </v-app>
+            <span class="mx-2"> Inicia sesión con Google </span>
+          </v-btn>
+        </div>
+        <div>
+          <p class="mb-3">
+            También puedes ingresar como especialista
+          </p>
+          <v-btn
+            class="lighten-1 blue accent-4"
+            raised
+            outlined
+            large
+            dark
+            block
+            to="/login/admin"
+          >
+            Inicia sesión
+          </v-btn>
+        </div>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
 export default {
-  components: {},
-
   layout: 'free',
+
   middleware: 'authenticated',
 
   data () {
@@ -55,13 +61,7 @@ export default {
   async mounted () {
     const { authUser } = this.$store.state
 
-    console.log('authUser', authUser)
     if (authUser) {
-      /*       console.log('logueqado')
-      await this.$store.dispatch('getUser', { uid: authUser.uid })
-      const { role } = this.$store.state.user
-      console.log('role', role)
- */
       await this.$router.push('/app')
     }
   },
@@ -109,7 +109,7 @@ export default {
       // You can add or remove more scopes here provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
       const authData = await this.$fire.auth.signInWithPopup(provider)
 
-      await this.$store.commit('SET_CREDENTIAL', authData.credential)
+      this.$store.commit('SET_CREDENTIAL', authData.credential)
       await this.getDataSavingTime(authData.user.uid)
 
       if (authData.additionalUserInfo.isNewUser) {
@@ -159,7 +159,7 @@ export default {
         )
         this.saveDataSourcesByUsers(res.dataSource, user, accessToken)
       } catch (error) {
-        console.log('LOGIN getMeDataSources error', error)
+        this.$store.dispatch('SET_MESSAGE', { message: error })
       }
     },
 
@@ -207,7 +207,7 @@ export default {
           data: dataSourceFilter
         })
 
-        const startDateOrigin = '2021-02-01T00:00:00.000Z'
+        const startDateOrigin = '2021-04-22T00:00:00.000Z'
         const startTimeOrigin = new Date(startDateOrigin).getTime()
 
         const dataSaving =
@@ -215,10 +215,10 @@ export default {
             ? this.$store.state.dataSavingTime[0]
             : null
 
-        const startTime = dataSaving ? dataSaving.date : startTimeOrigin
+        const startTime = dataSaving != null ? dataSaving.date : startTimeOrigin
 
         const endDate = new Date()
-
+        endDate.setUTCHours(0, 0, 0, 0)
         const endTime = endDate.getTime()
 
         dataSourceFilter.forEach(async (item) => {
@@ -277,7 +277,6 @@ export default {
               try {
                 let value
                 if (
-                  name === 'com.google.step_count.delta' ||
                   name === 'com.google.step_count.delta'
                 ) {
                   value = obj.dataset[0].point[0]
@@ -332,7 +331,7 @@ export default {
           }
         }
       } catch (error) {
-        return error
+        this.$store.dispatch('SET_MESSAGE', { message: error })
       }
     },
 
@@ -345,7 +344,7 @@ export default {
         if (value >= dd.minSalud && value <= dd.maxSalud) {
           return 'green'
         }
-        if (value >= dd.minAcept && value <= dd.maxAcept) {
+        if (value >= dd.minAcept && (value < dd.minSalud || value > dd.maxSalud) && value <= dd.maxAcept && value !== 0) {
           return 'yellow'
         }
         return 'red'
@@ -398,7 +397,7 @@ export default {
               startTimeMillis: obj.startTimeMillis,
               startTimeNanos: '',
 
-              value,
+              value: Number(value),
 
               name: obj.name,
               modifiedTimeMillis: obj.modifiedTimeMillis,
@@ -432,7 +431,7 @@ export default {
               .set({
                 uid,
                 ...sleepObj,
-                stateSleep
+                state: stateSleep
               })
             await this.$fire.firestore
               .collection('dataSet')
@@ -440,16 +439,14 @@ export default {
               .set({
                 uid,
                 ...sleepDeepObj,
-                stateSleepDeep
+                state: stateSleepDeep
               })
           } catch (error) {
-            console.log('error', error)
+            this.$store.dispatch('SET_MESSAGE', { message: error })
           }
         })
-
-        console.log('LOGIN getMeSessionsSleep res', res)
       } catch (error) {
-        console.log('LOGIN getMeSessionsSleep error', error)
+        this.$store.dispatch('SET_MESSAGE', { message: error })
       }
     }
   }

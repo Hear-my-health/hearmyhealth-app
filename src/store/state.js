@@ -12,6 +12,7 @@ export default () => ({
   dataSet: [],
   devices: [],
   values: [],
+  message: {},
   valuesLast: [
     {
       key: 'heartRateByDay',
