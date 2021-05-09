@@ -14,63 +14,6 @@
               outlined
             />
           </v-col>
-          <!-- <v-col cols="12" sm="4" md="4">
-            <v-menu
-              ref="menu1"
-              v-model="menu1"
-              :close-on-content-click="false"
-              transition="scale-transition"
-              offset-y
-              min-width="auto"
-            >
-              <template #activator="{ on, attrs }">
-                <v-text-field
-                  v-model="dateStarFormatted"
-                  label="Inicio"
-                  persistent-hint
-                  prepend-icon="mdi-calendar"
-                  v-bind="attrs"
-                  @blur="dateStart = parseDate(dateStarFormatted)"
-                  v-on="on"
-                />
-              </template>
-              <v-date-picker
-                v-model="dateStart"
-                no-title
-                min="2020-12-01"
-                @input="menu1 = false"
-              />
-            </v-menu>
-          </v-col>
-          <v-col cols="12" sm="4" md="4">
-            <v-menu
-              ref="menu2"
-              v-model="menu2"
-              :close-on-content-click="false"
-              transition="scale-transition"
-              offset-y
-              min-width="auto"
-            >
-              <template #activator="{ on, attrs }">
-                <v-text-field
-                  v-model="dateEndFormatted"
-                  label="Fin"
-                  persistent-hint
-                  prepend-icon="mdi-calendar"
-                  v-bind="attrs"
-                  @blur="dateEnd = parseDate(dateEndFormatted)"
-                  v-on="on"
-                />
-              </template>
-              <v-date-picker
-                v-model="dateEnd"
-                no-title
-                :min="dateStart"
-                :max="nowDate"
-                @input="menu2 = false"
-              />
-            </v-menu>
-          </v-col> -->
         </v-row>
         <v-row justify="center" align="center">
           <!-- SALUD FÍSICA -->
@@ -131,6 +74,26 @@
               </v-progress-circular>
             </v-col>
             <v-col
+              v-if="
+                dataStep.length === 0 &&
+                dataHeartRate.length === 0 &&
+                dataHeartRateAvgMinMax.tt2.length === 0 &&
+                dataCalories.length === 0
+              "
+            >
+              No existen datos de salud física del paciente
+            </v-col>
+            <v-col
+              v-if="
+                dataStep.length === 0 &&
+                (dataHeartRate.length !== 0 ||
+                  dataHeartRateAvgMinMax.tt2.length !== 0 ||
+                  dataCalories.length !== 0)
+              "
+            >
+              No hay datos de los pasos del paciente
+            </v-col>
+            <v-col
               v-if="dataStep.length > 0"
               cols="12"
               sm="12"
@@ -143,6 +106,7 @@
                 :chart-data="dataStep"
                 :options="chartOptions"
                 :chart-colors="stepColors"
+                :key="componentKey"
                 label="Pasos"
               />
             </v-col>
@@ -205,7 +169,21 @@
                   {{ "S. Mental" }}
                 </v-progress-circular>
               </v-col>
-              <v-col cols="12" sm="7" md="7" justify="center" align="center">
+              <v-col
+                v-if="
+                  dataMood.length === 0 && dataSleepDeepSleep.tt.length === 0
+                "
+              >
+                No existen datos de salud mental del paciente
+              </v-col>
+              <v-col
+                cols="12"
+                sm="7"
+                md="7"
+                justify="center"
+                align="center"
+                v-if="dataMood.length > 0"
+              >
                 <div>Valores estado de animo:</div>
                 <v-img
                   src="https://firebasestorage.googleapis.com/v0/b/hear-my-health.appspot.com/o/caritasExplicacion.png?alt=media&token=caa42dc7-638a-4428-8ae1-5668fe6c4647"
@@ -213,6 +191,11 @@
                 />
               </v-col>
             </v-row>
+            <v-col
+              v-if="dataMood.length === 0 && dataSleepDeepSleep.tt.length !== 0"
+            >
+              No hay datos del estado de ánimo del paciente
+            </v-col>
             <v-col
               v-if="dataMood.length > 0"
               cols="12"
@@ -286,6 +269,15 @@
       <v-container v-if="selectedType === 'Salud Física'">
         <v-col
           v-if="
+            dataHeartRate.length === 0 &&
+            dataHeartRateAvgMinMax.tt2.length === 0 &&
+            (dataStep.length !== 0 || dataCalories.length !== 0)
+          "
+        >
+          No hay datos del ritmo cardíaco del paciente
+        </v-col>
+        <v-col
+          v-if="
             dataHeartRate.length > 0 && dataHeartRateAvgMinMax.tt2.length === 0
           "
           cols="12"
@@ -315,6 +307,17 @@
             :label="heartRateLabel"
           />
         </v-col>
+
+        <v-col
+          v-if="
+            dataCalories.length === 0 &&
+            (dataStep.length !== 0 ||
+              dataHeartRate.length !== 0 ||
+              dataHeartRateAvgMinMax.tt2.length !== 0)
+          "
+        >
+          No hay datos de las calorías del paciente
+        </v-col>
         <v-col
           v-if="dataCalories.length > 0"
           cols="12"
@@ -333,7 +336,12 @@
       </v-container>
       <v-container v-if="selectedType === 'Salud Mental'">
         <v-col
-          v-if="dataStep.length > 0"
+          v-if="dataSleepDeepSleep.tt.length === 0 && dataMood.length !== 0"
+        >
+          No hay datos del sueño y sueño profundo del paciente
+        </v-col>
+        <v-col
+          v-if="dataSleepDeepSleep.tt.length > 0"
           cols="12"
           sm="12"
           md="12"
@@ -382,6 +390,7 @@ export default {
 
   data() {
     return {
+      componentKey: 0,
       nowDate: new Date().toISOString().slice(0, 10),
       heartRateColors: {
         borderColor: "#E55381",
@@ -493,6 +502,14 @@ export default {
         },
       ],
     };
+  },
+
+  async fetch({ store }) {
+    try {
+      await store.dispatch("getDataSet", { uid: this.uid });
+    } catch (e) {
+      return "error";
+    }
   },
 
   computed: {
@@ -819,16 +836,11 @@ export default {
           );
           const ee = {
             date: this.formatDateTable(start),
-            data: dataTemp !== undefined ? Math.round(dataTemp.value) : 0,
+            data: dataTemp !== undefined ? dataTemp.value.toFixed(2) : 0,
           };
-          tt.push(ee);
-          /* dataTemp.forEach((e) => {
-            const ee = {
-              date: this.formatDateTable(start),
-              data: e.value !== null ? Math.round(e.value) : 0,
-            };
+          if (ee.data !== 0) {
             tt.push(ee);
-          }); */
+          }
 
           start = dateEnd;
         }
@@ -867,9 +879,11 @@ export default {
           );
           const ee = {
             date: this.formatDateTable(start),
-            data: dataTemp !== undefined ? Math.round(dataTemp.value) : 0,
+            data: dataTemp !== undefined ? dataTemp.value.toFixed(2) : 0,
           };
-          tt.push(ee);
+          if (ee.data !== 0) {
+            tt.push(ee);
+          }
 
           start = dateEnd;
         }
@@ -898,9 +912,11 @@ export default {
           );
           const ee = {
             date: this.formatDateTable(start),
-            data: dataTemp !== undefined ? Math.round(dataTemp.value) : 0,
+            data: dataTemp !== undefined ? dataTemp.value.toFixed(2) : 0,
           };
-          tt.push(ee);
+          if (ee.data !== 0) {
+            tt.push(ee);
+          }
           start = dateEnd;
         }
       }
@@ -938,27 +954,28 @@ export default {
                 date: this.formatDateTable(start),
                 data:
                   dataTemp !== undefined
-                    ? Math.round(dataTemp.point.value[0].fpVal)
+                    ? dataTemp.point.value[0].fpVal.toFixed(2)
                     : 0,
               };
               const ee1 = {
                 date: this.formatDateTable(start),
                 data:
                   dataTemp !== undefined
-                    ? Math.round(dataTemp.point.value[1].fpVal)
+                    ? dataTemp.point.value[1].fpVal.toFixed(2)
                     : 0,
               };
               const ee2 = {
                 date: this.formatDateTable(start),
                 data:
                   dataTemp !== undefined
-                    ? Math.round(dataTemp.point.value[2].fpVal)
+                    ? dataTemp.point.value[2].fpVal.toFixed(2)
                     : 0,
               };
-
-              tt.push(ee);
-              tt2.push(ee1);
-              tt3.push(ee2);
+              if (ee.data !== 0 && ee1.data !== 0 && ee2.data !== 0) {
+                tt.push(ee);
+                tt2.push(ee1);
+                tt3.push(ee2);
+              }
             }
           }
           start = dateEnd;
@@ -1004,7 +1021,9 @@ export default {
             data:
               dataTemp !== undefined && dataTemp !== null ? dataTemp.value : 0,
           };
-          tt.push(ee);
+          if (ee.data !== 0) {
+            tt.push(ee);
+          }
           start = dateEnd;
         }
       }
@@ -1058,7 +1077,6 @@ export default {
             date: this.formatDateTable(start),
             data: dataTemp1 !== undefined ? dataTemp1.value : 0,
           };
-          tt.push(ee1);
 
           const dataTemp2 = dd.find(
             (t) =>
@@ -1069,7 +1087,12 @@ export default {
             date: this.formatDateTable(start),
             data: dataTemp2 !== undefined ? dataTemp2.value : 0,
           };
-          tt2.push(ee2);
+
+          if (ee1.data !== 0 && ee2.data !== 0) {
+            tt.push(ee1);
+            tt2.push(ee2);
+          }
+
           start = dateEnd;
         }
       }
@@ -1190,31 +1213,11 @@ export default {
     },
   },
 
-  watch: {
-    /* dateStart (val) {
-      this.dateStarFormatted = this.formatDate(this.dateStart)
+  /*   watch: {
+    dataStep() {
+      this.forceRender();
     },
-    dateEnd (val) {
-      this.dateEndFormatted = this.formatDate(this.dateEnd)
-    }, */
-    selectedType() {
-      /* if (this.selectedType === "Salud Física") {
-        this.dataSetNotification = this.$store.state.dataSet.filter(
-          (e) =>
-            e.dataTypeName === "com.google.heart_rate.bpm" ||
-            e.dataTypeName === "com.google.calories.expended" ||
-            e.dataTypeName === "com.google.step_count.delta"
-        );
-      } else if (this.selectedType === "Salud Mental") {
-        this.dataSetNotification = this.$store.state.dataSet.filter(
-          (e) =>
-            e.dataTypeName === "com.google.sleep.segment" ||
-            e.dataTypeName === "app.web.hear-my-health.sleep.deep" ||
-            e.dataTypeName === "app.web.hear-my-health.mood.segment"
-        );
-      } */
-    },
-  },
+  }, */
 
   /*   created () {
     const date = new Date()
@@ -1237,6 +1240,10 @@ export default {
   },
 
   methods: {
+    forceRender() {
+      this.componentKey += 1;
+    },
+
     overageValueDataSet(dd) {
       const valueFilter = dd.filter(
         (t) => t.dataTypeName === "app.web.hear-my-health.mood.segment"

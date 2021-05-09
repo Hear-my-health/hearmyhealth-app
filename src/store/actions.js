@@ -76,7 +76,6 @@ export default {
   }),
 
   getThoughtsByDate: firestoreAction(async function ({ state, bindFirestoreRef }, params) {
-    console.log(params);
     const { start, end, uid } = params;
     const res = this.$fire.firestore
       .collection('thoughts')
@@ -86,6 +85,31 @@ export default {
       .orderBy('date', 'desc').limit(100)
 
     await bindFirestoreRef('thoughts', res, { wait: true })
+  }),
+
+  getAlertsByDate: firestoreAction(async function ({ state, bindFirestoreRef }, params) {
+    const { start, end, uid } = params;
+    const res = this.$fire.firestore
+      .collection('alerts')
+      .where('uid', '==', uid)
+      .where('date', '<', end)
+      .where('date', '>', start)
+      .orderBy('date', 'desc').limit(100)
+
+    await bindFirestoreRef('alerts', res, { wait: true })
+  }),
+
+  getDataSetByDate: firestoreAction(async function ({ state, bindFirestoreRef }, params) {
+    /* const { uid } = ctx */
+    const { start, end, uid } = params;
+    const res = this.$fire.firestore
+      .collection('dataSet')
+      .where('uid', '==', uid)
+      .where('startTimeMillis', '<', end)
+      .where('startTimeMillis', '>', start)
+      .orderBy('startTimeMillis', 'desc').limit(600)
+
+    await bindFirestoreRef('dataSet', res, { wait: true })
   }),
 
   getDataSavingTime: firestoreAction(async function ({ state, bindFirestoreRef }, ctx) {

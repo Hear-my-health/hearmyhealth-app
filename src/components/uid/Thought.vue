@@ -5,93 +5,34 @@
     </v-row>
     <br />
     <br />
-    <v-timeline dense>
-      <v-row justify="center" align="center">
-        <!-- <v-col cols="12" sm="8" md="3">
-          <v-menu
-            ref="menu1"
-            v-model="menu1"
-            :close-on-content-click="false"
-            transition="scale-transition"
-            offset-y
-            max-width="290px"
-            min-width="auto"
-          >
-            <template #activator="{ on, attrs }">
-              <v-text-field
-                v-model="dateStarFormatted"
-                label="Inicio"
-                persistent-hint
-                prepend-icon="mdi-calendar"
-                v-bind="attrs"
-                hint="MM/DD/YYYY"
-                @blur="dateStart = parseDate(dateStarFormatted)"
-                v-on="on"
+    <v-container v-if="thoughts.length === 0">
+      No hay pensamientos en el rango de fecha seleccionado
+    </v-container>
+    <v-container v-if="thoughts.length > 0">
+      <v-timeline dense>
+        <v-timeline-item v-for="(thought, ith) in thoughts" :key="ith">
+          <v-card class="elevation-0 blue-grey lighten-5">
+            <v-card-title class="title font-weight-regular">
+              <img
+                :src="`/images/${thought.name}.svg`"
+                alt="google-auth"
+                style="width: 32px; height: 32px"
+                class="mr-3"
               />
-            </template>
-            <v-date-picker
-              v-model="dateStart"
-              min="2020-12-01"
-              no-title
-              @input="menu1 = false"
-            />
-          </v-menu>
-        </v-col>
-
-        <v-col cols="12" sm="8" md="3">
-          <v-menu
-            ref="menu2"
-            v-model="menu2"
-            :close-on-content-click="false"
-            transition="scale-transition"
-            offset-y
-            max-width="290px"
-            min-width="auto"
-          >
-            <template #activator="{ on, attrs }">
-              <v-text-field
-                v-model="dateEndFormatted"
-                label="Fin"
-                persistent-hint
-                prepend-icon="mdi-calendar"
-                v-bind="attrs"
-                hint="MM/DD/YYYY"
-                @blur="dateEnd = parseDate(dateEndFormatted)"
-                v-on="on"
-              />
-            </template>
-            <v-date-picker
-              v-model="dateEnd"
-              :min="dateStart"
-              :max="nowDate"
-              no-title
-              @input="menu2 = false"
-            />
-          </v-menu>
-        </v-col> -->
-      </v-row>
-      <v-timeline-item v-for="(thought, ith) in thoughts" :key="ith">
-        <v-card class="elevation-0 blue-grey lighten-5">
-          <v-card-title class="title font-weight-regular">
-            <img
-              :src="`/images/${thought.name}.svg`"
-              alt="google-auth"
-              style="width: 32px; height: 32px"
-              class="mr-3"
-            />
-            {{ thought.thought }}
-          </v-card-title>
-          <v-card-text class="subtitle-1 font-weight-light">
-            {{
-              "Fecha: " +
-              formatDateTable(thought.date) +
-              "  Hora: " +
-              formatDateHour(thought.date)
-            }}
-          </v-card-text>
-        </v-card>
-      </v-timeline-item>
-    </v-timeline>
+              {{ thought.thought }}
+            </v-card-title>
+            <v-card-text class="subtitle-1 font-weight-light">
+              {{
+                "Fecha: " +
+                formatDateTable(thought.date) +
+                "  Hora: " +
+                formatDateHour(thought.date)
+              }}
+            </v-card-text>
+          </v-card>
+        </v-timeline-item>
+      </v-timeline>
+    </v-container>
   </v-container>
 </template>
 

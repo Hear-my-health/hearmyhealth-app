@@ -10,27 +10,34 @@
         Agregar alerta
       </v-btn>
     </v-row>
-    <v-row justify="center" align="center">
-      <v-col v-for="(alert, ilt) in alerts" :key="ilt" cols="12">
-        <v-card classdark>
-          <v-card-title class="headline">
-            <v-row>
-              <v-col>Nivel: {{ alert.type }} | {{ alert.alert }}</v-col>
-            </v-row>
-          </v-card-title>
-          <v-card-text style="font-size: 1.2rem">
-            Fecha: {{ formatDateTable(alert.date) }}
-            <span v-if="alert.doctorName">
-              | Doctor: {{ alert.doctorName }}</span
-            >
-            <span v-if="alert.doctorSpecialty">
-              - {{ alert.doctorSpecialty }}</span
-            >
-          </v-card-text>
-        </v-card>
-        <v-spacer />
-      </v-col>
-    </v-row>
+    <v-container v-if="alerts.length === 0">
+      <br />
+      <br />
+      No hay alertas en el rango de fecha seleccionado
+    </v-container>
+    <v-container v-if="alerts.length > 0">
+      <v-row justify="center" align="center">
+        <v-col v-for="(alert, ilt) in alerts" :key="ilt" cols="12">
+          <v-card classdark>
+            <v-card-title class="headline">
+              <v-row>
+                <v-col>Nivel: {{ alert.type }} | {{ alert.alert }}</v-col>
+              </v-row>
+            </v-card-title>
+            <v-card-text style="font-size: 1.2rem">
+              Fecha: {{ formatDateTable(alert.date) }}
+              <span v-if="alert.doctorName">
+                | Doctor: {{ alert.doctorName }}</span
+              >
+              <span v-if="alert.doctorSpecialty">
+                - {{ alert.doctorSpecialty }}</span
+              >
+            </v-card-text>
+          </v-card>
+          <v-spacer />
+        </v-col>
+      </v-row>
+    </v-container>
     <v-dialog
       v-if="dialog"
       v-model="dialog"
