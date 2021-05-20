@@ -497,6 +497,14 @@ export default {
     }
   }, */
 
+  /* async fetch({ store }) {
+    try {
+      await store.dispatch("getDataSet", { uid: this.uid });
+    } catch (e) {
+      return "error";
+    }
+  }, */
+
   computed: {
     auth() {
       return this.$store.state.authUser || null;
@@ -636,7 +644,8 @@ export default {
       this.$router.push("/");
     } else {
       /* this.$store.dispatch("getDataSet", { uid: authUser.uid }); */
-      this.$store.dispatch("getDataSet", { uid: this.uid });
+      /* this.$store.dispatch("getDataSet", { uid: this.uid }); */
+
       /* this.$store.dispatch("getUser", { uid: authUser.uid }); */
       this.$store.dispatch("getUser", { uid: this.uid });
       this.$store.dispatch("getValues");

@@ -290,7 +290,9 @@ export default {
           .signInWithEmailAndPassword(this.acc.email, this.acc.password)
           .then((res) => {
             localStorage.setItem("role", "admin");
-            this.$router.push("/back/");
+            setTimeout(() => {
+              this.$router.push("/back/");
+            }, 1000);
           })
           .catch((err) => {
             this.submitted = false;
