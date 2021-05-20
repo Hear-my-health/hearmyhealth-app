@@ -128,7 +128,9 @@ export default {
       alert: "",
       type: null,
       uid: this.$props.myUid,
+      // eslint-disable-next-line vue/no-dupe-keys
       dateStart: this.$props.dateStart,
+      // eslint-disable-next-line vue/no-dupe-keys
       dateEnd: this.$props.dateEnd,
       params: {
         uid: "",
@@ -183,6 +185,22 @@ export default {
       return errors;
     },
   },
+  watch: {
+    dateStart(val) {
+      /* this.dateStarFormatted = this.formatDate(this.dateStart) */
+      this.params.uid = this.uid;
+      this.params.start = new Date(this.dateStart).getTime();
+      this.params.end = new Date(this.dateEnd).setUTCHours(23, 59);
+      this.$store.dispatch("getAlertsByDate", this.params);
+    },
+    dateEnd(val) {
+      /* this.dateEndFormatted = this.formatDate(this.dateEnd) */
+      this.params.uid = this.uid;
+      this.params.start = new Date(this.dateStart).getTime();
+      this.params.end = new Date(this.dateEnd).setUTCHours(23, 59);
+      this.$store.dispatch("getAlertsByDate", this.params);
+    },
+  },
   mounted() {
     const { authUser } = this.$store.state;
     if (!authUser) {
@@ -195,22 +213,6 @@ export default {
       /* this.$store.dispatch('getAlerts', { uid: this.uid }) */
       this.$store.dispatch("getUser", { uid: this.uid });
     }
-  },
-  watch: {
-    dateStart(val) {
-      /* this.dateStarFormatted = this.formatDate(this.dateStart)*/
-      this.params.uid = this.uid;
-      this.params.start = new Date(this.dateStart).getTime();
-      this.params.end = new Date(this.dateEnd).setUTCHours(23, 59);
-      this.$store.dispatch("getAlertsByDate", this.params);
-    },
-    dateEnd(val) {
-      /* this.dateEndFormatted = this.formatDate(this.dateEnd)*/
-      this.params.uid = this.uid;
-      this.params.start = new Date(this.dateStart).getTime();
-      this.params.end = new Date(this.dateEnd).setUTCHours(23, 59);
-      this.$store.dispatch("getAlertsByDate", this.params);
-    },
   },
   methods: {
     submit() {

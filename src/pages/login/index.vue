@@ -224,7 +224,7 @@ export default {
         const startTime = dataSaving != null ? dataSaving.date : startTimeOrigin
 
         const endDate = new Date()
-        endDate.setUTCHours(0, 0, 0, 0)
+        endDate.setHours(0, 0, 0, 0)
         const endTime = endDate.getTime()
 
         dataSourceFilter.forEach(async (item) => {
