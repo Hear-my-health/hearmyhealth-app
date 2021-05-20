@@ -254,7 +254,10 @@ export default {
                   role: "admin",
                 })
                 .then((res) => {
-                  this.$router.push("/back/");
+                  localStorage.setItem("role", "admin");
+                  setTimeout(() => {
+                    this.$router.push("/back/");
+                  }, 1000);
                 })
                 .catch((err) => {
                   this.submitted = false;
