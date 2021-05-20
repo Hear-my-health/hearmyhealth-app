@@ -37,7 +37,7 @@
               </v-progress-circular>
             </v-col>
             <v-col
-              v-if="dataPhysicalHealth < 60 && dataPhysicalHealth >= 30"
+              v-if="dataPhysicalHealth < 70 && dataPhysicalHealth >= 30"
               cols="12"
               sm="4"
               md="4"
@@ -55,7 +55,7 @@
               </v-progress-circular>
             </v-col>
             <v-col
-              v-if="dataPhysicalHealth >= 60"
+              v-if="dataPhysicalHealth >= 70"
               cols="12"
               sm="12"
               md="4"
@@ -134,7 +134,7 @@
                 </v-progress-circular>
               </v-col>
               <v-col
-                v-if="dataMentalHealth < 60 && dataMentalHealth >= 30"
+                v-if="dataMentalHealth < 70 && dataMentalHealth >= 30"
                 cols="12"
                 sm="4"
                 md="4"
@@ -152,7 +152,7 @@
                 </v-progress-circular>
               </v-col>
               <v-col
-                v-if="dataMentalHealth >= 60"
+                v-if="dataMentalHealth >= 70"
                 cols="12"
                 sm="4"
                 md="4"
