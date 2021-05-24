@@ -227,6 +227,16 @@
             dense
             outlined
           />
+          <div v-if="dataSetNotification.length === 0">
+            No existe información de las
+            {{
+              selectNotification === "red"
+                ? "Alertas"
+                : selectNotification === "yellow"
+                ? "Advertencias"
+                : "Recomendaciones"
+            }}
+          </div>
           <div class="fixed-container">
             <div v-for="(item, index) in dataSetNotification" :key="index">
               <div v-if="item.data.length">
@@ -1206,7 +1216,9 @@ export default {
           }
           console.log(ee);
           start = dateEnd;
-          tt.push(ee);
+          if (ee.data.length > 0) {
+            tt.push(ee);
+          }
         }
       }
       return tt;
