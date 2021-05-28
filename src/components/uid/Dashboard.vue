@@ -102,7 +102,8 @@
               justify="center"
               align="center"
             >
-              <bar-chart
+              <BarChart
+                height="graphHeight"
                 :chart-data="dataStep"
                 :options="chartOptions"
                 :chart-colors="stepColors"
@@ -204,7 +205,8 @@
               justify="center"
               align="center"
             >
-              <bar-chart
+              <BarChart
+                height="graphHeight"
                 :chart-data="dataMood"
                 :options="chartOptions"
                 :chart-colors="moodColors"
@@ -296,7 +298,8 @@
           justify="center"
           align="center"
         >
-          <line-chart
+          <LineChart
+            height="graphHeight"
             :chart-data="dataHeartRate"
             :options="chartOptions"
             :chart-colors="heartRateColors"
@@ -312,6 +315,7 @@
           align="center"
         >
           <TripleLineChart
+            height="graphHeight"
             :chart-data="dataHeartRateAvgMinMax"
             :options="chartOptions"
             :label="heartRateLabel"
@@ -336,12 +340,15 @@
           justify="center"
           align="center"
         >
-          <line-chart
-            :chart-data="dataCalories"
-            :options="chartOptions"
-            :chart-colors="caloriesColors"
-            label="Calorías"
-          />
+          <v-container fluid>
+            <LineChart
+              height="graphHeight"
+              :options="chartOptions"
+              :chart-data="dataCalories"
+              :chart-colors="caloriesColors"
+              label="Calorías"
+            />
+          </v-container>
         </v-col>
       </v-container>
       <v-container v-if="selectedType === 'Salud Mental'">
@@ -358,7 +365,8 @@
           justify="center"
           align="center"
         >
-          <double-bar-chart
+          <DoubleBarChart
+            height="graphHeight"
             :chart-data="dataSleepDeepSleep"
             :options="chartOptions"
             :label="sleepLabel"
@@ -400,7 +408,7 @@ export default {
 
   data() {
     return {
-      componentKey: 0,
+      graphHeight: 150,
       nowDate: new Date().toISOString().slice(0, 10),
       heartRateColors: {
         borderColor: "#E55381",
@@ -449,7 +457,7 @@ export default {
       end: 0,
       chartOptions: {
         responsive: true,
-        maintainAspectRatio: false,
+        /*         maintainAspectRatio: false, */
       },
       selectedType: "Salud Física",
       selectTypes: ["Salud Física", "Salud Mental"],
@@ -836,9 +844,6 @@ export default {
           const dd = this.$store.state.dataSet.filter(
             (s) => s.startTimeMillis >= start && s.endTimeMillis <= dateEnd
           );
-          /* const dataTemp = dd.filter(
-            (s) => s.dataTypeName === "com.google.calories.expended"
-          ); */
           const dataTemp = dd.find(
             (t) =>
               t.dataTypeName === "com.google.calories.expended" &&
@@ -1225,12 +1230,6 @@ export default {
     },
   },
 
-  /*   watch: {
-    dataStep() {
-      this.forceRender();
-    },
-  }, */
-
   /*   created () {
     const date = new Date()
     this.dateEnd = date.toISOString().substr(0, 10)
@@ -1252,10 +1251,6 @@ export default {
   },
 
   methods: {
-    forceRender() {
-      this.componentKey += 1;
-    },
-
     overageValueDataSet(dd) {
       const valueFilter = dd.filter(
         (t) => t.dataTypeName === "app.web.hear-my-health.mood.segment"
