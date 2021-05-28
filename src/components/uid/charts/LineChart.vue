@@ -18,7 +18,7 @@ export default {
     },
   },
   watch: {
-    chartData(to, from) {
+    chartData() {
       const dates = this.chartData.map((d) => d.date);
       const totals = this.chartData.map((d) => d.data || 0);
 
