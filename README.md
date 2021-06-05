@@ -41,7 +41,7 @@ Nuxt.js SSR app template for deploying on Firebase.
     $ yarn predeploy
 
     # deploy Firebase to production
-    $ firbese deploy
+    $ firebase deploy
 
     # serve local Nuxt.js app with hot reload at localhost:3000
     $ yarn dev
